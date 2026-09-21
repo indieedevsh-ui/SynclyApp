@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+Target 'BeSorted' in project 'BeSorted'
+➜ Explicit dependency on target 'BeSorted Watch Watch App' in project 'BeSorted'
+➜ Explicit dependency on target 'BeSorted WidgetExtension' in project 'BeSorted'
+Target 'BeSorted WidgetExtension' in project 'BeSorted' (no dependencies)
+Target 'BeSorted Watch Watch App' in project 'BeSorted' (no dependencies)

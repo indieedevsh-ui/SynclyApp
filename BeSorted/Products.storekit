@@ -1,0 +1,192 @@
+{
+  "identifier" : "A4E91C2B",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "3.99",
+      "familyShareable" : false,
+      "internalID" : "B1S0A001",
+      "localizations" : [
+        {
+          "description" : "Model Smart Assistant od iPhone 14 (6 GB RAM) — heurystyka + NaturalLanguage.",
+          "displayName" : "Smart Assistant",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Smart Assistant from iPhone 14 (6 GB RAM) — heuristics + NaturalLanguage.",
+          "displayName" : "Smart Assistant",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jujug.BeSorted.smartAssistant.standard",
+      "referenceName" : "Smart Assistant",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "6.99",
+      "familyShareable" : false,
+      "internalID" : "B1S0A002",
+      "localizations" : [
+        {
+          "description" : "Smart Assistant + dla iPhone 15 Pro i nowszych.",
+          "displayName" : "Smart Assistant +",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Smart Assistant + for iPhone 15 Pro and newer.",
+          "displayName" : "Smart Assistant +",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jujug.BeSorted.smartAssistant.plus",
+      "referenceName" : "Smart Assistant Plus",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "11.99",
+      "familyShareable" : false,
+      "internalID" : "B1S0A003",
+      "localizations" : [
+        {
+          "description" : "Smart Assistant Pro z Foundation Models / Apple Intelligence.",
+          "displayName" : "Smart Assistant Pro",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Smart Assistant Pro with Foundation Models / Apple Intelligence.",
+          "displayName" : "Smart Assistant Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jujug.BeSorted.smartAssistant.pro",
+      "referenceName" : "Smart Assistant Pro",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "3.00",
+      "familyShareable" : false,
+      "internalID" : "B1S0A004",
+      "localizations" : [
+        {
+          "description" : "Upgrade z Smart Assistant do Smart Assistant +.",
+          "displayName" : "Upgrade do Smart Assistant +",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Upgrade from Smart Assistant to Smart Assistant +.",
+          "displayName" : "Upgrade to Smart Assistant +",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jujug.BeSorted.smartAssistant.plus.fromStandard",
+      "referenceName" : "Plus from Standard",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "8.00",
+      "familyShareable" : false,
+      "internalID" : "B1S0A005",
+      "localizations" : [
+        {
+          "description" : "Upgrade z Smart Assistant do Smart Assistant Pro.",
+          "displayName" : "Upgrade do Smart Assistant Pro",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Upgrade from Smart Assistant to Smart Assistant Pro.",
+          "displayName" : "Upgrade to Smart Assistant Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jujug.BeSorted.smartAssistant.pro.fromStandard",
+      "referenceName" : "Pro from Standard",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "5.00",
+      "familyShareable" : false,
+      "internalID" : "B1S0A006",
+      "localizations" : [
+        {
+          "description" : "Upgrade z Smart Assistant + do Smart Assistant Pro.",
+          "displayName" : "Upgrade do Smart Assistant Pro",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Upgrade from Smart Assistant + to Smart Assistant Pro.",
+          "displayName" : "Upgrade to Smart Assistant Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jujug.BeSorted.smartAssistant.pro.fromPlus",
+      "referenceName" : "Pro from Plus",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "pl_PL",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "POL",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

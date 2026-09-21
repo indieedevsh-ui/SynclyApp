@@ -1,0 +1,69 @@
+{
+  "" : {
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted WidgetExtension-primary.dia",
+    "emit-module-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted WidgetExtension-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted WidgetExtension-primary-emit-module.dia",
+    "pch" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted WidgetExtension-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted WidgetExtension-primary.swiftdeps"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Widget/AppIntent.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/AppIntent~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Widget/BeSorted_Widget.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_Widget~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Widget/BeSorted_WidgetBundle.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetBundle~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Widget/BeSorted_WidgetControl.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetControl~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Widget/BeSorted_WidgetLiveActivity.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/BeSorted_WidgetLiveActivity~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphoneos/BeSorted WidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

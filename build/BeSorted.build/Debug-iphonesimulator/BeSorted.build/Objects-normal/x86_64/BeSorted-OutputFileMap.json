@@ -1,0 +1,269 @@
+{
+  "" : {
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSorted-primary.dia",
+    "emit-module-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSorted-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSorted-primary-emit-module.dia",
+    "pch" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSorted-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSorted-primary.swiftdeps"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/AppAppearance.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppAppearance~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/BeSortedAIService.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedAIService~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/BeSortedApp.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedApp~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/BeSortedSound.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/BeSortedSound~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/ContentView.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ContentView~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/L10n.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/L10n~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/ProjectContextFileImporter.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFileImporter~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SmartAssistant.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistant~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SmartAssistantStandardIntel.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStandardIntel~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SmartAssistantStoreKit.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantStoreKit~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SmartAssistantTourSnapshots.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantTourSnapshots~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SmartAssistantViews.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartAssistantViews~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SmartMode.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SmartMode~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted/SynclySplashView.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SynclySplashView~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/AppLanguage.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/AppLanguage~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/CurrentPlanStore.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/CurrentPlanStore~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/GameProjectCore.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GameProjectCore~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/PhoneWatchSync.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/PhoneWatchSync~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/Project.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/Project~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectBug.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectBug~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectContextFile.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectContextFile~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectFutureNote.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectFutureNote~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectKind.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectKind~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectTask.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/ProjectTask~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/SharedModelContainer.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/SharedModelContainer~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted.build/Objects-normal/x86_64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

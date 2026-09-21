@@ -1,0 +1,149 @@
+{
+  "" : {
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted Watch Watch App-primary.dia",
+    "emit-module-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted Watch Watch App-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted Watch Watch App-primary-emit-module.dia",
+    "pch" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted Watch Watch App-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted Watch Watch App-primary.swiftdeps"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Watch Watch App/BeSorted_WatchApp.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/BeSorted_WatchApp~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSorted Watch Watch App/ContentView.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/AppLanguage.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/AppLanguage~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/CurrentPlanStore.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/CurrentPlanStore~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/GameProjectCore.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GameProjectCore~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/PhoneWatchSync.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/PhoneWatchSync~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/Project.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/Project~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectBug.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectBug~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectContextFile.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectContextFile~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectFutureNote.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectFutureNote~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectKind.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectKind~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/ProjectTask.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/ProjectTask~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/BeSortedShared/SharedModelContainer.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/SharedModelContainer~partial.swiftmodule"
+  },
+  "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/michael/Desktop/PROJEKTY/BeSorted/build/BeSorted.build/Debug-iphonesimulator/BeSorted Watch Watch App.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
