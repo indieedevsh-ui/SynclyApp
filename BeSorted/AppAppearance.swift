@@ -96,9 +96,9 @@ enum AppGlassStyle: String, CaseIterable, Identifiable {
         case (.english, .zero):
             "No Liquid Glass — solid surfaces everywhere. Tabs become bottom text labels."
         case (.polish, .neomorphic):
-            "Miękkie wypukłe przyciski, wklęsła pastylka zakładek i delikatny blask wybranej zakładki — bez twardych krawędzi."
+            "Miękkie wypukłe karty, dok zakładek i wklęsły suwak wybranej zakładki — bez twardych krawędzi."
         case (.english, .neomorphic):
-            "Soft raised buttons, a recessed tab pill and a gentle glow on the selected tab — no hard edges."
+            "Soft raised cards, a tab dock and a recessed selected-tab thumb — no hard edges."
         }
     }
 }
@@ -640,54 +640,56 @@ final class AppAppearance {
     }
 
     var neoPalette: NeoPalette {
+        // Kolory SoftEmbossed (referencja): surface = wypełnienie kafli,
+        // highlight = jasne światło lewa-góra, shadow = ciemny cień prawa-dół.
         switch theme {
         case .black:
             return NeoPalette(
-                highlight: Color.white.opacity(0.13),
-                shadow: Color.black.opacity(0.40),
-                shadowStrong: Color.black.opacity(0.56),
+                highlight: Color(red: 0.18, green: 0.19, blue: 0.21).opacity(0.70),
+                shadow: Color.black.opacity(0.85),
+                shadowStrong: Color.black.opacity(0.92),
                 track: Color(white: 0.16)
             )
         case .white:
             return NeoPalette(
-                highlight: Color.white.opacity(0.94),
-                shadow: Color(red: 0.82, green: 0.72, blue: 0.55).opacity(0.52),
-                shadowStrong: Color(red: 0.72, green: 0.60, blue: 0.42).opacity(0.72),
+                highlight: Color.white.opacity(0.85),
+                shadow: Color(red: 0.72, green: 0.68, blue: 0.63).opacity(0.60),
+                shadowStrong: Color(red: 0.72, green: 0.68, blue: 0.63).opacity(0.80),
                 track: Color(red: 0.86, green: 0.78, blue: 0.62)
             )
         case .orange:
             return NeoPalette(
-                highlight: Color(red: 1.0, green: 0.78, blue: 0.60).opacity(0.18),
-                shadow: Color.black.opacity(0.42),
-                shadowStrong: Color.black.opacity(0.58),
+                highlight: Color(red: 1.0, green: 0.63, blue: 0.48).opacity(0.50),
+                shadow: Color(red: 0.58, green: 0.17, blue: 0.02).opacity(0.60),
+                shadowStrong: Color(red: 0.58, green: 0.17, blue: 0.02).opacity(0.80),
                 track: Color(red: 0.30, green: 0.15, blue: 0.06)
             )
         case .darkBlue:
             return NeoPalette(
-                highlight: Color(red: 0.55, green: 0.72, blue: 1.0).opacity(0.20),
-                shadow: Color.black.opacity(0.44),
-                shadowStrong: Color.black.opacity(0.60),
+                highlight: Color(red: 0.11, green: 0.24, blue: 0.47).opacity(0.60),
+                shadow: Color.black.opacity(0.75),
+                shadowStrong: Color.black.opacity(0.90),
                 track: Color(red: 0.05, green: 0.13, blue: 0.34)
             )
         case .silver:
             return NeoPalette(
-                highlight: Color.white.opacity(0.94),
-                shadow: Color(red: 0.12, green: 0.13, blue: 0.16).opacity(0.30),
-                shadowStrong: Color(red: 0.12, green: 0.13, blue: 0.16).opacity(0.48),
+                highlight: Color.white.opacity(0.90),
+                shadow: Color(red: 0.64, green: 0.67, blue: 0.72).opacity(0.60),
+                shadowStrong: Color(red: 0.64, green: 0.67, blue: 0.72).opacity(0.80),
                 track: Color(red: 0.77, green: 0.79, blue: 0.84)
             )
         case .lightBlue:
             return NeoPalette(
-                highlight: Color.white.opacity(0.92),
-                shadow: Color(red: 0.08, green: 0.16, blue: 0.28).opacity(0.32),
-                shadowStrong: Color(red: 0.08, green: 0.16, blue: 0.28).opacity(0.52),
+                highlight: Color.white.opacity(0.80),
+                shadow: Color(red: 0.36, green: 0.56, blue: 0.75).opacity(0.55),
+                shadowStrong: Color(red: 0.36, green: 0.56, blue: 0.75).opacity(0.75),
                 track: Color(red: 0.62, green: 0.75, blue: 0.88)
             )
         case .cherry:
             return NeoPalette(
-                highlight: Color(red: 1.0, green: 0.62, blue: 0.70).opacity(0.16),
-                shadow: Color.black.opacity(0.40),
-                shadowStrong: Color.black.opacity(0.56),
+                highlight: Color(red: 0.43, green: 0.13, blue: 0.21).opacity(0.65),
+                shadow: Color.black.opacity(0.65),
+                shadowStrong: Color.black.opacity(0.85),
                 track: Color(red: 0.20, green: 0.055, blue: 0.11)
             )
         }
@@ -696,11 +698,68 @@ final class AppAppearance {
     var neoHighlight: Color { neoPalette.highlight }
     var neoShadow: Color { neoPalette.shadow }
     var neoShadowStrong: Color { neoPalette.shadowStrong }
-    /// Powierzchnia wypukłych kafli — kolor tła motywu, ten sam jaki widać na kafelkach
-    /// (czarny → ciemny szary, biały → beż, wiśniowy → głęboki róż, niebieski → głęboki błękit).
-    /// Elementy rozróżnia wyłącznie miękka poświata: białe światło z lewej-góry
-    /// i ciemny cień z prawej-dolu, nie barwa wypełnienia.
-    var neoRaisedFill: Color { fullyOpaque(tileTint) }
+    /// Powierzchnia wypukłych kafli (referencja SoftEmbossed `surfaceColor`):
+    /// wiśnia → głęboki burgund, jasnoniebieski → nasycony błękit itd.
+    /// Elementy rozróżnia miękka poświata: światło z lewej-góry
+    /// i ciemny cień z prawej-dołu, nie barwa wypełnienia.
+    var neoSurface: Color {
+        switch theme {
+        case .black:
+            return Color(red: 0.10, green: 0.11, blue: 0.12)
+        case .white:
+            return Color(red: 0.933, green: 0.910, blue: 0.871)
+        case .orange:
+            return Color(red: 0.929, green: 0.408, blue: 0.20)
+        case .darkBlue:
+            return Color(red: 0.067, green: 0.153, blue: 0.298)
+        case .silver:
+            return Color(red: 0.890, green: 0.906, blue: 0.933)
+        case .lightBlue:
+            return Color(red: 0.608, green: 0.816, blue: 1.0)
+        case .cherry:
+            return Color(red: 0.282, green: 0.078, blue: 0.129)
+        }
+    }
+    /// Wklęsły chip (referencja `chipBackground`): suwak pastylki, pigułki wartości,
+    /// przyciski wyboru — ciemniejszy odcień surface z własnym embossingiem.
+    var neoChip: Color {
+        switch theme {
+        case .black:
+            return Color(red: 0.063, green: 0.067, blue: 0.075).opacity(0.90)
+        case .white:
+            return Color(red: 0.871, green: 0.839, blue: 0.780).opacity(0.85)
+        case .orange:
+            return Color(red: 0.788, green: 0.278, blue: 0.082).opacity(0.85)
+        case .darkBlue:
+            return Color(red: 0.039, green: 0.086, blue: 0.169).opacity(0.85)
+        case .silver:
+            return Color(red: 0.784, green: 0.816, blue: 0.863).opacity(0.80)
+        case .lightBlue:
+            return Color(red: 0.482, green: 0.698, blue: 0.898).opacity(0.80)
+        case .cherry:
+            return Color(red: 0.188, green: 0.051, blue: 0.082).opacity(0.85)
+        }
+    }
+    /// Akcent przycisków akcji (referencja `accentRed`): „Aktywuj”, „Resetuj”.
+    var neoAccentRed: Color {
+        switch theme {
+        case .black:
+            return Color(red: 0.871, green: 0.216, blue: 0.216)
+        case .white:
+            return Color(red: 0.722, green: 0.227, blue: 0.227)
+        case .orange:
+            return Color(red: 0.659, green: 0.145, blue: 0.0)
+        case .darkBlue:
+            return Color(red: 0.310, green: 0.502, blue: 0.882)
+        case .silver:
+            return Color(red: 0.80, green: 0.20, blue: 0.20)
+        case .lightBlue:
+            return Color(red: 0.149, green: 0.388, blue: 0.922)
+        case .cherry:
+            return Color(red: 0.549, green: 0.114, blue: 0.184)
+        }
+    }
+    var neoRaisedFill: Color { neoSurface }
 
     /// Ikona neumorfizmu: jaśniejszy odcień wybranego motywu, żeby była czytelna
     /// na pastylce (czarny → jasny szary, pomarańczowy → jasny pomarańcz, jasne → beż).
@@ -719,49 +778,60 @@ final class AppAppearance {
         case .lightBlue:
             return Color(red: 0.42, green: 0.62, blue: 0.88)
         case .cherry:
-            return Color(red: 0.82, green: 0.50, blue: 0.58)
+            return Color(red: 0.90, green: 0.22, blue: 0.30)
         }
     }
 
-    /// „Ciemna", wytłoczona pastylka wskaźnika zakładek (Neumorfizm): powierzchnia motywu
-    /// przyciemniona ~45-50%, żeby na głębokim tle czytała się jako ciemny, wypukły kafel.
+    /// Powierzchnia toru pastylki zakładek (Neumorfizm): barwa motywu.
+    /// Suwak ma ten sam kolor — wyróżnia go embossing + świecąca ikona.
+    var neoPillSurface: Color {
+        switch theme {
+        case .black:
+            return Color.black
+        case .white:
+            // Beż
+            return Color(red: 0.93, green: 0.87, blue: 0.76)
+        case .orange:
+            // Jasny brąz
+            return Color(red: 0.72, green: 0.48, blue: 0.28)
+        case .darkBlue:
+            return Color(red: 0.07, green: 0.16, blue: 0.38)
+        case .silver:
+            // Jasny szary
+            return Color(red: 0.82, green: 0.84, blue: 0.88)
+        case .lightBlue:
+            return Color(red: 0.72, green: 0.84, blue: 0.94)
+        case .cherry:
+            // Wiśniowy
+            return Color(red: 0.42, green: 0.10, blue: 0.18)
+        }
+    }
+
+    /// Suwak = dokładnie ten sam kolor co tor pastylki.
     var neoPillThumbFill: Color {
-        let base = fullyOpaque(tileTint)
-        #if canImport(UIKit)
-        let ui = UIColor(base)
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-        if ui.getRed(&r, green: &g, blue: &b, alpha: &a) {
-            return Color(red: Double(r * 0.55), green: Double(g * 0.55), blue: Double(b * 0.55))
-        }
-        var w: CGFloat = 0
-        if ui.getWhite(&w, alpha: &a) {
-            return Color(white: Double(w * 0.5), opacity: 1)
-        }
-        #endif
-        return base
+        fullyOpaque(neoPillSurface)
     }
 
-    /// Świecąca ikona z napisem w suwaku pastylki (Neumorfizm): biel na czarnym,
-    /// jasny beż na jasnych motywach — mocniejsza niż zwykłe ikony.
+    /// Świecąca ikona aktywnej zakładki (Neumorfizm).
+    /// Czarny → biel; biały → jasny beż; pomarańczowy → jasny pomarańcz;
+    /// ciemnoniebieski → jasny błękit; srebrny → lekki jasny szary;
+    /// jasnoniebieski → jaśniejszy błękit; wiśniowy → intensywna wiśniowa.
     var neoSliderAccent: Color {
         switch theme {
         case .black:
             return .white
         case .white:
-            return Color(red: 0.68, green: 0.58, blue: 0.40)
+            return Color(red: 1.0, green: 0.95, blue: 0.86)
         case .orange:
             return Color(red: 1.0, green: 0.72, blue: 0.50)
         case .darkBlue:
-            return Color(red: 0.62, green: 0.76, blue: 1.0)
+            return Color(red: 0.72, green: 0.82, blue: 1.0)
         case .silver:
-            return Color(white: 0.96)
+            return Color(red: 0.96, green: 0.96, blue: 0.98)
         case .lightBlue:
-            return Color(red: 0.56, green: 0.76, blue: 1.0)
+            return Color(red: 0.92, green: 0.97, blue: 1.0)
         case .cherry:
-            return Color(red: 1.0, green: 0.68, blue: 0.76)
+            return Color(red: 1.0, green: 0.40, blue: 0.48)
         }
     }
 
@@ -896,7 +966,7 @@ extension View {
         }
     }
 
-    /// Wypukła pastylka dookoła treści (np. wartość + strzałka w wierszu Neumorfizmu).
+    /// Pigułka wartości w wierszu (referencja: płaski `chipBackground`, bez embossingu).
     /// Poza neumorfizmem — brak zmian (no-op).
     @ViewBuilder
     func besortedNeoRaisedPill(
@@ -908,11 +978,8 @@ extension View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background {
-                    BeSortedNeoRaised(
-                        shape: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous),
-                        appearance: appearance,
-                        fill: appearance.neoRaisedFill
-                    )
+                    Capsule(style: .continuous)
+                        .fill(appearance.neoChip)
                 }
         } else {
             self
@@ -1880,12 +1947,14 @@ struct BesortedFixedWidthTileScroll<Content: View>: View {
     var scrollDisabled: Bool = false
     @ViewBuilder var content: () -> Content
 
+    @Environment(AppAppearance.self) private var appearance
+
     var body: some View {
         let screenW = BeSortedContentInsets.screenWidth
         let inset = BeSortedContentInsets.tileListHorizontal
 
         ScrollView(.vertical) {
-            LazyVStack(spacing: 12) {
+            LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
                 content()
             }
             .padding(.horizontal, inset)
@@ -1968,54 +2037,40 @@ extension Shape {
     }
 }
 
-/// Wypukła (raised) powierzchnia: wypełnienie + miękki, warstwowy cień (światło / cień / ambient).
-/// `cushion` dodaje puchate, piórowe warstwy — „tapicerowana" głębia dużych paneli/sekcji.
+/// Wypukła (raised) powierzchnia (referencja SoftEmbossed): wypełnienie surface +
+/// ciemny cień prawa-dół i jasne światło lewa-góra. Bez aur/glow — czysty emboss.
 struct BeSortedNeoRaised<S: Shape>: View {
     let shape: S
     let appearance: AppAppearance
     var fill: Color? = nil
-    var radius: CGFloat = 8
-    var distance: CGFloat = 5
-    var glowColor: Color? = nil
-    var glowRadius: CGFloat = 10
+    var radius: CGFloat = 12
+    var distance: CGFloat = 6
     var cushion: Bool = false
 
     var body: some View {
+        let darkRadius = cushion ? radius + 2 : radius
+        let lightRadius = max(darkRadius - 2, 4)
         Group {
-            if cushion {
-                shape
-                    .fill(fill ?? appearance.neoRaisedFill)
-                    // Zwarta para embossingu (światło / cień) tuż przy krawędzi.
-                    .shadow(color: appearance.neoHighlight.opacity(0.92), radius: radius, x: -distance, y: -distance)
-                    .shadow(color: appearance.neoShadow.opacity(0.80), radius: radius, x: distance, y: distance)
-                    // Puchate, piórowe warstwy: miękka mgiełka daleko od krawędzi.
-                    .shadow(color: appearance.neoHighlight.opacity(0.45), radius: 16, x: -8, y: -8)
-                    .shadow(color: appearance.neoShadow.opacity(0.34), radius: 22, x: 10, y: 12)
-                    .shadow(color: appearance.neoShadow.opacity(0.14), radius: 34, x: 2, y: 20)
-                    // Ambient + subtelna aura akcentu.
-                    .shadow(color: appearance.selectedTabTint.opacity(0.20), radius: 18, x: 0, y: 5)
-                    .shadow(color: glowColor?.opacity(0.40) ?? .clear, radius: glowRadius)
-            } else {
-                shape
-                    .fill(fill ?? appearance.neoRaisedFill)
-                    // Lekki biały dropshadow poświaty u góry-lewej.
-                    .shadow(color: appearance.neoHighlight.opacity(0.90), radius: radius, x: -distance, y: -distance)
-                    // Lekki ciemny dropshadow u dołu-prawej.
-                    .shadow(color: appearance.neoShadow.opacity(0.80), radius: radius, x: distance, y: distance)
-                    // Miękki ambient pod spodem + subtelna poświata akcentu.
-                    .shadow(color: appearance.neoShadow.opacity(0.10), radius: 18, x: 0, y: 5)
-                    .shadow(color: appearance.selectedTabTint.opacity(0.20), radius: 16)
-                    .shadow(color: glowColor?.opacity(0.40) ?? .clear, radius: glowRadius)
-            }
+            shape
+                .fill(fill ?? appearance.neoRaisedFill)
+                // Spłaszcz wypełnienie ZANIM nałożysz cienie — kompozyt nigdy nie
+                // przycina poświaty do własnych ramek (lewy-górny/dolny-prawy cień widać cały).
+                .compositingGroup()
+                // Ciemny cień prawa-dół.
+                .shadow(color: appearance.neoShadow, radius: darkRadius, x: distance, y: distance + 2)
+                // Jasne światło lewa-góra.
+                .shadow(color: appearance.neoHighlight, radius: lightRadius, x: -distance + 1, y: -distance + 1)
         }
-        .compositingGroup()
+        // UWAGA: brak drawingGroup — rasteryzacja do bitmapy ramek PRZYCINAŁABY
+        // cienie wystające poza kształt (emboss stawał się niewidoczny / płaski).
+        // Wydajność bierze się z samej geometrii referencyjnej (2 cienie zamiast 5–8).
         // Czyści dekoracja — nigdy nie przechwytuje dotyku (przyciski wyżej klikalne).
         .allowsHitTesting(false)
     }
 }
 
-/// Wciśnięty stan przycisku (Neumorfizm): bez cienia wewnętrznego —
-/// lustrzane cienie (ciemny u góry-lewej, jasny u dołu-prawej).
+/// Wciśnięty stan przycisku (Neumorfizm): lustrzane cienie (ciemny u góry-lewej,
+/// jasny u dołu-prawej) skierowane do wewnątrz — subtelny innershadow bez dropshadowu.
 struct BeSortedNeoInset<S: Shape>: View {
     let shape: S
     let appearance: AppAppearance
@@ -2024,12 +2079,26 @@ struct BeSortedNeoInset<S: Shape>: View {
     var distance: CGFloat = 5
 
     var body: some View {
-        shape
-            .fill(fill ?? appearance.neoRaisedFill)
-            .shadow(color: appearance.neoShadow.opacity(0.85), radius: radius, x: -distance, y: -distance)
-            .shadow(color: appearance.neoHighlight.opacity(0.95), radius: radius, x: distance, y: distance)
-            .compositingGroup()
-            .allowsHitTesting(false)
+        ZStack {
+            shape.fill(fill ?? appearance.neoRaisedFill)
+            // Ciemny cień dociągany do krawędzi od góry-lewej (środek jaśniejszy).
+            shape.neoInnerShadow(
+                appearance.neoShadow.opacity(0.55),
+                radius: radius,
+                x: -distance,
+                y: -distance
+            )
+            // Jasne odbite światło dociskane od dołu-prawej.
+            shape.neoInnerShadow(
+                appearance.neoHighlight.opacity(0.75),
+                radius: radius,
+                x: distance,
+                y: distance
+            )
+        }
+        .compositingGroup()
+        .drawingGroup()
+        .allowsHitTesting(false)
     }
 }
 
@@ -2063,14 +2132,17 @@ struct BeSortedNeoCarved<S: Shape>: View {
         }
         .compositingGroup()
         // Miękki zewnętrzny cień dociskający wgłębienie do tła.
-        .shadow(color: appearance.neoShadow.opacity(0.26), radius: 7, x: 2, y: 3)
-        .shadow(color: appearance.neoHighlight.opacity(0.30), radius: 9, x: -3, y: -3)
+        // Biała poświata na zewnątrz tylko mocno przyciemniona — na jasnych motywach
+        // zbyt jasna tworzyła „białą kreskę" wokół napisów.
+        .shadow(color: appearance.neoShadow.opacity(0.28), radius: 8, x: 2, y: 3)
+        .shadow(color: appearance.neoHighlight.opacity(0.14), radius: 8, x: -3, y: -3)
+        // UWAGA: brak drawingGroup — rasteryzacja przycinałaby zewnętrzne cienie.
         .allowsHitTesting(false)
     }
 }
 
-/// „Studnia" pastylki zakładek (jedyny element z cieniem wewnętrznym): dokładnie
-/// kolor tła motywu, prześwitujący, z subtelnym wewnętrznym cieniem (max 2 px).
+/// „Studnia" pastylki zakładek: lity kolor motywu + subtelny emboss.
+/// Ciemne motywy: bez jasnego highlightu (mył tor na biały/szary).
 struct BeSortedNeoWell<S: Shape>: View {
     let shape: S
     let appearance: AppAppearance
@@ -2078,21 +2150,34 @@ struct BeSortedNeoWell<S: Shape>: View {
     var depth: CGFloat = 1
 
     var body: some View {
+        let fill = appearance.fullyOpaque(appearance.neoPillSurface)
         ZStack {
-            // Dokładnie kolor tła widoczny na kafelkach — pastylka nie jest czarna/biała.
-            shape.fill(appearance.neoRaisedFill.opacity(appearance.theme.usesLightContent ? 0.94 : 0.97))
-            // Subtelny, ciemny wewnętrzny cień (max 2 px) + delikatne jasne światło od dołu.
-            shape.neoInnerShadow(appearance.neoShadowStrong.opacity(0.35), radius: min(radius, 2), x: 0, y: depth)
-            shape.neoInnerShadow(appearance.neoHighlight.opacity(0.45), radius: min(radius, 2), x: 0, y: -depth)
+            shape.fill(fill)
+            shape.neoInnerShadow(
+                appearance.neoShadowStrong.opacity(
+                    appearance.theme.usesLightContent ? 0.32 : 0.48
+                ),
+                radius: min(radius, 2),
+                x: 0,
+                y: depth
+            )
+            if appearance.theme.usesLightContent {
+                shape.neoInnerShadow(
+                    appearance.neoHighlight.opacity(0.35),
+                    radius: min(radius, 2),
+                    x: 0,
+                    y: -depth
+                )
+            }
         }
         .compositingGroup()
-        // Bardzo subtelny drop shadow dookoła — 2 px, bez przesunięcia.
         .shadow(
-            color: appearance.neoShadow.opacity(appearance.theme.usesLightContent ? 0.22 : 0.30),
-            radius: 2,
+            color: appearance.neoShadow.opacity(appearance.theme.usesLightContent ? 0.22 : 0.40),
+            radius: 3,
             x: 0,
-            y: 0
+            y: 1
         )
+        // UWAGA: brak drawingGroup — rasteryzacja przycinałaby zewnętrzny cień.
         .allowsHitTesting(false)
     }
 }
@@ -2111,16 +2196,13 @@ struct BeSortedNeoButtonStyle: ButtonStyle {
         ZStack {
             configuration.label
                 .background {
-                    // Lita, wypukła pastylka w akcencie z miękką poświatą (jak „Change" na referencji).
-                    // Mocniejsza para embossingu (radius/distance), by czytelnie „wytłaczała" się z tła.
+                    // Wypukły emboss w geometrii referencyjnej (bez glow/aur).
                     BeSortedNeoRaised(
                         shape: shape,
                         appearance: appearance,
                         fill: fill,
                         radius: 10,
-                        distance: 6,
-                        glowColor: appearance.selectedTabTint,
-                        glowRadius: 14
+                        distance: 6
                     )
                 }
                 .opacity(pressed ? 0 : 1)

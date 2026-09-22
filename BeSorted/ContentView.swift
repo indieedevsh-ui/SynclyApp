@@ -501,14 +501,25 @@ struct ContentView: View {
     }
 
     private var mainTabInactiveForeground: Color {
-        // Neumorfizm: ikonki w ciemnym odcieniu motywu (czarny → ciemny szary) — wklęsłe, bez blasku.
+        // Neumorfizm (referencja TabBarButton): nieaktywne = textSecondary.
         if appearance.isNeomorphic {
-            return appearance.neoIconColor
+            return appearance.secondaryText
         }
         // Jak w Fitness: nieaktywne = biel / czerń wg motywu; kolor motywu dopiero pod suwakiem.
         return appearance.theme.usesLightContent
             ? Color.black.opacity(0.88)
             : Color.white.opacity(0.92)
+    }
+
+    /// Aktywna zakładka w Neumorfizmie (referencja TabBarButton): biel,
+    /// na jasnych motywach (biały/srebrny) — primaryText dla kontrastu na chipie.
+    private var mainTabActiveForeground: Color {
+        switch appearance.theme {
+        case .white, .silver:
+            return appearance.primaryText
+        default:
+            return .white
+        }
     }
 
     /// Wypełnienie suwaka 2D (spoczynek) — jak Fitness: ciemniejsza „soczewka”, nie kolor motywu.
@@ -739,12 +750,6 @@ struct ContentView: View {
             radius: appearance.isNeomorphic ? 10 : (isMainTabScrubbing ? 11 : 8),
             y: appearance.isNeomorphic ? 1 : (isMainTabScrubbing ? 2 : 2)
         )
-        .shadow(
-            color: appearance.isNeomorphic
-                ? appearance.selectedTabTint.opacity(0.22)
-                : .clear,
-            radius: appearance.isNeomorphic ? 18 : 0
-        )
         .animation(mainTabThumbMorphAnimation, value: isMainTabScrubbing)
         .accessibilityElement(children: .contain)
     }
@@ -754,13 +759,11 @@ struct ContentView: View {
 
         return Group {
             if appearance.isNeomorphic {
-                // Neumorfizm: wskaźnik zakładek = ciemna, wytłoczona pastylka —
-                // miękkie światło u góry-lewej, głęboki cień prawo-dół, aura akcentu.
+                // Suwak referencyjny: wklęsły chip + para embossingu (światło / cień).
                 shape
-                    .fill(appearance.neoPillThumbFill)
-                    .shadow(color: appearance.tabSliderAccent.opacity(0.50), radius: 14)
-                    .shadow(color: appearance.neoHighlight.opacity(0.95), radius: 6, x: -4, y: -4)
-                    .shadow(color: appearance.neoShadow.opacity(0.85), radius: 8, x: 5, y: 5)
+                    .fill(appearance.neoChip)
+                    .shadow(color: appearance.neoHighlight.opacity(0.40), radius: 6, x: -2, y: -2)
+                    .shadow(color: appearance.neoShadow.opacity(0.50), radius: 6, x: 2, y: 2)
                     .frame(width: width, height: height)
             } else {
                 shape
@@ -789,8 +792,12 @@ struct ContentView: View {
                     }
                     .frame(width: width, height: height)
             } else if appearance.isNeomorphic {
-                // Trzymany suwak = wciśnięty (wklęsły) w tor pastylki, bez blasku.
-                BeSortedNeoWell(shape: shape, appearance: appearance)
+                // Trzymany suwak: ten sam chip, lekko mocniejszy emboss.
+                let shape = Capsule(style: .continuous)
+                shape
+                    .fill(appearance.neoChip)
+                    .shadow(color: appearance.neoHighlight.opacity(0.45), radius: 6, x: -2, y: -2)
+                    .shadow(color: appearance.neoShadow.opacity(0.55), radius: 6, x: 2, y: 2)
                     .frame(width: width, height: height)
             } else {
                 // Clear refractive lens suwaka (osobno od toru pastylki).
@@ -854,8 +861,14 @@ struct ContentView: View {
                     shape.stroke(appearance.primaryText.opacity(0.08), lineWidth: 1)
                 }
         } else if appearance.isNeomorphic {
-            // Prześwitująca „studnia" wgłębiona w ekran — widać gradient tła przez pastylkę.
-            BeSortedNeoWell(shape: shape, appearance: appearance)
+            // Dock referencyjny: surface 0.85 na ultraThinMaterial + miękki cień w dół.
+            // Material musi kompozować na żywo — bez drawingGroup.
+            shape
+                .fill(appearance.neoSurface.opacity(0.85))
+                .background {
+                    shape.fill(.ultraThinMaterial)
+                }
+                .shadow(color: appearance.neoShadow, radius: 20, x: 0, y: 10)
         } else {
             let blend = appearance.glassBlend()
             shape
@@ -1029,9 +1042,10 @@ struct ContentView: View {
         collapse: CGFloat = 0
     ) -> some View {
         let isAccent = style == .accent
-        // Neumorfizm: aktywna ikonka świeci odcieniem suwaka, nieaktywne — jaśniejszym odcieniem motywu.
+        // Neumorfizm (referencja TabBarButton): aktywna = biel (biały/srebrny: primaryText),
+        // nieaktywne = textSecondary. Bez poświat — płaskie kolory na chipie.
         let color = appearance.isNeomorphic
-            ? (isAccent ? appearance.neoSliderAccent : appearance.neoIconColor)
+            ? (isAccent ? mainTabActiveForeground : appearance.secondaryText)
             : (isAccent ? appearance.tabSliderAccent : mainTabInactiveForeground)
         let focusScale = mainTabIconFocusScale(for: tab, scrubProgress: scrubProgress)
         // Napisy znikają w mini formie; ikonki zostają.
@@ -1073,15 +1087,13 @@ struct ContentView: View {
     @ViewBuilder
     private func tabPillIcon(_ tab: AppTab, style: MainTabLabelStyle) -> some View {
         let isAccent = style == .accent
-        let isGlowing = appearance.isNeomorphic && isAccent
         let color = appearance.isNeomorphic
-            ? (isAccent ? appearance.neoSliderAccent : appearance.neoIconColor)
+            ? (isAccent ? mainTabActiveForeground : appearance.secondaryText)
             : (style == .accent ? appearance.tabSliderAccent : mainTabInactiveForeground)
         Image(systemName: tab.systemImage)
             .font(.system(size: 17, weight: .semibold))
             .symbolRenderingMode(.monochrome)
             .foregroundStyle(color)
-            .shadow(color: isGlowing ? color.opacity(0.65) : .clear, radius: isGlowing ? 5 : 0)
             .frame(width: 22, height: 22)
     }
 
@@ -1764,25 +1776,38 @@ struct SettingsTabView: View {
                         Text("Dane".l10n)
                             .font(.headline.weight(.semibold))
                             .foregroundStyle(appearance.secondaryText)
-                            .besortedNeoCarvedTextFrame(appearance)
 
                         Text("Usuwa wszystkie projekty i ustawienia. Modele Smart Assistant pozostają bez zmian.".l10n)
                             .font(.caption)
                             .foregroundStyle(appearance.quaternaryText)
                             .fixedSize(horizontal: false, vertical: true)
-                            .besortedNeoCarvedTextFrame(appearance)
 
                         Button {
                             showResetConfirm = true
                         } label: {
                             Text("Resetuj".l10n)
-                                .font(.subheadline.weight(.bold))
-                                .foregroundStyle(Color(red: 0.95, green: 0.28, blue: 0.28))
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(
+                                    appearance.isNeomorphic
+                                        ? appearance.neoAccentRed
+                                        : Color(red: 0.95, green: 0.28, blue: 0.28)
+                                )
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, 12)
+                                .padding(.vertical, 14)
+                                .background {
+                                    if appearance.isNeomorphic {
+                                        // Referencja: czerwony tekst na chipie z czerwoną obwódką.
+                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                            .fill(appearance.neoChip)
+                                            .overlay {
+                                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                    .stroke(appearance.neoAccentRed.opacity(0.2), lineWidth: 1)
+                                            }
+                                    }
+                                }
                                 .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
-                        .besortedAdaptiveGlassButton(appearance)
+                        .buttonStyle(BeSortedPlainButtonStyle())
                     }
                     .padding(16)
                     .background {
@@ -5425,7 +5450,7 @@ struct ProjectDetailView: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top, 16)
 
-            LazyVStack(spacing: 12) {
+            LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
                 ForEach(sortedTasks) { task in
                     taskRow(task)
                 }
@@ -5513,7 +5538,7 @@ struct ProjectDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 16)
 
-                    LazyVStack(spacing: 12) {
+                    LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
                         ForEach(sortedBugs) { bug in
                             bugRow(bug)
                         }
@@ -5559,7 +5584,7 @@ struct ProjectDetailView: View {
                 }
                 .frame(maxWidth: .infinity, minHeight: 320)
             } else {
-                LazyVStack(spacing: 12) {
+                LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
                     ForEach(sortedFutureNotes) { note in
                         futureNoteRow(note)
                     }
@@ -7721,16 +7746,14 @@ extension View {
                 }
                 .contentShape(shape)
         } else if appearance.isNeomorphic {
+            // Referencja (TabBarButton): wybrany = wklęsły chip, reszta = surface.
             self
                 .buttonStyle(BeSortedPlainButtonStyle())
                 .background {
-                    BeSortedNeoRaised(
-                        shape: shape,
-                        appearance: appearance,
-                        fill: isSelected
-                            ? appearance.fullyOpaque(appearance.selectedTabTint)
-                            : appearance.neoRaisedFill,
-                        glowColor: isSelected ? appearance.selectedTabTint : nil
+                    shape.fill(
+                        isSelected
+                            ? appearance.neoChip
+                            : appearance.neoRaisedFill
                     )
                 }
                 .contentShape(shape)

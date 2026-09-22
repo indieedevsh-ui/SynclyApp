@@ -24,16 +24,35 @@ struct SmartAssistantSettingsCard: View {
 
             Spacer(minLength: 8)
 
-            Button {
-                onActivate()
-            } label: {
-                Text((active != nil ? "Zmień" : "Aktywuj").l10n)
-                    .font(.subheadline.weight(.bold))
-                    .foregroundStyle(appearance.selectedTabForeground)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+            if appearance.isNeomorphic {
+                // Referencja: płaski kapsułowy accentRed + miękki cień, biały tekst.
+                Button {
+                    onActivate()
+                } label: {
+                    Text((active != nil ? "Zmień" : "Aktywuj").l10n)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(
+                            Capsule()
+                                .fill(appearance.neoAccentRed)
+                                .shadow(color: appearance.neoShadow.opacity(0.4), radius: 5, x: 2, y: 3)
+                        )
+                }
+                .buttonStyle(BeSortedPlainButtonStyle())
+            } else {
+                Button {
+                    onActivate()
+                } label: {
+                    Text((active != nil ? "Zmień" : "Aktywuj").l10n)
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(appearance.selectedTabForeground)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                }
+                .besortedAdaptiveProminentButton(appearance, tint: appearance.selectedTabTint)
             }
-            .besortedAdaptiveProminentButton(appearance, tint: appearance.selectedTabTint)
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)

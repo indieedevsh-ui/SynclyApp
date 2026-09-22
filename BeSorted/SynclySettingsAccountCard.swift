@@ -21,19 +21,16 @@ struct SynclySettingsAccountCard: View {
                 Text("Konto Apple".l10n)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(appearance.primaryText)
-                    .besortedNeoCarvedTextFrame(appearance)
 
                 if account.isSignedIn {
                     Text(signedInSubtitle)
                         .font(.caption)
                         .foregroundStyle(appearance.tertiaryText)
                         .lineLimit(1)
-                        .besortedNeoCarvedTextFrame(appearance)
                     Text(account.iCloudStatusLabel)
                         .font(.caption2.weight(.medium))
                         .foregroundStyle(syncStatusColor)
                         .fixedSize(horizontal: false, vertical: true)
-                        .besortedNeoCarvedTextFrame(appearance)
                 }
             }
 
@@ -48,17 +45,32 @@ struct SynclySettingsAccountCard: View {
                 } label: {
                     Text("Wyloguj się".l10n)
                         .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color(red: 0.95, green: 0.28, blue: 0.28))
+                        .foregroundStyle(
+                            appearance.isNeomorphic
+                                ? appearance.neoAccentRed
+                                : Color(red: 0.95, green: 0.28, blue: 0.28)
+                        )
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 12)
-                        .besortedGlass(
-                            appearance,
-                            interactive: true,
-                            tint: appearance.tileTint.opacity(0.85),
-                            in: .rect(cornerRadius: 14),
-                            role: .content
-                        )
+                        .background {
+                            if appearance.isNeomorphic {
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .fill(appearance.neoChip)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                            .stroke(appearance.neoAccentRed.opacity(0.2), lineWidth: 1)
+                                    }
+                            } else {
+                                Color.clear.besortedGlass(
+                                    appearance,
+                                    interactive: true,
+                                    tint: appearance.tileTint.opacity(0.85),
+                                    in: .rect(cornerRadius: 14),
+                                    role: .content
+                                )
+                            }
+                        }
                         .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 .buttonStyle(BeSortedPlainButtonStyle())
@@ -68,12 +80,12 @@ struct SynclySettingsAccountCard: View {
                 } onCompletion: { result in
                     handleSettingsSignIn(result)
                 }
-                .signInWithAppleButtonStyle(
-                    appearance.theme.usesLightContent ? .black : .white
-                )
+                // Referencja: zawsze biały przycisk z miękkim cieniem.
+                .signInWithAppleButtonStyle(appearance.isNeomorphic ? .white : (appearance.theme.usesLightContent ? .black : .white))
                 .frame(maxWidth: .infinity)
                 .frame(height: 44)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .shadow(color: Color.black.opacity(appearance.isNeomorphic ? 0.2 : 0), radius: 6, x: 0, y: 3)
                 .overlay {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
                         .stroke(appearance.fieldStroke, lineWidth: 1)
