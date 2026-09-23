@@ -20,7 +20,10 @@ struct TourMiniTabFrame<Content: View>: View {
             .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 28, style: .continuous)
-                    .stroke(appearance.primaryText.opacity(0.10), lineWidth: 1)
+                    .stroke(
+                        appearance.isFlatDesign ? .clear : appearance.primaryText.opacity(0.10),
+                        lineWidth: 1
+                    )
             }
     }
 }

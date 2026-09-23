@@ -752,9 +752,9 @@ struct ContentView: View {
         .shadow(
             color: appearance.isNeomorphic
                 ? .black.opacity(appearance.theme.usesLightContent ? 0.16 : 0.30)
-                : .black.opacity(isMainTabScrubbing ? 0.14 : 0.10),
-            radius: appearance.isNeomorphic ? 10 : (isMainTabScrubbing ? 11 : 8),
-            y: appearance.isNeomorphic ? 1 : (isMainTabScrubbing ? 2 : 2)
+                : (appearance.isFlatDesign ? .clear : .black.opacity(isMainTabScrubbing ? 0.14 : 0.10)),
+            radius: appearance.isNeomorphic ? 10 : (appearance.isFlatDesign ? 0 : (isMainTabScrubbing ? 11 : 8)),
+            y: appearance.isNeomorphic ? 1 : (appearance.isFlatDesign ? 0 : (isMainTabScrubbing ? 2 : 2))
         )
         .animation(mainTabThumbMorphAnimation, value: isMainTabScrubbing)
         .accessibilityElement(children: .contain)
@@ -770,6 +770,11 @@ struct ContentView: View {
                     .fill(appearance.neoChip)
                     .shadow(color: appearance.neoHighlight.opacity(0.40), radius: 6, x: -2, y: -2)
                     .shadow(color: appearance.neoShadow.opacity(0.50), radius: 6, x: 2, y: 2)
+                    .frame(width: width, height: height)
+            } else if appearance.isFlatDesign {
+                // Flat design: płaski suwak bez ramek i cieni.
+                shape
+                    .fill(mainTabThumbRestFill)
                     .frame(width: width, height: height)
             } else {
                 shape
@@ -793,9 +798,6 @@ struct ContentView: View {
             if appearance.usesZeroLiquidGlass {
                 shape
                     .fill(Color.white.opacity(0.12))
-                    .overlay {
-                        shape.strokeBorder(Color.white.opacity(0.28), lineWidth: 0.7)
-                    }
                     .frame(width: width, height: height)
             } else if appearance.isNeomorphic {
                 // Trzymany suwak: ten sam chip, lekko mocniejszy emboss.
@@ -863,9 +865,6 @@ struct ContentView: View {
         if appearance.usesZeroLiquidGlass {
             shape
                 .fill(appearance.fullyOpaque(appearance.tileTint))
-                .overlay {
-                    shape.stroke(appearance.primaryText.opacity(0.08), lineWidth: 1)
-                }
         } else if appearance.isNeomorphic {
             // Dock referencyjny: surface 0.85 na ultraThinMaterial + miękki cień w dół.
             // Material musi kompozować na żywo — bez drawingGroup.
@@ -1116,9 +1115,6 @@ struct ContentView: View {
                 if appearance.usesZeroLiquidGlass {
                     shape
                         .fill(appearance.fullyOpaque(appearance.tileTint))
-                        .overlay {
-                            shape.stroke(appearance.primaryText.opacity(0.08), lineWidth: 1)
-                        }
                 } else if appearance.isNeomorphic {
                     BeSortedNeoRaised(shape: shape, appearance: appearance)
                 } else {
@@ -1134,7 +1130,11 @@ struct ContentView: View {
                         )
                 }
             }
-            .shadow(color: .black.opacity(0.12), radius: 7, y: 2)
+            .shadow(
+                color: appearance.isFlatDesign ? .clear : .black.opacity(0.12),
+                radius: appearance.isFlatDesign ? 0 : 7,
+                y: appearance.isFlatDesign ? 0 : 2
+            )
             .offset(x: -lupaPullTowardPill)
             .gesture(
                 DragGesture(minimumDistance: 0, coordinateSpace: .local)
@@ -1195,95 +1195,17 @@ struct ContentView: View {
     }
 
     private var projectDetailTabBar: some View {
-        Group {
-            if appearance.usesZeroLiquidGlass || appearance.isNeomorphic {
-                VStack(spacing: 0) {
-                    HStack(spacing: 0) {
-                        ForEach(ProjectDetailTab.allCases) { tab in
-                            textTabLabel(
-                                title: tab.title,
-                                isSelected: projectDetailTab == tab
-                            ) {
-                                withAnimation(.smooth(duration: 0.26)) {
-                                    projectDetailTab = tab
-                                }
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 18)
-                    .padding(.top, 12)
-                    .padding(.bottom, 6)
-
-                    appearance.background
-                        .frame(height: 22)
-                        .frame(maxWidth: .infinity)
+        ProjectDetailPill(
+            selection: projectDetailTab,
+            onSelect: { tab in
+                withAnimation(.smooth(duration: 0.26)) {
+                    projectDetailTab = tab
                 }
-                .frame(maxWidth: .infinity)
-                .background {
-                    appearance.background
-                        .ignoresSafeArea(edges: .bottom)
-                }
-                .contentShape(Rectangle())
-            } else {
-                ZStack {
-                    GlassEffectContainer(spacing: 8) {
-                        HStack(spacing: 8) {
-                            ForEach(ProjectDetailTab.allCases) { tab in
-                                tabGlassCapsule(isSelected: projectDetailTab == tab)
-                            }
-                        }
-                    }
-                    .allowsHitTesting(false)
-
-                    HStack(spacing: 8) {
-                        ForEach(ProjectDetailTab.allCases) { tab in
-                            glassTabButton(
-                                title: tab.title,
-                                systemImage: tab.systemImage,
-                                isSelected: projectDetailTab == tab
-                            ) {
-                                withAnimation(.smooth(duration: 0.26)) {
-                                    projectDetailTab = tab
-                                }
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
             }
-        }
+        )
+        .padding(.horizontal, 16)
+        .padding(.bottom, 8)
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
-    }
-
-    private func textTabLabel(
-        title: String,
-        isSelected: Bool,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button {
-            withAnimation(.smooth(duration: 0.28)) {
-                action()
-            }
-        } label: {
-            Text(title)
-                .font(.system(size: zeroTabFontSize(isSelected: isSelected), weight: isSelected ? .bold : .medium))
-                .foregroundStyle(
-                    isSelected
-                        ? appearance.primaryText
-                        : appearance.secondaryText
-                )
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .minimumScaleFactor(0.75)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
-        }
-        .buttonStyle(BeSortedPlainButtonStyle(sound: .tab))
-    }
-
-    private func zeroTabFontSize(isSelected: Bool) -> CGFloat {
-        13 * (isSelected ? 1.3 : 1.0)
     }
 
     private var planAIPullGesture: some Gesture {
@@ -1359,100 +1281,398 @@ struct ContentView: View {
         isAIDragActive = false
         aiDragTranslation = .zero
     }
+}
 
-    /// Pastylka Liquid Glass bez tekstu (pasek detalu projektu).
-    private func tabGlassCapsule(isSelected: Bool) -> some View {
-        Color.clear
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .besortedGlass(
-                appearance,
-                interactive: !isSelected && appearance.glassFrost < 0.55,
-                tint: isSelected ? appearance.selectedTabTint : appearance.tileTint.opacity(0.55),
-                in: .capsule,
-                minimumFrost: isSelected ? 0.72 : 0.35
-            )
-            .shadow(
-                color: isSelected
-                    ? (appearance.theme.usesLightContent
-                        ? appearance.beige.opacity(0.55)
-                        : Color.white.opacity(0.75))
-                    : .clear,
-                radius: isSelected ? 10 : 0
-            )
+/// Pastylka detalu projektu — ta sama „Fitness-like” pastylka co w głównym tabbarze,
+/// tylko z zakładkami projektu (Zadania / Aktualne błędy / Notatka przyszłości).
+private struct ProjectDetailPill: View {
+    @Environment(AppAppearance.self) private var appearance
+
+    let selection: ProjectDetailTab
+    let onSelect: (ProjectDetailTab) -> Void
+
+    private let tabs = ProjectDetailTab.allCases
+    private let trackPadding: CGFloat = 4
+    private let slotHeight: CGFloat = 50
+    private let thumbExtra: CGFloat = 8
+
+    @State private var isScrubbing = false
+    @State private var scrubProgress: CGFloat = 0
+    @State private var sliderStretch: CGFloat = 0
+    @State private var lastDragX: CGFloat?
+    @State private var lastDragTime: Date?
+
+    private let scrubPillScale: CGFloat = 1.01
+    private let scrubSliderOutset: CGFloat = 9
+    private let thumbMorphAnimation: Animation = .spring(response: 0.40, dampingFraction: 0.84)
+    private let tapSlideAnimation: Animation = .spring(response: 0.46, dampingFraction: 0.72)
+    private let tapThreshold: CGFloat = 8
+
+    private func index(of tab: ProjectDetailTab) -> CGFloat {
+        CGFloat(tabs.firstIndex(of: tab) ?? 0)
     }
 
-    private func tabLabelContent(
-        title: String,
-        systemImage: String,
-        assetImageName: String? = nil,
-        isSelected: Bool
-    ) -> some View {
-        VStack(spacing: 4) {
-            if let assetImageName {
-                let isWide = assetImageName == "MojeProjektyIcon"
-                Image(assetImageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(
-                        width: (isWide ? 22 : 17) * 1.1,
-                        height: 17 * 1.1
+    private func progress(slotCount: Int) -> CGFloat {
+        min(max(scrubProgress, 0), max(CGFloat(slotCount - 1), 0))
+    }
+
+    private var restThumbFill: Color {
+        appearance.theme.usesLightContent
+            ? Color.black.opacity(0.14)
+            : Color.black.opacity(0.50)
+    }
+
+    var body: some View {
+        GeometryReader { geo in
+            let innerWidth = max(geo.size.width - trackPadding * 2, 1)
+            let slotWidth = innerWidth / CGFloat(max(tabs.count, 1))
+            let slotCount = tabs.count
+            let sliderHeight = max(geo.size.height - trackPadding * 2, 1)
+            let progress = progress(slotCount: slotCount)
+            let stretch = sliderStretch
+            let stretchScaleX = 1 + abs(stretch) * 0.22
+            let stretchScaleY = 1 - abs(stretch) * 0.1
+            let glassLift: CGFloat = isScrubbing ? 1 : 0
+            let restingThumbWidth = min(slotWidth + thumbExtra, innerWidth)
+            let holdOutset = scrubSliderOutset * glassLift
+            let thumbWidth = restingThumbWidth + 8 * glassLift
+            let thumbHeight = sliderHeight + holdOutset
+            let thumbY = trackPadding - holdOutset / 2
+            let thumbLead = stretch * min(slotWidth * 0.10, 8)
+            let restingThumbX = trackPadding
+                + progress * slotWidth
+                - (restingThumbWidth - slotWidth) / 2
+            let thumbNudge = 1.5 * glassLift
+            let thumbOffsetX = restingThumbX - thumbNudge + thumbLead - (3 * glassLift)
+            let glassScale = 1 + 0.18 * glassLift
+            let accentMaskX =
+                progress * slotWidth
+                - (restingThumbWidth - slotWidth) / 2
+                - thumbNudge
+                - (3 * glassLift)
+                + thumbLead
+            let shape = Capsule(style: .continuous)
+
+            ZStack(alignment: .topLeading) {
+                Color.clear
+                    .background { projectTrack }
+
+                thumb(width: restingThumbWidth, height: sliderHeight)
+                    .offset(x: restingThumbX + thumbLead * (1 - glassLift), y: trackPadding)
+                    .opacity(1 - glassLift)
+                    .animation(thumbMorphAnimation, value: isScrubbing)
+                    .allowsHitTesting(false)
+
+                if isScrubbing {
+                    thumb(width: thumbWidth, height: thumbHeight)
+                        .scaleEffect(x: glassScale * stretchScaleX, y: glassScale * stretchScaleY)
+                        .offset(x: thumbOffsetX, y: thumbY)
+                        .transition(
+                            .asymmetric(
+                                insertion: .opacity
+                                    .combined(with: .scale(scale: 0.92))
+                                    .animation(thumbMorphAnimation),
+                                removal: .opacity
+                                    .combined(with: .scale(scale: 0.96))
+                                    .animation(thumbMorphAnimation)
+                            )
+                        )
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
+                }
+
+                ZStack {
+                    projectLabelsRow(
+                        slotWidth: slotWidth,
+                        height: sliderHeight,
+                        active: false,
+                        progress: progress
                     )
-                    .opacity(isSelected ? 1 : 0.82)
-            } else {
-                Image(systemName: systemImage)
-                    .font(.system(size: 13 * 1.1, weight: .semibold))
-                    .symbolRenderingMode(.monochrome)
-                    .foregroundStyle(glassTabLabelColor(isSelected: isSelected))
-            }
-            Text(title)
-                .font(.system(size: 11, weight: .semibold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .foregroundStyle(glassTabLabelColor(isSelected: isSelected))
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 52)
-        .drawingGroup(opaque: false)
-        .contentShape(Capsule())
-    }
+                    projectLabelsRow(
+                        slotWidth: slotWidth,
+                        height: sliderHeight,
+                        active: true,
+                        progress: progress
+                    )
+                    .mask(alignment: .leading) {
+                        Capsule(style: .continuous)
+                            .frame(width: thumbWidth, height: sliderHeight)
+                            .scaleEffect(x: stretchScaleX, y: 1, anchor: .center)
+                            .offset(x: accentMaskX)
+                    }
+                }
+                .padding(.horizontal, trackPadding)
+                .padding(.vertical, trackPadding)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+                .animation(
+                    isScrubbing ? nil : thumbMorphAnimation,
+                    value: scrubProgress
+                )
 
-    private func glassTabLabelColor(isSelected: Bool) -> Color {
-        let pureBlack = Color(red: 0, green: 0, blue: 0)
-        let pureWhite = Color(red: 1, green: 1, blue: 1)
-        if isSelected {
-            switch appearance.theme {
-            case .lightBlue, .orange, .darkBlue, .cherry:
-                return pureWhite
-            case .black, .white, .silver:
-                return pureBlack
+                HStack(spacing: 0) {
+                    ForEach(tabs) { tab in
+                        Button {
+                            onSelect(tab)
+                        } label: {
+                            Color.clear
+                                .frame(width: slotWidth, height: sliderHeight)
+                                .contentShape(Capsule())
+                        }
+                        .buttonStyle(BeSortedPlainButtonStyle(sound: .tab))
+                        .accessibilityLabel(tab.title)
+                        .accessibilityAddTraits(tab == selection ? .isSelected : [])
+                    }
+                }
+                .frame(width: innerWidth, height: sliderHeight, alignment: .leading)
+                .padding(.horizontal, trackPadding)
+                .padding(.vertical, trackPadding)
+                .allowsHitTesting(false)
+            }
+            .animation(thumbMorphAnimation, value: isScrubbing)
+            .contentShape(shape)
+            .highPriorityGesture(scrubGesture(slotWidth: slotWidth, slotCount: slotCount))
+        }
+        .frame(height: slotHeight + trackPadding * 2)
+        .padding(.vertical, scrubSliderOutset)
+        .scaleEffect(isScrubbing ? scrubPillScale : 1.0)
+        .shadow(
+            color: appearance.isNeomorphic
+                ? .black.opacity(appearance.theme.usesLightContent ? 0.16 : 0.30)
+                : (appearance.isFlatDesign ? .clear : .black.opacity(isScrubbing ? 0.14 : 0.10)),
+            radius: appearance.isNeomorphic ? 10 : (appearance.isFlatDesign ? 0 : (isScrubbing ? 11 : 8)),
+            y: appearance.isNeomorphic ? 1 : (appearance.isFlatDesign ? 0 : (isScrubbing ? 2 : 2))
+        )
+        .animation(thumbMorphAnimation, value: isScrubbing)
+        .accessibilityElement(children: .contain)
+        .onAppear {
+            scrubProgress = index(of: selection)
+            lastDragX = nil
+            lastDragTime = nil
+        }
+        .onChange(of: selection) { _, newValue in
+            guard !isScrubbing else { return }
+            let index = index(of: newValue)
+            if abs(scrubProgress - index) > 0.02 {
+                withAnimation(.smooth(duration: 0.38)) {
+                    scrubProgress = index
+                }
             }
         }
-        return appearance.theme.usesLightContent ? pureBlack : pureWhite
     }
 
     @ViewBuilder
-    private func glassTabButton(
-        title: String,
-        systemImage: String,
-        assetImageName: String? = nil,
-        isSelected: Bool,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button {
-            withAnimation(.smooth(duration: 0.25)) {
-                action()
-            }
-        } label: {
-            tabLabelContent(
-                title: title,
-                systemImage: systemImage,
-                assetImageName: assetImageName,
-                isSelected: isSelected
-            )
+    private var projectTrack: some View {
+        let shape = Capsule(style: .continuous)
+        if appearance.isFlatDesign {
+            shape
+                .fill(appearance.fullyOpaque(appearance.tileTint))
+        } else if appearance.isNeomorphic {
+            shape
+                .fill(appearance.neoSurface.opacity(0.85))
+                .background { shape.fill(.ultraThinMaterial) }
+                .shadow(color: appearance.neoShadow, radius: 20, x: 0, y: 10)
+        } else {
+            shape
+                .fill(Color.clear)
+                .glassEffect(
+                    appearance.blendedGlass(
+                        interactive: false,
+                        tint: appearance.tileTint.opacity(0.55),
+                        blend: appearance.glassBlend()
+                    ),
+                    in: shape
+                )
+                .overlay {
+                    shape.strokeBorder(
+                        Color.white.opacity(appearance.theme.usesLightContent ? 0.28 : 0.16),
+                        lineWidth: 0.8
+                    )
+                }
+                .animation(.smooth(duration: 0.38), value: appearance.glassStyle)
         }
-        .buttonStyle(BeSortedPlainButtonStyle(sound: .tab))
-        .contentShape(Capsule())
+    }
+
+    @ViewBuilder
+    private func thumb(width: CGFloat, height: CGFloat) -> some View {
+        let shape = Capsule(style: .continuous)
+        if appearance.isNeomorphic {
+            shape
+                .fill(appearance.neoChip)
+                .shadow(color: appearance.neoHighlight.opacity(0.40), radius: 6, x: -2, y: -2)
+                .shadow(color: appearance.neoShadow.opacity(0.50), radius: 6, x: 2, y: 2)
+                .frame(width: width, height: height)
+        } else if appearance.isFlatDesign {
+            shape
+                .fill(restThumbFill)
+                .frame(width: width, height: height)
+        } else {
+            shape
+                .fill(restThumbFill)
+                .overlay {
+                    shape.strokeBorder(
+                        Color.white.opacity(appearance.theme.usesLightContent ? 0.28 : 0.18),
+                        lineWidth: 0.85
+                    )
+                }
+                .shadow(color: .black.opacity(0.14), radius: 3.5, y: 1)
+                .frame(width: width, height: height)
+        }
+    }
+
+    private func projectLabelsRow(slotWidth: CGFloat, height: CGFloat, active: Bool, progress: CGFloat) -> some View {
+        HStack(spacing: 0) {
+            ForEach(tabs) { tab in
+                let focusScale = projectIconFocusScale(for: tab, progress: progress)
+                VStack(spacing: 3) {
+                    Image(systemName: tab.systemImage)
+                        .font(.system(size: 16, weight: .semibold))
+                        .symbolRenderingMode(.monochrome)
+                        .frame(width: 20, height: 20)
+                    Text(tab.title)
+                        .font(.system(size: 10.5, weight: .semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                }
+                .foregroundStyle(labelColor(active: active))
+                .scaleEffect(focusScale)
+                .frame(width: slotWidth, height: height)
+            }
+        }
+    }
+
+    private func projectIconFocusScale(for tab: ProjectDetailTab, progress: CGFloat) -> CGFloat {
+        guard let index = tabs.firstIndex(of: tab) else { return 1 }
+        let distance = abs(progress - CGFloat(index))
+        let raw = max(0, 1 - distance / 0.38)
+        let eased = raw * raw * (3 - 2 * raw)
+        return 1 + 0.10 * eased
+    }
+
+    private func labelColor(active: Bool) -> Color {
+        if active {
+            if appearance.isNeomorphic {
+                return appearance.theme.usesLightContent ? appearance.primaryText : Color.white
+            }
+            return appearance.tabSliderAccent
+        }
+        return appearance.secondaryText
+    }
+
+    /// Suwak identyczny jak w głównej pastylce: przeciąganie trzyma suwak, kliknięcie ślizga do slotu.
+    private func scrubGesture(slotWidth: CGFloat, slotCount: Int) -> some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .local)
+            .onChanged { value in
+                guard slotCount > 0, slotWidth > 0 else { return }
+
+                let horizontal = abs(value.translation.width)
+                let vertical = abs(value.translation.height)
+                let dragDistance = hypot(value.translation.width, value.translation.height)
+
+                if vertical > 14, vertical > horizontal * 1.1 {
+                    if isScrubbing {
+                        withAnimation(thumbMorphAnimation) {
+                            isScrubbing = false
+                            sliderStretch = 0
+                            scrubProgress = index(of: selection)
+                        }
+                        lastDragX = nil
+                        lastDragTime = nil
+                    }
+                    return
+                }
+
+                if dragDistance > tapThreshold, !isScrubbing {
+                    withAnimation(thumbMorphAnimation) {
+                        isScrubbing = true
+                    }
+                }
+
+                let x = value.location.x - trackPadding
+                let raw = x / slotWidth - 0.5
+
+                guard isScrubbing else {
+                    if abs(sliderStretch) > 0.001 {
+                        sliderStretch *= 0.82
+                    }
+                    return
+                }
+
+                let now = Date()
+                if let lastX = lastDragX, let lastTime = lastDragTime {
+                    let dt = now.timeIntervalSince(lastTime)
+                    if dt > 0.002, dt < 0.12 {
+                        let velocity = (value.location.x - lastX) / dt
+                        let maxIndex = max(CGFloat(slotCount - 1), 1)
+                        let clampedRaw = min(max(raw, 0), maxIndex)
+                        let edgeT = min(min(clampedRaw / 0.45, (maxIndex - clampedRaw) / 0.45), 1)
+                        let edgeScale = max(0.15, edgeT)
+                        let targetStretch = max(-1.0, min(1.0, (velocity / 820) * edgeScale))
+                        var stretchTx = Transaction()
+                        stretchTx.disablesAnimations = true
+                        withTransaction(stretchTx) {
+                            sliderStretch += (targetStretch - sliderStretch) * 0.38
+                        }
+                    }
+                } else {
+                    var stretchTx = Transaction()
+                    stretchTx.disablesAnimations = true
+                    withTransaction(stretchTx) {
+                        sliderStretch *= 0.82
+                    }
+                }
+                lastDragX = value.location.x
+                lastDragTime = now
+
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
+                    scrubProgress = min(max(raw, 0), CGFloat(slotCount - 1))
+                }
+            }
+            .onEnded { value in
+                lastDragX = nil
+                lastDragTime = nil
+
+                let horizontal = abs(value.translation.width)
+                let vertical = abs(value.translation.height)
+                let maxIndex = max(slotCount - 1, 0)
+
+                if vertical > 18, vertical > horizontal * 1.2 {
+                    withAnimation(thumbMorphAnimation) {
+                        isScrubbing = false
+                        sliderStretch = 0
+                        scrubProgress = index(of: selection)
+                    }
+                    return
+                }
+
+                let commitIndex: Int
+                if horizontal < 8 && vertical < 8 {
+                    let x = value.location.x - trackPadding
+                    commitIndex = min(max(Int((x / max(slotWidth, 1)).rounded(.down)), 0), maxIndex)
+                } else {
+                    commitIndex = min(max(Int(scrubProgress.rounded()), 0), maxIndex)
+                }
+
+                let tab = tabs[commitIndex]
+                let changed = tab != selection
+                // Kliknięcie (bez ruchu): dłuższy ślizg ze starej zakładki do wybranej.
+                // Trzymanie: szybki morph powrotu suwaka.
+                let dockAnimation: Animation =
+                    (horizontal < 8 && vertical < 8)
+                    ? tapSlideAnimation
+                    : thumbMorphAnimation
+                withAnimation(dockAnimation) {
+                    isScrubbing = false
+                    sliderStretch = 0
+                    scrubProgress = CGFloat(commitIndex)
+                }
+                onSelect(tab)
+                if changed {
+                    BeSortedSound.play(.tab)
+                }
+            }
     }
 }
 
@@ -3386,7 +3606,11 @@ struct ProjectsTabView: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.2),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private func lockedProjectsAIMenuButton(
@@ -3601,7 +3825,11 @@ struct ProjectsTabView: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.2),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private func collapseSearch() {
@@ -4627,7 +4855,11 @@ struct ProjectDetailView: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.2),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private func exitTaskDeleteMode() {
@@ -4752,7 +4984,11 @@ struct ProjectDetailView: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.2),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private var futureNotesAIMenu: some View {
@@ -4781,7 +5017,11 @@ struct ProjectDetailView: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.2),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private func lockedAIMenuButton(
@@ -6265,7 +6505,11 @@ struct CurrentPlanTabView: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.2),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private func planLockedAIMenuButton(
@@ -9566,8 +9810,12 @@ struct ForgottenProjectProposalOverlay: View {
 
                 ProjectTileView(project: suggestion.project)
                     .allowsHitTesting(false)
-                    .shadow(color: Color.black.opacity(0.22), radius: 18, x: 0, y: 8)
-                    .shadow(color: Color.black.opacity(0.10), radius: 6, x: 0, y: 2)
+                    .shadow(
+                        color: appearance.isFlatDesign ? .clear : Color.black.opacity(0.22),
+                        radius: appearance.isFlatDesign ? 0 : 18,
+                        x: 0,
+                        y: appearance.isFlatDesign ? 0 : 8
+                    )
 
                 ScrollView {
                     AIFormattedResultText(
@@ -9761,10 +10009,16 @@ struct ProjectSummarizeDotsLoader: View {
             Circle()
                 .fill(appearance.opaqueModalFill)
                 .overlay {
-                    Circle()
-                        .strokeBorder(appearance.primaryText.opacity(0.12), lineWidth: 1)
+                    if !appearance.isFlatDesign {
+                        Circle()
+                            .strokeBorder(appearance.primaryText.opacity(0.12), lineWidth: 1)
+                    }
                 }
-                .shadow(color: .black.opacity(0.18), radius: 16, y: 6)
+                .shadow(
+                    color: appearance.isFlatDesign ? .clear : .black.opacity(0.18),
+                    radius: appearance.isFlatDesign ? 0 : 16,
+                    y: appearance.isFlatDesign ? 0 : 6
+                )
         }
     }
 

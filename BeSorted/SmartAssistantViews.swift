@@ -476,7 +476,10 @@ ScrollView {
                         }
                         .overlay {
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(appearance.primaryText.opacity(0.10), lineWidth: 1)
+                                .stroke(
+                                    appearance.isFlatDesign ? .clear : appearance.primaryText.opacity(0.10),
+                                    lineWidth: 1
+                                )
                         }
                 } else if !canBuy && !owned {
                     Text("Niedostępne do zakupu".l10n)
@@ -489,7 +492,10 @@ ScrollView {
                         }
                         .overlay {
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(appearance.primaryText.opacity(0.10), lineWidth: 1)
+                                .stroke(
+                                    appearance.isFlatDesign ? .clear : appearance.primaryText.opacity(0.10),
+                                    lineWidth: 1
+                                )
                         }
                 } else if owned {
                     Button {
@@ -552,7 +558,10 @@ ScrollView {
                         }
                         .overlay {
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(appearance.primaryText.opacity(0.10), lineWidth: 1)
+                                .stroke(
+                                    appearance.isFlatDesign ? .clear : appearance.primaryText.opacity(0.10),
+                                    lineWidth: 1
+                                )
                         }
                 }
 

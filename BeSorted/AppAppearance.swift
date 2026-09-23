@@ -278,6 +278,9 @@ final class AppAppearance {
     /// Neumorfizm jest solidny (zero glassEffect), więc liczony jako „nie-glass”.
     var usesAnyLiquidGlass: Bool { glassStyle == .full || glassStyle == .balanced }
     var isNeomorphic: Bool { glassStyle == .neomorphic }
+    /// „Flat design”: Zero Liquid Glass i Wyważony — elementy bez glass i bez neumorfizmu
+    /// są płaskie: bez ramek, bez drop-shadowów i bez inner-shadowów.
+    var isFlatDesign: Bool { glassStyle == .zero || glassStyle == .balanced }
 
     /// W pełni nieprzezroczyste tło paneli / kafli (Zero i Wyważony content).
     var opaqueModalFill: Color {
@@ -407,10 +410,10 @@ final class AppAppearance {
                 preferredScheme: .light
             )
         case .orange:
-            // Cosmic Orange (Pro)
+            // Apricot gradient (Pro) — baza #FF9549.
             let accent = Color(red: 0.95, green: 0.48, blue: 0.16)
             return coloredDarkPalette(
-                background: Color(red: 0.12, green: 0.06, blue: 0.03),
+                background: Color(red: 1.0, green: 0.584, blue: 0.286),   // #FF9549
                 accent: accent,
                 tile: Color(red: 0.28, green: 0.12, blue: 0.05),
                 priority: Color(red: 0.55, green: 0.28, blue: 0.10)
@@ -425,10 +428,10 @@ final class AppAppearance {
                 priority: Color(red: 0.14, green: 0.30, blue: 0.58)
             )
         case .silver:
-            // Silver (Pro)
+            // Silver (Pro) — baza gradientu #C3C3C3.
             let accent = Color(red: 0.72, green: 0.74, blue: 0.78)
             return ThemePalette(
-                background: Color(red: 0.90, green: 0.91, blue: 0.93),
+                background: Color(red: 0.765, green: 0.765, blue: 0.765),   // #C3C3C3
                 primaryText: Color(red: 0.12, green: 0.13, blue: 0.16),
                 secondaryText: Color(red: 0.12, green: 0.13, blue: 0.16).opacity(0.68),
                 tertiaryText: Color(red: 0.12, green: 0.13, blue: 0.16).opacity(0.48),
@@ -532,7 +535,7 @@ final class AppAppearance {
             // Lekki beżowy u góry → biały u dołu.
             return Color(red: 0.94, green: 0.88, blue: 0.78)
         case .orange:
-            return Color(red: 0.38, green: 0.18, blue: 0.08)
+            return Color(red: 1.0, green: 0.655, blue: 0.506)   // #FFA781
         case .darkBlue:
             return Color(red: 0.10, green: 0.20, blue: 0.46)
         case .silver:
@@ -554,11 +557,12 @@ final class AppAppearance {
         case .white:
             return Color(red: 0.98, green: 0.95, blue: 0.90)
         case .orange:
-            return Color(red: 0.20, green: 0.10, blue: 0.05)
+            return Color(red: 1.0, green: 0.62, blue: 0.40)
         case .darkBlue:
             return Color(red: 0.05, green: 0.12, blue: 0.32)
         case .silver:
-            return Color(red: 0.96, green: 0.965, blue: 0.975)
+            // Biały u góry → jasnoszary #C3C3C3 u dołu.
+            return Color(red: 0.80, green: 0.80, blue: 0.80)
         case .lightBlue:
             return Color(red: 0.76, green: 0.86, blue: 0.96)
         case .cherry:
@@ -620,7 +624,11 @@ final class AppAppearance {
     var overlayScrim: Color { palette.overlayScrim }
     var softOverlayScrim: Color { palette.softOverlayScrim }
     var fieldFill: Color { palette.fieldFill }
-    var fieldStroke: Color { palette.fieldStroke }
+    var fieldStroke: Color {
+        // Flat design: pola są bez ramek.
+        guard !isFlatDesign else { return .clear }
+        return palette.fieldStroke
+    }
     var promptText: Color { palette.promptText }
     var prominentButtonTint: Color { palette.prominentButtonTint }
     var preferredScheme: ColorScheme { palette.preferredScheme }
@@ -1018,7 +1026,10 @@ extension View {
                     shape.fill(appearance.opaqueModalFill)
                 }
                 .overlay {
-                    shape.stroke(appearance.primaryText.opacity(0.10), lineWidth: 1)
+                    // Flat design: panele bez ramek; neumorfizm zostaje z delikatnym rąbkiem.
+                    if !appearance.isFlatDesign {
+                        shape.stroke(appearance.primaryText.opacity(0.10), lineWidth: 1)
+                    }
                 }
                 .compositingGroup()
         }
@@ -1206,21 +1217,9 @@ private struct LiquidGlassExpandingCapsuleModifier: ViewModifier {
     }
 }
 
-/// Rąbek solidnych powierzchni (Zero i Neumorfizm): grubość jak rąbek glass —
-/// delikatny gradient bez „ciągnięcia się” do końca krawędzi.
+/// Flat design: elementy bez liquid glass i bez neumorfizmu są płaskie — bez ramek.
 func flatBeSortedButtonRim<S: Shape>(_ appearance: AppAppearance, shape: S) -> some View {
-    shape
-        .stroke(
-            LinearGradient(
-                colors: [
-                    appearance.primaryText.opacity(0.24),
-                    appearance.primaryText.opacity(0.06)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            lineWidth: 2
-        )
+    EmptyView()
 }
 
 /// Solidny odpowiednik `.glass` w Zero — ta sama ramka co prominent (zaokrąglony prostokąt).

@@ -593,7 +593,11 @@ struct SmartModePillBar: View {
         }
         .offset(x: dragOffset * 0.1, y: min(dragOffsetY * 0.28, 0))
         // Bez animacji przy drag — spring tylko w onEnded (płynniej i taniej dla glass).
-        .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.12),
+            radius: appearance.isFlatDesign ? 0 : 8,
+            y: appearance.isFlatDesign ? 0 : 2
+        )
         .gesture(pillDragGesture)
         .simultaneousGesture(
             LongPressGesture(minimumDuration: 1.0)
@@ -643,7 +647,11 @@ struct SmartModePillBar: View {
             tint: pillGlassTint,
             in: .capsule
         )
-        .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.12),
+            radius: appearance.isFlatDesign ? 0 : 8,
+            y: appearance.isFlatDesign ? 0 : 2
+        )
         .transition(.opacity.combined(with: .scale(scale: 0.92)))
     }
 
@@ -684,7 +692,11 @@ struct SmartModePillBar: View {
             tint: pillGlassTint,
             in: .capsule
         )
-        .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.12),
+            radius: appearance.isFlatDesign ? 0 : 8,
+            y: appearance.isFlatDesign ? 0 : 2
+        )
     }
 
     private var deleteChrome: some View {
@@ -732,7 +744,11 @@ struct SmartModePillBar: View {
             tint: pillGlassTint,
             in: .capsule
         )
-        .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.12),
+            radius: appearance.isFlatDesign ? 0 : 8,
+            y: appearance.isFlatDesign ? 0 : 2
+        )
         .animation(.smooth(duration: 0.28), value: chrome.deleteSelectionCount > 0)
     }
 
@@ -776,7 +792,11 @@ struct SmartModePillBar: View {
             in: .rect(cornerRadius: 16),
             minimumFrost: AppAppearance.menuGlassMinimumFrost
         )
-        .shadow(color: .black.opacity(0.22), radius: 12, y: 4)
+        .shadow(
+            color: appearance.isFlatDesign ? .clear : .black.opacity(0.22),
+            radius: appearance.isFlatDesign ? 0 : 12,
+            y: appearance.isFlatDesign ? 0 : 4
+        )
     }
 
     private var pillDragGesture: some Gesture {
