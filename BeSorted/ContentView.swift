@@ -1253,25 +1253,37 @@ struct ContentView: View {
     private var appVerticalDock: some View {
         let titles = AppTab.allCases.map(\.title)
         let images = AppTab.allCases.map(\.systemImage)
-        return LandscapeVerticalDock(
-            titles: titles,
-            images: images,
-            selection: AppTab.allCases.firstIndex(of: selectedTab) ?? 0,
-            onSelect: { index in
-                let tab = AppTab.allCases[index]
-                let oldIndex = AppTab.allCases.firstIndex(of: selectedTab) ?? 0
-                if oldIndex != index {
-                    mainTabSlideForward = index > oldIndex
-                }
-                withAnimation(Self.mainTabSlideAnimation) {
-                    selectedTab = tab
-                }
-                collapseProjectsSearch(animated: true, clearQuery: true)
-            },
-            collapse: appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
-        ) {
+        // Grupa pionowa: pastylka + lupa poniżej — centrowana jako całość względem osi Y,
+        // więc w zakładkach z lupą pastylka podnosi się odrobinę, a bez lupy
+        // automatycznie wraca na idealny środek osi Y (jak przy dynamicznym X w poziomej pastylce).
+        let lupaHeight = mainTabSearchButtonSize
+        let lupaGap: CGFloat = 69
+
+        return VStack(spacing: 0) {
+            LandscapeVerticalDock(
+                titles: titles,
+                images: images,
+                selection: AppTab.allCases.firstIndex(of: selectedTab) ?? 0,
+                onSelect: { index in
+                    let tab = AppTab.allCases[index]
+                    let oldIndex = AppTab.allCases.firstIndex(of: selectedTab) ?? 0
+                    if oldIndex != index {
+                        mainTabSlideForward = index > oldIndex
+                    }
+                    withAnimation(Self.mainTabSlideAnimation) {
+                        selectedTab = tab
+                    }
+                    collapseProjectsSearch(animated: true, clearQuery: true)
+                },
+                collapse: appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
+            ) {
+                EmptyView()
+            }
+
             if selectedTab == .projects {
                 projectsSearchToggleButton
+                    .padding(.top, lupaGap)
+                    .frame(height: lupaHeight)
                     .transition(.opacity)
             }
         }
