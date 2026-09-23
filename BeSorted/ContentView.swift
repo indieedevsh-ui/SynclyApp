@@ -1195,16 +1195,28 @@ struct ContentView: View {
     }
 
     private var projectDetailTabBar: some View {
-        ProjectDetailPill(
-            selection: projectDetailTab,
-            onSelect: { tab in
-                withAnimation(.smooth(duration: 0.26)) {
-                    projectDetailTab = tab
-                }
+        HStack(spacing: 10) {
+            Spacer(minLength: 0)
+
+            CollapsingPillChrome(showsProjectsSearch: false) { collapse in
+                ProjectDetailPill(
+                    selection: projectDetailTab,
+                    collapse: collapse,
+                    onSelect: { tab in
+                        withAnimation(.smooth(duration: 0.26)) {
+                            projectDetailTab = tab
+                        }
+                    }
+                )
+            } searchButton: {
+                EmptyView()
             }
-        )
+
+            Spacer(minLength: 0)
+        }
         .padding(.horizontal, 16)
         .padding(.bottom, 8)
+        .frame(maxWidth: .infinity)
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
     }
 
@@ -1289,6 +1301,7 @@ private struct ProjectDetailPill: View {
     @Environment(AppAppearance.self) private var appearance
 
     let selection: ProjectDetailTab
+    var collapse: CGFloat = 0
     let onSelect: (ProjectDetailTab) -> Void
 
     private let tabs = ProjectDetailTab.allCases
@@ -1364,7 +1377,7 @@ private struct ProjectDetailPill: View {
                     .allowsHitTesting(false)
 
                 if isScrubbing {
-                    thumb(width: thumbWidth, height: thumbHeight)
+                    heldThumb(width: thumbWidth, height: thumbHeight)
                         .scaleEffect(x: glassScale * stretchScaleX, y: glassScale * stretchScaleY)
                         .offset(x: thumbOffsetX, y: thumbY)
                         .transition(
@@ -1386,13 +1399,15 @@ private struct ProjectDetailPill: View {
                         slotWidth: slotWidth,
                         height: sliderHeight,
                         active: false,
-                        progress: progress
+                        progress: progress,
+                        collapse: collapse
                     )
                     projectLabelsRow(
                         slotWidth: slotWidth,
                         height: sliderHeight,
                         active: true,
-                        progress: progress
+                        progress: progress,
+                        collapse: collapse
                     )
                     .mask(alignment: .leading) {
                         Capsule(style: .continuous)
@@ -1520,19 +1535,65 @@ private struct ProjectDetailPill: View {
         }
     }
 
-    private func projectLabelsRow(slotWidth: CGFloat, height: CGFloat, active: Bool, progress: CGFloat) -> some View {
+    @ViewBuilder
+    private func heldThumb(width: CGFloat, height: CGFloat) -> some View {
+        let shape = Capsule(style: .continuous)
+        if appearance.usesZeroLiquidGlass {
+            shape
+                .fill(restThumbFill)
+                .frame(width: width, height: height)
+        } else if appearance.isNeomorphic {
+            // Trzymany suwak: ten sam chip, lekko mocniejszy emboss.
+            let shape = Capsule(style: .continuous)
+            shape
+                .fill(appearance.neoChip)
+                .shadow(color: appearance.neoHighlight.opacity(0.45), radius: 6, x: -2, y: -2)
+                .shadow(color: appearance.neoShadow.opacity(0.55), radius: 6, x: 2, y: 2)
+                .frame(width: width, height: height)
+        } else {
+            // Full / Balanced: czysty refrakcyjny lens Live Glass (identyczny z główną pastylką).
+            // Zero mrozu — deformuje to, co za nim, zamiast mglić; tylko obwódka plusLighter.
+            shape
+                .fill(Color.clear)
+                .frame(width: width, height: height)
+                .glassEffect(Glass.clear.interactive(true), in: shape)
+                .overlay {
+                    shape.strokeBorder(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.55),
+                                Color.cyan.opacity(0.18),
+                                Color.white.opacity(0.12),
+                                Color.orange.opacity(0.14)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 0.9
+                    )
+                    .blendMode(.plusLighter)
+                }
+        }
+    }
+
+    private func projectLabelsRow(slotWidth: CGFloat, height: CGFloat, active: Bool, progress: CGFloat, collapse: CGFloat) -> some View {
         HStack(spacing: 0) {
             ForEach(tabs) { tab in
                 let focusScale = projectIconFocusScale(for: tab, progress: progress)
-                VStack(spacing: 3) {
+                // Kolaps jak w głównej pastylce: napisy znikają, ikony zostają.
+                let labelOpacity = max(0, 1 - collapse * 1.55)
+                VStack(spacing: labelOpacity > 0.08 ? 3 : 0) {
                     Image(systemName: tab.systemImage)
                         .font(.system(size: 16, weight: .semibold))
                         .symbolRenderingMode(.monochrome)
                         .frame(width: 20, height: 20)
-                    Text(tab.title)
-                        .font(.system(size: 10.5, weight: .semibold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.6)
+                    if labelOpacity > 0.05 {
+                        Text(tab.title)
+                            .font(.system(size: 10.5, weight: .semibold))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                            .opacity(labelOpacity)
+                    }
                 }
                 .foregroundStyle(labelColor(active: active))
                 .scaleEffect(focusScale)
