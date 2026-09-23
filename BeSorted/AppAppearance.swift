@@ -657,12 +657,12 @@ final class AppAppearance {
                 shadowStrong: Color(red: 0.72, green: 0.68, blue: 0.63).opacity(0.80),
                 track: Color(red: 0.86, green: 0.78, blue: 0.62)
             )
-        case .orange:
+case .orange:
             return NeoPalette(
-                highlight: Color(red: 1.0, green: 0.63, blue: 0.48).opacity(0.50),
-                shadow: Color(red: 0.58, green: 0.17, blue: 0.02).opacity(0.60),
-                shadowStrong: Color(red: 0.58, green: 0.17, blue: 0.02).opacity(0.80),
-                track: Color(red: 0.30, green: 0.15, blue: 0.06)
+                highlight: Color(red: 0.66, green: 0.40, blue: 0.22).opacity(0.22),
+                shadow: Color(red: 0.28, green: 0.15, blue: 0.07).opacity(0.28),
+                shadowStrong: Color(red: 0.28, green: 0.15, blue: 0.07).opacity(0.38),
+                track: Color(red: 0.25, green: 0.10, blue: 0.03)
             )
         case .darkBlue:
             return NeoPalette(
@@ -709,7 +709,7 @@ final class AppAppearance {
         case .white:
             return Color(red: 0.933, green: 0.910, blue: 0.871)
         case .orange:
-            return Color(red: 0.929, green: 0.408, blue: 0.20)
+            return Color(red: 0.76, green: 0.36, blue: 0.16)
         case .darkBlue:
             return Color(red: 0.067, green: 0.153, blue: 0.298)
         case .silver:
@@ -729,7 +729,7 @@ final class AppAppearance {
         case .white:
             return Color(red: 0.871, green: 0.839, blue: 0.780).opacity(0.85)
         case .orange:
-            return Color(red: 0.788, green: 0.278, blue: 0.082).opacity(0.85)
+            return Color(red: 0.56, green: 0.26, blue: 0.11).opacity(0.85)
         case .darkBlue:
             return Color(red: 0.039, green: 0.086, blue: 0.169).opacity(0.85)
         case .silver:
@@ -760,6 +760,16 @@ final class AppAppearance {
         }
     }
     var neoRaisedFill: Color { neoSurface }
+
+    /// Tekst wybranego kafelka wyboru w ustawieniach (Neumorfizm): wybrany kafelek
+    /// to wklęsły, ciemny chip, więc na motywach ciemnych (czarny/pomarańczowy/
+    /// ciemnoniebieski/wiśniowy) tekst musi być biały; na jasnych chipach
+    /// (biały/srebrny/błękitny) — tekst motywu. Poza Neumorfizmem wybrany kafelek
+    /// ma jasną pastylkę `selectedTabTint`, więc zostaje `selectedTabForeground`.
+    var choiceSelectedForeground: Color {
+        guard isNeomorphic else { return selectedTabForeground }
+        return theme.usesLightContent ? primaryText : Color.white
+    }
 
     /// Ikona neumorfizmu: jaśniejszy odcień wybranego motywu, żeby była czytelna
     /// na pastylce (czarny → jasny szary, pomarańczowy → jasny pomarańcz, jasne → beż).

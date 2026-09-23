@@ -501,9 +501,9 @@ struct ContentView: View {
     }
 
     private var mainTabInactiveForeground: Color {
-        // Neumorfizm (referencja TabBarButton): nieaktywne = textSecondary.
+        // Neumorfizm: czarny tekst na kafelek czarny (surface = 0.10,0.11,0.12).
         if appearance.isNeomorphic {
-            return appearance.secondaryText
+            return Color(red: 0.10, green: 0.11, blue: 0.12)
         }
         // Jak w Fitness: nieaktywne = biel / czerń wg motywu; kolor motywu dopiero pod suwakiem.
         return appearance.theme.usesLightContent
@@ -511,15 +511,21 @@ struct ContentView: View {
             : Color.white.opacity(0.92)
     }
 
-    /// Aktywna zakładka w Neumorfizmie (referencja TabBarButton): biel,
-    /// na jasnych motywach (biały/srebrny) — primaryText dla kontrastu na chipie.
+    /// Aktywna zakładka w Neumorfizmie: dla czarnego motywu tekst czarny na kafelku,
+    /// dla pozostałych motywów wzorzec referencyjny (biały/srebrny → primaryText, reszta → subtelny blask).
     private var mainTabActiveForeground: Color {
-        switch appearance.theme {
-        case .white, .silver:
-            return appearance.primaryText
-        default:
-            return .white
+        if appearance.isNeomorphic {
+            switch appearance.theme {
+            case .black:
+                return Color(red: 0.10, green: 0.11, blue: 0.12) // czarny tekst na czarnym kafełku
+            case .white, .silver:
+                return appearance.primaryText
+            default:
+                return Color.white.opacity(0.95) // subtelny blask / wyróżnienie
+            }
         }
+        // fallback
+        return .white
     }
 
     /// Wypełnienie suwaka 2D (spoczynek) — jak Fitness: ciemniejsza „soczewka”, nie kolor motywu.
@@ -2009,14 +2015,14 @@ private struct SettingsLanguagePickerOverlay: View {
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(
                                         isSelected
-                                            ? appearance.selectedTabForeground
+                                            ? appearance.choiceSelectedForeground
                                             : appearance.primaryText
                                     )
                                 Spacer(minLength: 0)
                                 if isSelected {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 13, weight: .bold))
-                                        .foregroundStyle(appearance.selectedTabForeground)
+                                        .foregroundStyle(appearance.choiceSelectedForeground)
                                 }
                             }
                             .padding(.horizontal, 14)
@@ -2091,7 +2097,7 @@ private struct SettingsAppearanceView: View {
                                             .font(.subheadline.weight(.semibold))
                                             .foregroundStyle(
                                                 isSelected
-                                                    ? appearance.selectedTabForeground
+                                                    ? appearance.choiceSelectedForeground
                                                     : appearance.primaryText
                                             )
                                             .lineLimit(1)
@@ -2127,14 +2133,14 @@ private struct SettingsAppearanceView: View {
                                             .font(.subheadline.weight(.semibold))
                                             .foregroundStyle(
                                                 isSelected
-                                                    ? appearance.selectedTabForeground
+                                                    ? appearance.choiceSelectedForeground
                                                     : appearance.primaryText
                                             )
                                         Text(style.subtitle)
                                             .font(.caption)
                                             .foregroundStyle(
                                                 isSelected
-                                                    ? appearance.selectedTabForeground.opacity(0.78)
+                                                    ? appearance.choiceSelectedForeground.opacity(0.78)
                                                     : appearance.quaternaryText
                                             )
                                             .fixedSize(horizontal: false, vertical: true)
@@ -7698,7 +7704,7 @@ struct FormSheetScaffold: View {
             .padding(.vertical, 12)
             .foregroundStyle(
                 isSelected
-                    ? appearance.selectedTabForeground
+                    ? appearance.choiceSelectedForeground
                     : appearance.primaryText
             )
         }
@@ -8143,14 +8149,14 @@ struct ProjectCoreOverlay: View {
                                         .font(.caption)
                                         .foregroundStyle(
                                             drawingScale == option
-                                                ? appearance.selectedTabForeground.opacity(0.85)
+                                                ? appearance.choiceSelectedForeground.opacity(0.85)
                                                 : appearance.secondaryText
                                         )
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
                                 .foregroundStyle(
                                     drawingScale == option
-                                        ? appearance.selectedTabForeground
+                                        ? appearance.choiceSelectedForeground
                                         : appearance.primaryText
                                 )
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -8353,7 +8359,7 @@ struct ProjectCoreOverlay: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(
                     isOn
-                        ? appearance.selectedTabForeground
+                        ? appearance.choiceSelectedForeground
                         : appearance.primaryText
                 )
                 .frame(maxWidth: .infinity)
