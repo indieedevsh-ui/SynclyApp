@@ -1881,6 +1881,19 @@ enum MenuPillCollapseBridge {
 
 /// Poziomy odstęp list kafelków od krawędzi ekranu (jak Aktualny Plan / Ustawienia).
 enum BeSortedContentInsets {
+    static var isLandscape: Bool {
+        let size = UIScreen.main.bounds.size
+        return size.width > size.height
+    }
+
+    /// Fizyczny poziomy safe inset w trybie poziomym (Dynamic Island / zaokrąglone rogi).
+    static var landscapeHorizontalSafeInset: CGFloat {
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        guard let window = scenes.flatMap(\.windows).first(where: \.isKeyWindow)
+            ?? scenes.first?.windows.first else { return 0 }
+        return max(window.safeAreaInsets.left, window.safeAreaInsets.right)
+    }
+
     /// Fizyczny top safe area (Dynamic Island / notch) — do rozciągania tła headera.
     static var topSafeArea: CGFloat {
         let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
@@ -1897,11 +1910,36 @@ enum BeSortedContentInsets {
         return 59
     }
 
-    static let tileListHorizontal: CGFloat = 20
-    /// Wspólny poziomy padding headerów — ten sam gutter co kafelki (My Projects / Plan / Settings).
-    static let headerHorizontal: CGFloat = tileListHorizontal
-    static let projectsHeaderLeading: CGFloat = headerHorizontal
-    static let projectsHeaderTrailing: CGFloat = headerHorizontal
+    /// Gutter list kafelków: w poziomie powiększony, żeby kafelki miały odstęp
+    /// od Dynamic Island / zaokrąglonych rogów (obecnie zachodziły pod cutout).
+    /// Jednocześnie „węższe kafelki” = szerszy gutter — w poziomie odrobinę większy.
+    static var tileListHorizontal: CGFloat {
+        guard isLandscape else { return 20 }
+        return max(20, landscapeHorizontalSafeInset + 16)
+    }
+
+    /// Trailing gutter list w poziomie: większy niż lewy, żeby kafelki i przyciski
+    /// prawą stroną nie zachodziły pod pionowy dock (pastylka zakładek) i lupę.
+    static var tileListTrailing: CGFloat {
+        guard isLandscape else { return tileListHorizontal }
+        // landscapeDockTrailing + szerokość docku (80) + przerwa (16).
+        return max(tileListHorizontal, landscapeDockTrailing + 96)
+    }
+
+    /// Wspólny poziomy padding headerów — taka sama szerokość co kafelki
+    /// (tytuły i przyciski headerów w linii z kafelkami).
+    static var headerHorizontal: CGFloat {
+        guard isLandscape else { return 20 }
+        return max(20, landscapeHorizontalSafeInset + 16)
+    }
+    static var projectsHeaderLeading: CGFloat { headerHorizontal }
+    static var projectsHeaderTrailing: CGFloat { headerHorizontal }
+
+    /// Trailing pionowego docku w poziomie: bliżej prawej krawędzi niż header,
+    /// ale zawsze z odstępem od krawędzi (nie „przyklejony”).
+    static var landscapeDockTrailing: CGFloat {
+        max(20, landscapeHorizontalSafeInset + 4)
+    }
 
     /// Stała szerokość ekranu — niezależna od soft edge / contentMargins przy scrollu.
     static var screenWidth: CGFloat {
@@ -1913,7 +1951,7 @@ enum BeSortedContentInsets {
     }
 
     static var tileWidth: CGFloat {
-        max(0, screenWidth - tileListHorizontal * 2)
+        max(0, screenWidth - tileListHorizontal - tileListTrailing)
     }
 }
 
@@ -1960,13 +1998,15 @@ struct BesortedFixedWidthTileScroll<Content: View>: View {
 
     var body: some View {
         let screenW = BeSortedContentInsets.screenWidth
-        let inset = BeSortedContentInsets.tileListHorizontal
+        let leading = BeSortedContentInsets.tileListHorizontal
+        let trailing = BeSortedContentInsets.tileListTrailing
 
         ScrollView(.vertical) {
             LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
                 content()
             }
-            .padding(.horizontal, inset)
+            .padding(.leading, leading)
+            .padding(.trailing, trailing)
             .frame(width: screenW, alignment: .center)
             .padding(.top, topPadding)
             .padding(.bottom, bottomPadding)

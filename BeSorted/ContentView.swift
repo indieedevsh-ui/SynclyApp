@@ -127,6 +127,10 @@ private struct CollapsingPillChrome<Pill: View, Search: View>: View {
 struct ContentView: View {
     @Environment(AppAppearance.self) private var appearance
     @Environment(SmartChrome.self) private var smartChrome
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
+    /// Tryb poziomy (telefon obrócony) — na prawą krawędź wjeżdża pionowy dock zakładek.
+    private var isLandscape: Bool { verticalSizeClass == .compact }
 
     @State private var selectedTab: AppTab = .projects
     @State private var selectedProject: Project?
@@ -286,20 +290,44 @@ struct ContentView: View {
 
             // Header tabs: regular liquid glass (rozciąga się w safe area).
             // TopSafeArea osobno niepotrzebne — dublowałoby frosty i wyglądało jak 2D.
-            VStack {
-                Spacer()
-                if selectedPlanTask != nil || showAIAssistant || isPlanTaskAIAssistPresented {
-                    EmptyView()
-                } else if appearance.smartMode {
-                    EmptyView()
-                } else if selectedProject != nil {
-                    if !isEditingProjectDetails && !smartChrome.blocksBottomChrome {
-                        projectDetailTabBar
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
+            Group {
+                if isLandscape {
+                    // Tryb poziomy: pionowy dock po prawej (z dala od Dynamic Island).
+                    HStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        if selectedPlanTask != nil || showAIAssistant || isPlanTaskAIAssistPresented {
+                            EmptyView()
+                        } else if appearance.smartMode {
+                            EmptyView()
+                        } else if selectedProject != nil {
+                            if !isEditingProjectDetails && !smartChrome.blocksBottomChrome {
+                                projectDetailVerticalDock
+                                    .transition(.opacity.combined(with: .move(edge: .trailing)))
+                            }
+                        } else if !smartChrome.blocksBottomChrome {
+                            appVerticalDock
+                                .transition(.opacity.combined(with: .move(edge: .trailing)))
+                        }
                     }
-                } else if !smartChrome.blocksBottomChrome {
-                    appTabBar
-                        .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    .padding(.trailing, BeSortedContentInsets.landscapeDockTrailing)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    VStack {
+                        Spacer()
+                        if selectedPlanTask != nil || showAIAssistant || isPlanTaskAIAssistPresented {
+                            EmptyView()
+                        } else if appearance.smartMode {
+                            EmptyView()
+                        } else if selectedProject != nil {
+                            if !isEditingProjectDetails && !smartChrome.blocksBottomChrome {
+                                projectDetailTabBar
+                                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                            }
+                        } else if !smartChrome.blocksBottomChrome {
+                            appTabBar
+                                .transition(.opacity.combined(with: .move(edge: .bottom)))
+                        }
+                    }
                 }
             }
             .zIndex(40)
@@ -307,6 +335,7 @@ struct ContentView: View {
             .animation(.smooth(duration: 0.28), value: isPlanTaskAIAssistPresented)
             .animation(.smooth(duration: 0.28), value: appearance.smartMode)
             .animation(.smooth(duration: 0.28), value: smartChrome.blocksBottomChrome)
+            .animation(.smooth(duration: 0.28), value: isLandscape)
             .onAppear {
                 bindMenuPillCollapseObserver()
             }
@@ -1220,6 +1249,56 @@ struct ContentView: View {
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
     }
 
+    /// Tryb poziomy: pionowy dock głównych zakładek przy prawej krawędzi.
+    private var appVerticalDock: some View {
+        let titles = AppTab.allCases.map(\.title)
+        let images = AppTab.allCases.map(\.systemImage)
+        return LandscapeVerticalDock(
+            titles: titles,
+            images: images,
+            selection: AppTab.allCases.firstIndex(of: selectedTab) ?? 0,
+            onSelect: { index in
+                let tab = AppTab.allCases[index]
+                let oldIndex = AppTab.allCases.firstIndex(of: selectedTab) ?? 0
+                if oldIndex != index {
+                    mainTabSlideForward = index > oldIndex
+                }
+                withAnimation(Self.mainTabSlideAnimation) {
+                    selectedTab = tab
+                }
+                collapseProjectsSearch(animated: true, clearQuery: true)
+            },
+            collapse: appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
+        ) {
+            if selectedTab == .projects {
+                projectsSearchToggleButton
+                    .transition(.opacity)
+            }
+        }
+        .animation(.smooth(duration: 0.34), value: selectedTab)
+        .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
+    }
+
+    /// Tryb poziomy: pionowy dock zakładek projektu przy prawej krawędzi.
+    private var projectDetailVerticalDock: some View {
+        VStack(spacing: 12) {
+            LandscapeVerticalDock(
+                titles: ProjectDetailTab.allCases.map(\.title),
+                images: ProjectDetailTab.allCases.map(\.systemImage),
+                selection: ProjectDetailTab.allCases.firstIndex(of: projectDetailTab) ?? 0,
+                onSelect: { index in
+                    withAnimation(.smooth(duration: 0.26)) {
+                        projectDetailTab = ProjectDetailTab.allCases[index]
+                    }
+                },
+                collapse: appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
+            ) {
+                EmptyView()
+            }
+        }
+        .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
+    }
+
     private var planAIPullGesture: some Gesture {
         DragGesture(minimumDistance: 14, coordinateSpace: .named("rootAI"))
             .onChanged { value in
@@ -1737,6 +1816,434 @@ private struct ProjectDetailPill: View {
     }
 }
 
+/// Pionowy dock na prawą krawędź ekranu (tylko tryb poziomy) — jak iPadOS dock:
+/// ta sama „Fitness” pastylka, ale suwak jeździ w pionie. Zero mrozu na suwaku —
+/// czysty refrakcyjny glass (Full / Balanced), płaski w Zero, emboss w neumorfizmie.
+private struct LandscapeVerticalDock<Accessory: View>: View {
+    @Environment(AppAppearance.self) private var appearance
+
+    let titles: [String]
+    let images: [String]
+    let selection: Int
+    let onSelect: (Int) -> Void
+    var collapse: CGFloat = 0
+    /// Akcesorium pod dockiem (np. lupa) — renderowane wewnątrz, więc skaluje się
+    /// i przesuwa razem z pastylką (nie zachodzi na nią podczas kolapsu).
+    @ViewBuilder var accessory: () -> Accessory
+
+    private let dockWidth: CGFloat = 80
+    private let horizontalPadding: CGFloat = 8
+    private let verticalPadding: CGFloat = 6
+    private let slotHeight: CGFloat = 58
+    private let thumbExtra: CGFloat = 8
+    private let scrubSliderOutset: CGFloat = 9
+    private let scrubPillScale: CGFloat = 1.01
+    private let thumbMorphAnimation: Animation = .spring(response: 0.40, dampingFraction: 0.84)
+    private let tapSlideAnimation: Animation = .spring(response: 0.46, dampingFraction: 0.72)
+    private let tapThreshold: CGFloat = 8
+    /// Odstęp akcesorium poniżej dolnej krawędzi docku (wysokość lupy/2 + przerwa).
+    private let bottomAccessoryOffset: CGFloat = 104
+
+    @State private var isScrubbing = false
+    @State private var scrubProgress: CGFloat = 0
+    @State private var sliderStretch: CGFloat = 0
+    @State private var lastDragY: CGFloat?
+    @State private var lastDragTime: Date?
+
+    private var restThumbFill: Color {
+        appearance.theme.usesLightContent
+            ? Color.black.opacity(0.14)
+            : Color.black.opacity(0.50)
+    }
+
+    var body: some View {
+        let count = titles.count
+        let slotCount = CGFloat(count)
+        let dockHeight = CGFloat(count) * slotHeight + verticalPadding * 2
+        let sliderWidth = dockWidth - horizontalPadding * 2
+        let progress = min(max(scrubProgress, 0), max(slotCount - 1, 0))
+        let stretch = sliderStretch
+        let stretchScaleX = 1 - abs(stretch) * 0.1
+        let stretchScaleY = 1 + abs(stretch) * 0.22
+        let glassLift: CGFloat = isScrubbing ? 1 : 0
+        let restingThumbHeight = slotHeight + thumbExtra
+        let holdOutset = scrubSliderOutset * glassLift
+        let heldThumbHeight = restingThumbHeight + 8 * glassLift
+        let heldThumbWidth = sliderWidth + holdOutset
+        let heldX = horizontalPadding - holdOutset / 2
+        let thumbLead = stretch * min(slotHeight * 0.10, 8)
+        let restingThumbY = verticalPadding
+            + progress * slotHeight
+            - (restingThumbHeight - slotHeight) / 2
+        let thumbNudge = 1.5 * glassLift
+        let heldOffsetY = restingThumbY - thumbNudge + thumbLead - (3 * glassLift)
+        let glassScale = 1 + 0.18 * glassLift
+        let accentMaskY =
+            progress * slotHeight
+            - (restingThumbHeight - slotHeight) / 2
+            - thumbNudge
+            - (3 * glassLift)
+            + thumbLead
+        let shape = Capsule(style: .continuous)
+
+        ZStack(alignment: .topLeading) {
+            Color.clear
+                .background { dockTrack }
+
+            restThumb(width: sliderWidth + thumbExtra, height: restingThumbHeight)
+                .offset(x: horizontalPadding - thumbExtra / 2, y: restingThumbY + thumbLead * (1 - glassLift))
+                .opacity(1 - glassLift)
+                .animation(thumbMorphAnimation, value: isScrubbing)
+                .allowsHitTesting(false)
+
+            if isScrubbing {
+                heldThumb(width: heldThumbWidth, height: heldThumbHeight)
+                    .scaleEffect(x: glassScale * stretchScaleX, y: glassScale * stretchScaleY)
+                    .offset(x: heldX, y: heldOffsetY)
+                    .transition(
+                        .asymmetric(
+                            insertion: .opacity
+                                .combined(with: .scale(scale: 0.92))
+                                .animation(thumbMorphAnimation),
+                            removal: .opacity
+                                .combined(with: .scale(scale: 0.96))
+                                .animation(thumbMorphAnimation)
+                        )
+                    )
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+            }
+
+            ZStack {
+                dockLabels(active: false, width: sliderWidth, progress: progress)
+                dockLabels(active: true, width: sliderWidth, progress: progress)
+                    .mask(alignment: .top) {
+                        Capsule(style: .continuous)
+                            .frame(width: sliderWidth + thumbExtra, height: restingThumbHeight + 8 * glassLift)
+                            .scaleEffect(x: 1, y: stretchScaleY, anchor: .center)
+                            .offset(y: accentMaskY)
+                    }
+            }
+            .padding(.horizontal, horizontalPadding)
+            .padding(.vertical, verticalPadding)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+            .animation(
+                isScrubbing ? nil : thumbMorphAnimation,
+                value: scrubProgress
+            )
+
+            VStack(spacing: 0) {
+                ForEach(0..<count, id: \.self) { index in
+                    Button {
+                        onSelect(index)
+                    } label: {
+                        Color.clear
+                            .frame(width: sliderWidth, height: slotHeight)
+                            .contentShape(Capsule())
+                    }
+                    .buttonStyle(BeSortedPlainButtonStyle(sound: .tab))
+                    .accessibilityLabel(titles[index])
+                    .accessibilityAddTraits(index == selection ? .isSelected : [])
+                }
+            }
+            .frame(width: sliderWidth, height: dockHeight - verticalPadding * 2, alignment: .top)
+            .padding(.horizontal, horizontalPadding)
+            .padding(.vertical, verticalPadding)
+            .allowsHitTesting(false)
+        }
+        .frame(width: dockWidth, height: dockHeight)
+        .contentShape(Rectangle())
+        .highPriorityGesture(scrubGesture(slotHeight: slotHeight, slotCount: count))
+        .overlay(alignment: .bottom) {
+            accessory()
+                .offset(y: bottomAccessoryOffset)
+        }
+        .scaleEffect(isScrubbing ? scrubPillScale : 1.0)
+        .scaleEffect(
+            x: 1 - 0.18 * collapse,
+            y: 1 - 0.18 * collapse,
+            anchor: .trailing
+        )
+        .shadow(
+            color: appearance.isNeomorphic
+                ? .black.opacity(appearance.theme.usesLightContent ? 0.16 : 0.30)
+                : (appearance.isFlatDesign ? .clear : .black.opacity(isScrubbing ? 0.14 : 0.10)),
+            radius: appearance.isNeomorphic ? 10 : (appearance.isFlatDesign ? 0 : (isScrubbing ? 11 : 8)),
+            y: appearance.isNeomorphic ? 1 : (appearance.isFlatDesign ? 0 : (isScrubbing ? 2 : 2))
+        )
+        .animation(thumbMorphAnimation, value: isScrubbing)
+        .animation(.spring(response: 0.46, dampingFraction: 0.58), value: collapse)
+        .accessibilityElement(children: .contain)
+        .onAppear {
+            scrubProgress = CGFloat(selection)
+            lastDragY = nil
+            lastDragTime = nil
+        }
+        .onChange(of: selection) { _, newValue in
+            guard !isScrubbing else { return }
+            let index = CGFloat(newValue)
+            if abs(scrubProgress - index) > 0.02 {
+                withAnimation(.smooth(duration: 0.38)) {
+                    scrubProgress = index
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var dockTrack: some View {
+        let shape = Capsule(style: .continuous)
+        if appearance.isFlatDesign {
+            shape
+                .fill(appearance.fullyOpaque(appearance.tileTint))
+        } else if appearance.isNeomorphic {
+            shape
+                .fill(appearance.neoSurface.opacity(0.85))
+                .background { shape.fill(.ultraThinMaterial) }
+                .shadow(color: appearance.neoShadow, radius: 20, x: 0, y: 10)
+        } else {
+            shape
+                .fill(Color.clear)
+                .glassEffect(
+                    appearance.blendedGlass(
+                        interactive: false,
+                        tint: appearance.tileTint.opacity(0.55),
+                        blend: appearance.glassBlend()
+                    ),
+                    in: shape
+                )
+                .overlay {
+                    shape.strokeBorder(
+                        Color.white.opacity(appearance.theme.usesLightContent ? 0.28 : 0.16),
+                        lineWidth: 0.8
+                    )
+                }
+                .animation(.smooth(duration: 0.38), value: appearance.glassStyle)
+        }
+    }
+
+    @ViewBuilder
+    private func restThumb(width: CGFloat, height: CGFloat) -> some View {
+        let shape = Capsule(style: .continuous)
+        if appearance.isNeomorphic {
+            shape
+                .fill(appearance.neoChip)
+                .shadow(color: appearance.neoHighlight.opacity(0.40), radius: 6, x: -2, y: -2)
+                .shadow(color: appearance.neoShadow.opacity(0.50), radius: 6, x: 2, y: 2)
+                .frame(width: width, height: height)
+        } else if appearance.isFlatDesign {
+            shape
+                .fill(restThumbFill)
+                .frame(width: width, height: height)
+        } else {
+            shape
+                .fill(restThumbFill)
+                .overlay {
+                    shape.strokeBorder(
+                        Color.white.opacity(appearance.theme.usesLightContent ? 0.28 : 0.18),
+                        lineWidth: 0.85
+                    )
+                }
+                .shadow(color: .black.opacity(0.14), radius: 3.5, y: 1)
+                .frame(width: width, height: height)
+        }
+    }
+
+    @ViewBuilder
+    private func heldThumb(width: CGFloat, height: CGFloat) -> some View {
+        let shape = Capsule(style: .continuous)
+        if appearance.usesZeroLiquidGlass {
+            shape
+                .fill(restThumbFill)
+                .frame(width: width, height: height)
+        } else if appearance.isNeomorphic {
+            let shape = Capsule(style: .continuous)
+            shape
+                .fill(appearance.neoChip)
+                .shadow(color: appearance.neoHighlight.opacity(0.45), radius: 6, x: -2, y: -2)
+                .shadow(color: appearance.neoShadow.opacity(0.55), radius: 6, x: 2, y: 2)
+                .frame(width: width, height: height)
+        } else {
+            // Full / Balanced: czysty refrakcyjny Lens — deformuje, nie mgli.
+            shape
+                .fill(Color.clear)
+                .frame(width: width, height: height)
+                .glassEffect(Glass.clear.interactive(true), in: shape)
+                .overlay {
+                    shape.strokeBorder(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.55),
+                                Color.cyan.opacity(0.18),
+                                Color.white.opacity(0.12),
+                                Color.orange.opacity(0.14)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 0.9
+                    )
+                    .blendMode(.plusLighter)
+                }
+        }
+    }
+
+    private func dockLabels(active: Bool, width: CGFloat, progress: CGFloat) -> some View {
+        VStack(spacing: 0) {
+            ForEach(0..<titles.count, id: \.self) { index in
+                let focusScale = iconFocusScale(index: index, progress: progress)
+                let labelOpacity = max(0, 1 - collapse * 1.55)
+                VStack(spacing: labelOpacity > 0.08 ? 3 : 0) {
+                    Image(systemName: images[index])
+                        .font(.system(size: 18, weight: .semibold))
+                        .symbolRenderingMode(.monochrome)
+                        .frame(width: 24, height: 24)
+                    if labelOpacity > 0.05 {
+                        Text(titles[index])
+                            .font(.system(size: 9.5, weight: .semibold))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.55)
+                            .opacity(labelOpacity)
+                    }
+                }
+                .foregroundStyle(labelColor(active: active))
+                .scaleEffect(focusScale)
+                .frame(width: width, height: slotHeight)
+            }
+        }
+    }
+
+    private func iconFocusScale(index: Int, progress: CGFloat) -> CGFloat {
+        let distance = abs(progress - CGFloat(index))
+        let raw = max(0, 1 - distance / 0.38)
+        let eased = raw * raw * (3 - 2 * raw)
+        return 1 + 0.10 * eased
+    }
+
+    private func labelColor(active: Bool) -> Color {
+        if active {
+            if appearance.isNeomorphic {
+                return appearance.theme.usesLightContent ? appearance.primaryText : Color.white
+            }
+            return appearance.tabSliderAccent
+        }
+        return appearance.secondaryText
+    }
+
+    private func scrubGesture(slotHeight: CGFloat, slotCount: Int) -> some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .local)
+            .onChanged { value in
+                guard slotCount > 0, slotHeight > 0 else { return }
+
+                let horizontal = abs(value.translation.width)
+                let vertical = abs(value.translation.height)
+                let dragDistance = hypot(value.translation.width, value.translation.height)
+
+                if horizontal > 14, horizontal > vertical * 1.1 {
+                    if isScrubbing {
+                        withAnimation(thumbMorphAnimation) {
+                            isScrubbing = false
+                            sliderStretch = 0
+                            scrubProgress = CGFloat(selection)
+                        }
+                        lastDragY = nil
+                        lastDragTime = nil
+                    }
+                    return
+                }
+
+                if dragDistance > tapThreshold, !isScrubbing {
+                    withAnimation(thumbMorphAnimation) {
+                        isScrubbing = true
+                    }
+                }
+
+                let y = value.location.y - verticalPadding
+                let raw = y / slotHeight - 0.5
+
+                guard isScrubbing else {
+                    if abs(sliderStretch) > 0.001 {
+                        sliderStretch *= 0.82
+                    }
+                    return
+                }
+
+                let now = Date()
+                if let lastY = lastDragY, let lastTime = lastDragTime {
+                    let dt = now.timeIntervalSince(lastTime)
+                    if dt > 0.002, dt < 0.12 {
+                        let velocity = (value.location.y - lastY) / dt
+                        let maxIndex = max(CGFloat(slotCount - 1), 1)
+                        let clampedRaw = min(max(raw, 0), maxIndex)
+                        let edgeT = min(min(clampedRaw / 0.45, (maxIndex - clampedRaw) / 0.45), 1)
+                        let edgeScale = max(0.15, edgeT)
+                        let targetStretch = max(-1.0, min(1.0, (velocity / 820) * edgeScale))
+                        var stretchTx = Transaction()
+                        stretchTx.disablesAnimations = true
+                        withTransaction(stretchTx) {
+                            sliderStretch += (targetStretch - sliderStretch) * 0.38
+                        }
+                    }
+                } else {
+                    var stretchTx = Transaction()
+                    stretchTx.disablesAnimations = true
+                    withTransaction(stretchTx) {
+                        sliderStretch *= 0.82
+                    }
+                }
+                lastDragY = value.location.y
+                lastDragTime = now
+
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
+                    scrubProgress = min(max(raw, 0), CGFloat(slotCount - 1))
+                }
+            }
+            .onEnded { value in
+                lastDragY = nil
+                lastDragTime = nil
+
+                let horizontal = abs(value.translation.width)
+                let vertical = abs(value.translation.height)
+                let maxIndex = max(slotCount - 1, 0)
+
+                if horizontal > 18, horizontal > vertical * 1.2 {
+                    withAnimation(thumbMorphAnimation) {
+                        isScrubbing = false
+                        sliderStretch = 0
+                        scrubProgress = CGFloat(selection)
+                    }
+                    return
+                }
+
+                let commitIndex: Int
+                if horizontal < 8 && vertical < 8 {
+                    let y = value.location.y - verticalPadding
+                    commitIndex = min(max(Int((y / max(slotHeight, 1)).rounded(.down)), 0), maxIndex)
+                } else {
+                    commitIndex = min(max(Int(scrubProgress.rounded()), 0), maxIndex)
+                }
+
+                let changed = commitIndex != selection
+                let dockAnimation: Animation =
+                    (horizontal < 8 && vertical < 8)
+                    ? tapSlideAnimation
+                    : thumbMorphAnimation
+                withAnimation(dockAnimation) {
+                    isScrubbing = false
+                    sliderStretch = 0
+                    scrubProgress = CGFloat(commitIndex)
+                }
+                onSelect(commitIndex)
+                if changed {
+                    BeSortedSound.play(.tab)
+                }
+            }
+    }
+}
+
 private struct PlanTabFrameKey: PreferenceKey {
     static var defaultValue: CGRect = .zero
     static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
@@ -2116,7 +2623,8 @@ struct SettingsTabView: View {
                         glowColor: glowColor
                     )
                 }
-                .padding(.horizontal, 16)
+                .padding(.leading, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListHorizontal : 16)
+                    .padding(.trailing, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListTrailing : 16)
                 .padding(.top, 64)
                 .padding(.bottom, 72)
             }
@@ -2482,7 +2990,8 @@ private struct SettingsAppearanceView: View {
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.leading, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListHorizontal : 16)
+                    .padding(.trailing, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListTrailing : 16)
                 .padding(.top, 64)
                 .padding(.bottom, 72)
             }
@@ -2719,7 +3228,8 @@ private struct SettingsExtraSettingsView: View {
                             )
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.leading, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListHorizontal : 16)
+                    .padding(.trailing, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListTrailing : 16)
                 .padding(.top, 64)
                 .padding(.bottom, 72)
             }
@@ -4243,7 +4753,8 @@ struct ProjectDetailView: View {
                         .animation(.smooth(duration: 0.26), value: selectedTab)
                         .padding(.top, 12)
                         .padding(.bottom, 110)
-                        .padding(.horizontal, BeSortedContentInsets.tileListHorizontal)
+                        .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+                        .padding(.trailing, BeSortedContentInsets.tileListTrailing)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .besortedListScrollChrome()
