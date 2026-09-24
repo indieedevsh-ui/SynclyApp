@@ -1256,11 +1256,10 @@ struct ContentView: View {
     private var appVerticalDock: some View {
         let titles = AppTab.allCases.map(\.title)
         let images = AppTab.allCases.map(\.systemImage)
-        // Grupa pionowa: pastylka + lupa poniżej — centrowana jako całość względem osi Y,
-        // więc w zakładkach z lupą pastylka podnosi się odrobinę, a bez lupy
-        // automatycznie wraca na idealny środek osi Y (jak przy dynamicznym X w poziomej pastylce).
+        // Lupa pod pastylką z odstępem jak w trybie pionowym (mainTabBarItemSpacing).
+        // Grupę (pastylka + lupa) środkuje sam układ względem osi Y, więc gdy lupa
+        // zniknie (inna zakładka albo kolaps), pastylka płynnie wraca na środek osi Y.
         let lupaHeight = mainTabSearchButtonSize
-        let lupaGap: CGFloat = 69
         // Kurczenie lupy razem z pastylką (jak w pionie): skala = skala docku × wygaszenie
         // przed pełnym kolapsem (bez zostawiania „mikro-kropki").
         let collapse = appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
@@ -1269,8 +1268,9 @@ struct ContentView: View {
             ? 1
             : max(0, 1 - (collapse - 0.72) / 0.22)
         let lupaScale = max(0, shrinkY * endKill)
+        let showsLupa = selectedTab == .projects && lupaScale > 0.06
 
-        return VStack(spacing: 0) {
+        return VStack(alignment: .center, spacing: showsLupa ? mainTabBarItemSpacing : 0) {
             LandscapeVerticalDock(
                 titles: titles,
                 images: images,
@@ -1286,24 +1286,29 @@ struct ContentView: View {
                     }
                     collapseProjectsSearch(animated: true, clearQuery: true)
                 },
-                collapse: appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
+                collapse: collapse
             ) {
                 EmptyView()
             }
 
-            if selectedTab == .projects {
-                projectsSearchToggleButton
-                    .padding(.top, lupaGap)
-                    .frame(height: lupaHeight)
-                    .scaleEffect(lupaScale, anchor: .center)
-                    .opacity(lupaScale)
+            if showsLupa {
+                Color.clear
+                    .frame(
+                        width: lupaHeight * lupaScale,
+                        height: lupaHeight * lupaScale
+                    )
+                    .overlay {
+                        projectsSearchToggleButton
+                            .frame(width: lupaHeight, height: lupaHeight)
+                            .scaleEffect(lupaScale, anchor: .center)
+                    }
                     .allowsHitTesting(lupaScale > 0.35)
                     .transition(.opacity)
             }
         }
         .animation(.smooth(duration: 0.34), value: selectedTab)
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
-        .animation(.spring(response: 0.46, dampingFraction: 0.58), value: smartChrome.menuPillCollapseProgress)
+        .animation(.spring(response: 0.92, dampingFraction: 0.58), value: smartChrome.menuPillCollapseProgress)
     }
 
     /// Tryb poziomy: pionowy dock zakładek projektu przy prawej krawędzi.
@@ -1861,7 +1866,7 @@ private struct LandscapeVerticalDock<Accessory: View>: View {
     private let dockWidth: CGFloat = 80
     private let horizontalPadding: CGFloat = 8
     private let verticalPadding: CGFloat = 6
-    private let slotHeight: CGFloat = 58
+    private let slotHeight: CGFloat = 62
     private let thumbExtra: CGFloat = 8
     private let scrubSliderOutset: CGFloat = 9
     private let scrubPillScale: CGFloat = 1.01
@@ -2000,7 +2005,7 @@ private struct LandscapeVerticalDock<Accessory: View>: View {
             y: appearance.isNeomorphic ? 1 : (appearance.isFlatDesign ? 0 : (isScrubbing ? 2 : 2))
         )
         .animation(thumbMorphAnimation, value: isScrubbing)
-        .animation(.spring(response: 0.46, dampingFraction: 0.58), value: collapse)
+        .animation(.spring(response: 0.92, dampingFraction: 0.58), value: collapse)
         .accessibilityElement(children: .contain)
         .onAppear {
             scrubProgress = CGFloat(selection)
