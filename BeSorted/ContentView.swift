@@ -314,6 +314,7 @@ struct ContentView: View {
                     }
                     .padding(.trailing, BeSortedContentInsets.landscapeDockTrailing)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .offset(y: BeSortedContentInsets.landscapeDockVerticalAdjustment)
                 } else {
                     VStack {
                         Spacer()

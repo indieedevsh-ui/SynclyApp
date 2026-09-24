@@ -1941,6 +1941,13 @@ enum BeSortedContentInsets {
         max(20, landscapeHorizontalSafeInset + 4)
     }
 
+    /// W pionie dock w poziomie byłby idealnie na środku ekranu — przez Dynamic Island /
+    /// wcięcie u góry wygląda na za wysoki. To delikatne przesunięcie w dół całej grupy
+    /// (pastylka zakładek + lupa), żeby wyrównać ją w osi Y w trybie poziomym.
+    static var landscapeDockVerticalAdjustment: CGFloat {
+        12
+    }
+
     /// Stała szerokość obszaru — window bounds (obraca się z interfejsem), nie `screen.bounds`
     /// (ten zawsze zwraca wymiary pionowe — kafelki w poziomie byłyby rozmiaru portretu).
     static var screenWidth: CGFloat {
