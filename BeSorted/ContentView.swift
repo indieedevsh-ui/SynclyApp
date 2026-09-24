@@ -281,6 +281,9 @@ struct ContentView: View {
                                 .accessibilityHidden(tab != selectedTab)
                         }
                     }
+                    // Płynne przejście pion ↔ poziom: szerokości kafelków/treści animują się
+                    // razem z obrotem zamiast skakać na statycznych wymiarach.
+                    .animation(.smooth(duration: 0.30), value: verticalSizeClass)
                     // Bez .clipped() — ucinało tło headera w status barze (musi sięgać do góry ekranu).
                     .animation(Self.mainTabSlideAnimation, value: selectedTab)
                 }
@@ -1258,6 +1261,14 @@ struct ContentView: View {
         // automatycznie wraca na idealny środek osi Y (jak przy dynamicznym X w poziomej pastylce).
         let lupaHeight = mainTabSearchButtonSize
         let lupaGap: CGFloat = 69
+        // Kurczenie lupy razem z pastylką (jak w pionie): skala = skala docku × wygaszenie
+        // przed pełnym kolapsem (bez zostawiania „mikro-kropki").
+        let collapse = appearance.collapsingMenuPill ? smartChrome.menuPillCollapseProgress : 0
+        let shrinkY = 1 - 0.18 * collapse
+        let endKill: CGFloat = collapse < 0.72
+            ? 1
+            : max(0, 1 - (collapse - 0.72) / 0.22)
+        let lupaScale = max(0, shrinkY * endKill)
 
         return VStack(spacing: 0) {
             LandscapeVerticalDock(
@@ -1284,11 +1295,15 @@ struct ContentView: View {
                 projectsSearchToggleButton
                     .padding(.top, lupaGap)
                     .frame(height: lupaHeight)
+                    .scaleEffect(lupaScale, anchor: .center)
+                    .opacity(lupaScale)
+                    .allowsHitTesting(lupaScale > 0.35)
                     .transition(.opacity)
             }
         }
         .animation(.smooth(duration: 0.34), value: selectedTab)
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
+        .animation(.spring(response: 0.46, dampingFraction: 0.58), value: smartChrome.menuPillCollapseProgress)
     }
 
     /// Tryb poziomy: pionowy dock zakładek projektu przy prawej krawędzi.

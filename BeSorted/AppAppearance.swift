@@ -1941,10 +1941,14 @@ enum BeSortedContentInsets {
         max(20, landscapeHorizontalSafeInset + 4)
     }
 
-    /// Stała szerokość ekranu — niezależna od soft edge / contentMargins przy scrollu.
+    /// Stała szerokość obszaru — window bounds (obraca się z interfejsem), nie `screen.bounds`
+    /// (ten zawsze zwraca wymiary pionowe — kafelki w poziomie byłyby rozmiaru portretu).
     static var screenWidth: CGFloat {
         let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
         if let active = scenes.first(where: { $0.activationState == .foregroundActive }) {
+            if let window = active.windows.first {
+                return window.bounds.width
+            }
             return active.screen.bounds.width
         }
         return scenes.first?.screen.bounds.width ?? 390
