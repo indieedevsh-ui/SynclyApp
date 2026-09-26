@@ -1806,6 +1806,10 @@ struct BesortedCollapsingTabTitle: View {
 enum MenuPillCollapse {
     /// Dystans scrolla do pełnego skurczenia (gdy bez Minimalistycznego Nagłówka).
     static let distance: CGFloat = 247
+    /// W poziomie ekran jest dużo niższy, więc ta sama liczba pt to relatywnie więcej
+    /// scrolla — przez to pastylka kurczyła się po „mini scrolu”. Dłuższy dystans
+    /// w poziomie opóźnia kurczenie do realnie dłuższego przewijania.
+    static let landscapeDistance: CGFloat = 400
 
     static func progress(
         contentOffsetY: CGFloat,
@@ -1817,7 +1821,8 @@ enum MenuPillCollapse {
             return TabHeaderScrollSolidify.titleTravelProgress(scrollY: contentOffsetY)
         }
         let y = max(0, contentOffsetY)
-        let p = min(1, y / distance)
+        let maxDistance = BeSortedContentInsets.isLandscape ? landscapeDistance : distance
+        let p = min(1, y / maxDistance)
         return p * p * (3 - 2 * p)
     }
 }
@@ -1967,7 +1972,7 @@ enum BeSortedContentInsets {
 }
 
 /// Blokuje UIScrollView: bez automatycznych insetów i z clipsToBounds — szerokość nie „pływa” przy scrollu.
-private struct BesortedScrollViewLock: UIViewRepresentable {
+struct BesortedScrollViewLock: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let probe = UIView(frame: .zero)
         probe.isUserInteractionEnabled = false

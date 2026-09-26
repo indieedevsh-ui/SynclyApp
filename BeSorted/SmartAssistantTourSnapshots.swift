@@ -463,7 +463,7 @@ private struct TourPlanTabSnapshot: View {
                             Text("Aktualny Plan".l10n)
                                 .font(.title.weight(.bold))
                                 .foregroundStyle(appearance.primaryText)
-                            Text("\(3)/\(CurrentPlanStore.maxActiveTasks) zadań")
+                            Text(L10n.format("%d/%d zadań", 3, CurrentPlanStore.maxActiveTasks))
                                 .font(.subheadline)
                                 .foregroundStyle(appearance.tertiaryText)
                         }

@@ -281,9 +281,6 @@ struct ContentView: View {
                                 .accessibilityHidden(tab != selectedTab)
                         }
                     }
-                    // Płynne przejście pion ↔ poziom: szerokości kafelków/treści animują się
-                    // razem z obrotem zamiast skakać na statycznych wymiarach.
-                    .animation(.smooth(duration: 0.30), value: verticalSizeClass)
                     // Bez .clipped() — ucinało tło headera w status barze (musi sięgać do góry ekranu).
                     .animation(Self.mainTabSlideAnimation, value: selectedTab)
                 }
@@ -1309,12 +1306,15 @@ struct ContentView: View {
         }
         .animation(.smooth(duration: 0.34), value: selectedTab)
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
-        .animation(.spring(response: 0.92, dampingFraction: 0.58), value: smartChrome.menuPillCollapseProgress)
+        .animation(.spring(response: 0.46, dampingFraction: 0.58), value: smartChrome.menuPillCollapseProgress)
     }
 
     /// Tryb poziomy: pionowy dock zakładek projektu przy prawej krawędzi.
     private var projectDetailVerticalDock: some View {
-        VStack(spacing: 12) {
+        // Dock projektu w trybie poziomym jest wyśrodkowany względem osi Y:
+        // anulujemy tylko grupowe przesunięcie HStacku (landscapeDockVerticalAdjustment),
+        // żeby pastylka była dokładnie na środku ekranu (netto Y = 0).
+        return VStack(spacing: 12) {
             LandscapeVerticalDock(
                 titles: ProjectDetailTab.allCases.map(\.title),
                 images: ProjectDetailTab.allCases.map(\.systemImage),
@@ -1329,6 +1329,7 @@ struct ContentView: View {
                 EmptyView()
             }
         }
+        .offset(y: -BeSortedContentInsets.landscapeDockVerticalAdjustment)
         .animation(.smooth(duration: 0.36), value: appearance.glassStyle)
     }
 
@@ -1417,6 +1418,7 @@ private struct ProjectDetailPill: View {
     let onSelect: (ProjectDetailTab) -> Void
 
     private let tabs = ProjectDetailTab.allCases
+    private let slotWidth: CGFloat = 96
     private let trackPadding: CGFloat = 4
     private let slotHeight: CGFloat = 50
     private let thumbExtra: CGFloat = 8
@@ -1560,7 +1562,10 @@ private struct ProjectDetailPill: View {
             .contentShape(shape)
             .highPriorityGesture(scrubGesture(slotWidth: slotWidth, slotCount: slotCount))
         }
-        .frame(height: slotHeight + trackPadding * 2)
+        .frame(
+            width: slotWidth * CGFloat(tabs.count) + trackPadding * 2,
+            height: slotHeight + trackPadding * 2
+        )
         .padding(.vertical, scrubSliderOutset)
         .scaleEffect(isScrubbing ? scrubPillScale : 1.0)
         .shadow(
@@ -1867,7 +1872,7 @@ private struct LandscapeVerticalDock<Accessory: View>: View {
     private let dockWidth: CGFloat = 80
     private let horizontalPadding: CGFloat = 8
     private let verticalPadding: CGFloat = 6
-    private let slotHeight: CGFloat = 62
+    private let slotHeight: CGFloat = 72
     private let thumbExtra: CGFloat = 8
     private let scrubSliderOutset: CGFloat = 9
     private let scrubPillScale: CGFloat = 1.01
@@ -1917,7 +1922,6 @@ private struct LandscapeVerticalDock<Accessory: View>: View {
             - thumbNudge
             - (3 * glassLift)
             + thumbLead
-        let shape = Capsule(style: .continuous)
 
         ZStack(alignment: .topLeading) {
             Color.clear
@@ -2006,7 +2010,7 @@ private struct LandscapeVerticalDock<Accessory: View>: View {
             y: appearance.isNeomorphic ? 1 : (appearance.isFlatDesign ? 0 : (isScrubbing ? 2 : 2))
         )
         .animation(thumbMorphAnimation, value: isScrubbing)
-        .animation(.spring(response: 0.92, dampingFraction: 0.58), value: collapse)
+        .animation(.spring(response: 0.46, dampingFraction: 0.58), value: collapse)
         .accessibilityElement(children: .contain)
         .onAppear {
             scrubProgress = CGFloat(selection)
@@ -2656,8 +2660,8 @@ struct SettingsTabView: View {
                         glowColor: glowColor
                     )
                 }
-                .padding(.leading, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListHorizontal : 16)
-                    .padding(.trailing, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListTrailing : 16)
+                .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+                    .padding(.trailing, BeSortedContentInsets.tileListTrailing)
                 .padding(.top, 64)
                 .padding(.bottom, 72)
             }
@@ -3023,8 +3027,8 @@ private struct SettingsAppearanceView: View {
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                 }
-                .padding(.leading, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListHorizontal : 16)
-                    .padding(.trailing, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListTrailing : 16)
+                .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+                    .padding(.trailing, BeSortedContentInsets.tileListTrailing)
                 .padding(.top, 64)
                 .padding(.bottom, 72)
             }
@@ -3050,7 +3054,7 @@ private struct SettingsAppearanceView: View {
 
                 Spacer(minLength: 0)
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, BeSortedContentInsets.headerHorizontal)
             .padding(.top, 12)
             .padding(.bottom, 12)
             .tabHeaderRegularLiquidGlass(appearance, scrollY: headerSolidProgress)
@@ -3261,8 +3265,8 @@ private struct SettingsExtraSettingsView: View {
                             )
                     }
                 }
-                .padding(.leading, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListHorizontal : 16)
-                    .padding(.trailing, BeSortedContentInsets.isLandscape ? BeSortedContentInsets.tileListTrailing : 16)
+                .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+                    .padding(.trailing, BeSortedContentInsets.tileListTrailing)
                 .padding(.top, 64)
                 .padding(.bottom, 72)
             }
@@ -3288,7 +3292,7 @@ private struct SettingsExtraSettingsView: View {
 
                 Spacer(minLength: 0)
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, BeSortedContentInsets.headerHorizontal)
             .padding(.top, 12)
             .padding(.bottom, 12)
             .tabHeaderRegularLiquidGlass(appearance, scrollY: headerSolidProgress)
@@ -3476,7 +3480,7 @@ struct ProjectsTabView: View {
         .onChange(of: forgottenProposal?.project.persistentModelID) { _, _ in
             updateProjectsChromeBlocking()
         }
-        .onChange(of: isFindingForgottenProject) { _, _ in
+.onChange(of: isFindingForgottenProject) { _, _ in
             updateProjectsChromeBlocking()
         }
         .onDisappear {
@@ -3561,6 +3565,19 @@ struct ProjectsTabView: View {
                 )
                 .frame(width: 1, height: 1)
                 .accessibilityHidden(true)
+
+                if filteredProjects.isEmpty && !projects.isEmpty {
+                    VStack(alignment: .center, spacing: 12) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 36, weight: .medium))
+                            .foregroundStyle(appearance.quaternaryText)
+                        Text("Brak wyników".l10n)
+                            .font(.headline)
+                            .foregroundStyle(appearance.secondaryText)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 40)
+                }
 
                 ForEach(filteredProjects) { project in
                     projectRow(project)
@@ -4097,7 +4114,7 @@ struct ProjectsTabView: View {
             title: "Moje projekty".l10n,
             scrollY: scrollY,
             leadingPadding: gutter,
-            trailingPadding: gutter
+            trailingPadding: BeSortedContentInsets.tileListTrailing
         ) {
             if !appearance.smartMode {
                 HStack(alignment: .center, spacing: 8) {
@@ -4637,10 +4654,6 @@ struct ProjectDetailView: View {
                     if appearance.smartMode {
                         if aiExportForceExpanded || aiExportFocus != .none {
                             projectExportControl
-                        } else if isTaskDeleteMode {
-                            EmptyView()
-                        } else {
-                            EmptyView()
                         }
                     } else {
                         HStack(spacing: 10) {
@@ -4700,10 +4713,11 @@ struct ProjectDetailView: View {
                         }
                     }
             }
-            .padding(.horizontal, 16)
+            .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+            .padding(.trailing, BeSortedContentInsets.tileListTrailing)
             .padding(.top, 8)
             .padding(.bottom, 12)
-            .frame(maxWidth: .infinity)
+            .frame(width: BeSortedContentInsets.screenWidth)
             .tabHeaderRegularLiquidGlass(appearance, scrollY: headerSolidProgress)
             .onChange(of: isTaskDeleteMode) { _, enabled in
                 if !enabled {
@@ -4788,9 +4802,10 @@ struct ProjectDetailView: View {
                         .padding(.bottom, 110)
                         .padding(.leading, BeSortedContentInsets.tileListHorizontal)
                         .padding(.trailing, BeSortedContentInsets.tileListTrailing)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(width: BeSortedContentInsets.screenWidth, alignment: .leading)
                     }
                     .besortedListScrollChrome()
+                    .background { BesortedScrollViewLock() }
                     .trackTabHeaderSolidProgress($headerSolidProgress)
                     .simultaneousGesture(
                         TapGesture().onEnded {
@@ -6291,19 +6306,36 @@ struct ProjectDetailView: View {
     }
 
     private var tasksSection: some View {
-        VStack(spacing: 16) {
-            Button("Dodaj zadanie".l10n) {
-                showAddTask = true
-            }
-            .font(.title3.weight(.semibold))
-            .controlSize(.large)
-            .besortedAdaptiveGlassButton(appearance)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top, 16)
+        Group {
+            if sortedTasks.isEmpty {
+                VStack(spacing: 16) {
+                    placeholderSection(
+                        title: "Brak otwartych zadań.".l10n,
+                        systemImage: "checklist"
+                    )
+                    Button("Dodaj zadanie".l10n) {
+                        showAddTask = true
+                    }
+                    .font(.title3.weight(.semibold))
+                    .controlSize(.large)
+                    .besortedAdaptiveGlassButton(appearance)
+                }
+            } else {
+                VStack(spacing: 16) {
+                    Button("Dodaj zadanie".l10n) {
+                        showAddTask = true
+                    }
+                    .font(.title3.weight(.semibold))
+                    .controlSize(.large)
+                    .besortedAdaptiveGlassButton(appearance)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 16)
 
-            LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
-                ForEach(sortedTasks) { task in
-                    taskRow(task)
+                    LazyVStack(spacing: appearance.isNeomorphic ? 18 : 12) {
+                        ForEach(sortedTasks) { task in
+                            taskRow(task)
+                        }
+                    }
                 }
             }
         }
@@ -6989,7 +7021,8 @@ struct CurrentPlanTabView: View {
                 ZStack(alignment: .topLeading) {
                     BesortedCollapsingTabHeader(
                         title: "Aktualny Plan".l10n,
-                        scrollY: headerSolidProgress
+                        scrollY: headerSolidProgress,
+                        trailingPadding: BeSortedContentInsets.tileListTrailing
                     ) {
                         if !appearance.smartMode {
                             HStack(alignment: .center, spacing: 8) {
@@ -7041,7 +7074,7 @@ struct CurrentPlanTabView: View {
                         }
                     }
 
-                    Text("\(planTasks.count)/\(appearance.planMaxTasks) zadań")
+                    Text(L10n.format("%d/%d zadań", planTasks.count, appearance.planMaxTasks))
                         .font(.subheadline)
                         .foregroundStyle(appearance.tertiaryText)
                         .padding(.leading, BeSortedContentInsets.headerHorizontal)
@@ -7333,7 +7366,8 @@ struct CurrentPlanTabView: View {
                                 Text(group.project.name)
                                     .font(.title2.weight(.bold))
                                     .foregroundStyle(appearance.primaryText)
-                                    .padding(.horizontal, 16)
+                                    .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+                                    .padding(.trailing, BeSortedContentInsets.tileListTrailing)
 
                                 ForEach(group.tasks) { task in
                                     Button {
@@ -7346,7 +7380,8 @@ struct CurrentPlanTabView: View {
                                         TaskTileView(task: task)
                                     }
                                     .buttonStyle(BeSortedPlainButtonStyle(sound: .tile))
-                                    .padding(.horizontal, 16)
+                                    .padding(.leading, BeSortedContentInsets.tileListHorizontal)
+                                    .padding(.trailing, BeSortedContentInsets.tileListTrailing)
                                 }
                             }
                         }
@@ -7399,7 +7434,7 @@ struct PlanTaskDetailView: View {
 
                     Spacer()
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, BeSortedContentInsets.headerHorizontal)
                 .padding(.top, 8)
                 .padding(.bottom, 12)
 
@@ -7597,7 +7632,7 @@ struct BugTileView: View {
 
                 Spacer(minLength: 0)
 
-                Text("Waga \(bug.severity)/5")
+                Text(L10n.format("Waga %d/5", bug.severity))
                     .font(.footnote.weight(.bold))
                     .foregroundStyle(appearance.secondaryText)
             }
@@ -7931,7 +7966,7 @@ struct FutureNoteTileView: View {
             }
 
             Text(note.text)
-                .font(.body)
+                .font(.title3.weight(.semibold))
                 .foregroundStyle(appearance.primaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -8690,9 +8725,9 @@ struct ProjectCoreOverlay: View {
         case schoolSubject, schoolGoal, schoolContent, schoolCompletion
     }
 
-    var body: some View {
+var body: some View {
         ZStack {
-            appearance.overlayScrim
+            appearance.screenBackgroundGradient
                 .ignoresSafeArea()
                 .onTapGesture {
                     saveAndClose()
@@ -9591,6 +9626,22 @@ private struct TaskFocusTileHeightKey: PreferenceKey {
     }
 }
 
+private struct TaskFocusHeaderHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 44
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+private struct TaskFocusActionsHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 42
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
 struct TaskFocusOverlay: View {
     enum Mode {
         /// Sekcja Zadania: Usuń · Priorytet · Edytuj
@@ -9610,24 +9661,62 @@ struct TaskFocusOverlay: View {
     @State private var tileOffsetY: CGFloat = 80
     @State private var contentOpacity: Double = 0
     @State private var measuredTileHeight: CGFloat = 0
+    @State private var measuredHeaderHeight: CGFloat = 44
+    @State private var measuredActionsHeight: CGFloat = 42
+    @State private var windowH: CGFloat = 874
     @State private var showEditSheet = false
     @State private var showBugChoice = false
     @State private var showAddBug = false
+
+    private var debugLabelText: String {
+        let H = windowH
+        let tileH = min(max(measuredTileHeight, 110), H * 0.5)
+        let above = measuredHeaderHeight + 34
+        let maxGap = (H - 8 - 16 - tileH - measuredActionsHeight - (measuredActionsHeight - above) / 2 - above) / 1.5
+        let gap = min(195, max(0, maxGap))
+        let cs = max(0, (gap + measuredActionsHeight - above) / 2)
+        return "H=\(Int(H)) tile=\(Int(tileH)) gap=\(Int(gap)) cs=\(Int(cs)) hdr=\(Int(measuredHeaderHeight)) act=\(Int(measuredActionsHeight))"
+    }
 
     var body: some View {
         ZStack {
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
+                .background {
+                    GeometryReader { wgeo in
+                        Color.clear.onAppear { windowH = wgeo.size.height }
+                    }
+                }
                 .onTapGesture {
                     guard !showBugChoice else { return }
                     dismiss()
                 }
 
-            // Anuluj + kafelek + akcje w jednym bloku.
-            // Nad kafelkiem: Anuluj (~46) + odstęp (34). Pod kafelkiem: akcje (~46) + balans (34).
-            // Blok wyśrodkowany symetrycznie → sam kafelek ląduje dokładnie na środku osi X i Y.
+            Text(debugLabelText)
+                .font(.caption2)
+                .foregroundColor(.red)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .padding(6)
+
+            // Anuluj + kafelek + akcje w jednym bloku, centreowany przez Spacery.
+            // Kafelek jest przesuwany o (below – above)/2, więc jego środek ląduje
+            // dokładnie na osi Y; przyciski trzymają ~195 pt poniżej kafelka.
+            // Na niskim ekranie (poziom) odstęp kurczy się, by blok się zmieścił.
+            let H = windowH
+            let tileH = min(max(measuredTileHeight, 110), H * 0.5)
+            let gapAbove: CGFloat = 34
+            let targetGap: CGFloat = 195
+            let topPad: CGFloat = 8
+            let bottomPad: CGFloat = 16
+            let headerH = measuredHeaderHeight
+            let actionsH = measuredActionsHeight
+            let above = headerH + gapAbove
+            let maxGap = (H - topPad - bottomPad - tileH - actionsH - (actionsH - above) / 2 - above) / 1.5
+            let gap = min(targetGap, max(0, maxGap))
+            let centerShift = max(0, (gap + actionsH - above) / 2)
+
             VStack(spacing: 0) {
-                Spacer(minLength: 8)
+                Spacer(minLength: 0)
 
                 HStack {
                     Button(action: dismiss) {
@@ -9660,10 +9749,18 @@ struct TaskFocusOverlay: View {
                     Spacer(minLength: 0)
                 }
                 .padding(.horizontal, 16)
+                .background {
+                    GeometryReader { hgeo in
+                        Color.clear.preference(
+                            key: TaskFocusHeaderHeightKey.self,
+                            value: hgeo.size.height
+                        )
+                    }
+                }
 
                 // Wyraźny odstęp Anuluj ↔ kafelek.
                 Spacer()
-                    .frame(height: 34)
+                    .frame(height: gapAbove)
 
                 ScrollView {
                     TaskTileView(
@@ -9674,43 +9771,52 @@ struct TaskFocusOverlay: View {
                     )
                     .contentShape(Rectangle())
                     .onTapGesture(perform: dismiss)
+                    .fixedSize(horizontal: false, vertical: true)
                     .background {
-                        GeometryReader { geo in
+                        GeometryReader { tgeo in
                             Color.clear.preference(
                                 key: TaskFocusTileHeightKey.self,
-                                value: geo.size.height
+                                value: tgeo.size.height
                             )
                         }
                     }
                 }
                 .scrollBounceBehavior(.basedOnSize)
-                .fixedSize(horizontal: false, vertical: true)
                 .frame(
                     minHeight: max(110, measuredTileHeight),
-                    maxHeight: BeSortedScreen.height * 0.5,
+                    maxHeight: H * 0.5,
                     alignment: .top
                 )
                 .onPreferenceChange(TaskFocusTileHeightKey.self) { height in
                     measuredTileHeight = height
                 }
 
-                // Przyklejone do kafelka.
                 Spacer()
-                    .frame(height: 1)
+                    .frame(height: gap)
 
                 actionsRow
                     .frame(maxWidth: 420)
+                    .background {
+                        GeometryReader { ageo in
+                            Color.clear.preference(
+                                key: TaskFocusActionsHeightKey.self,
+                                value: ageo.size.height
+                            )
+                        }
+                    }
+                    .onPreferenceChange(TaskFocusActionsHeightKey.self) { height in
+                        measuredActionsHeight = height
+                    }
+                    .onPreferenceChange(TaskFocusHeaderHeightKey.self) { height in
+                        measuredHeaderHeight = height
+                    }
 
-                // Balans symetrii — tyle samo powietrza pod kafelkiem, co nad nim.
-                Color.clear
-                    .frame(height: 46)
-                    .frame(maxWidth: .infinity)
-
-                Spacer(minLength: 8)
+                Spacer(minLength: 0)
             }
             .frame(maxWidth: 460)
             .padding(.horizontal, 20)
-            .offset(y: tileOffsetY)
+            .offset(y: tileOffsetY + centerShift)
+            .frame(maxWidth: .infinity, minHeight: H)
             .opacity(contentOpacity)
 
             if showBugChoice {

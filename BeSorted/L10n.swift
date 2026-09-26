@@ -33,6 +33,7 @@ enum L10n {
         "Notatka przyszłości": "Future Note",
         "Szukaj": "Search",
         "Szukaj projektu": "Search project",
+        "Brak wyników": "No results",
         "Usuń": "Delete",
         "Edytuj": "Edit",
         "Anuluj": "Cancel",
