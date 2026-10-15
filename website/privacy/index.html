@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Syncly — Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for the Syncly iOS app. How we handle your projects, Sign in with Apple, iCloud, purchases, and on-device AI." />
+  <style>
+    :root {
+      --ink: #0e1218;
+      --mist-strong: rgba(242, 245, 250, 0.94);
+      --glass-edge: rgba(255, 255, 255, 0.14);
+      --glass-fill: rgba(22, 28, 38, 0.52);
+      --text: rgba(236, 240, 246, 0.94);
+      --muted: rgba(188, 198, 214, 0.74);
+      --faint: rgba(168, 180, 198, 0.55);
+      --accent: #7eb8c9;
+      --accent-soft: rgba(126, 184, 201, 0.18);
+      --radius: 22px;
+      --max: 760px;
+      --font: Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* —— Very slow animated atmosphere —— */
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: linear-gradient(165deg, #0c1016 0%, #121820 50%, #0e131b 100%);
+    }
+
+    .atmosphere .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      will-change: transform;
+      opacity: 0.55;
+    }
+
+    .atmosphere .orb-a {
+      width: 58vmax;
+      height: 58vmax;
+      top: -22%;
+      left: -18%;
+      background: radial-gradient(circle, rgba(126, 184, 201, 0.34), transparent 68%);
+      animation: driftA 72s ease-in-out infinite alternate;
+    }
+
+    .atmosphere .orb-b {
+      width: 48vmax;
+      height: 48vmax;
+      top: 8%;
+      right: -20%;
+      background: radial-gradient(circle, rgba(90, 118, 160, 0.28), transparent 70%);
+      animation: driftB 88s ease-in-out infinite alternate;
+    }
+
+    .atmosphere .orb-c {
+      width: 62vmax;
+      height: 62vmax;
+      bottom: -30%;
+      left: 18%;
+      background: radial-gradient(circle, rgba(48, 64, 96, 0.42), transparent 72%);
+      animation: driftC 96s ease-in-out infinite alternate;
+    }
+
+    .atmosphere .veil {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.45;
+      mix-blend-mode: overlay;
+      animation: veilPulse 54s ease-in-out infinite alternate;
+    }
+
+    @keyframes driftA {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to   { transform: translate3d(12%, 18%, 0) scale(1.08); }
+    }
+
+    @keyframes driftB {
+      from { transform: translate3d(0, 0, 0) scale(1.05); }
+      to   { transform: translate3d(-14%, 22%, 0) scale(0.94); }
+    }
+
+    @keyframes driftC {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to   { transform: translate3d(10%, -16%, 0) scale(1.1); }
+    }
+
+    @keyframes veilPulse {
+      from { opacity: 0.32; }
+      to   { opacity: 0.52; }
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px 20px 96px;
+    }
+
+    header.hero {
+      margin-bottom: 28px;
+      animation: rise 0.7s ease-out both;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-family: var(--font);
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: linear-gradient(145deg, #3a4658, #2e3848 45%, #1e2734);
+      border: 1px solid var(--glass-edge);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      color: var(--mist-strong);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+      font-family: var(--font);
+    }
+
+    .brand-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-family: var(--font);
+    }
+
+    .lang {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-edge);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .lang button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: 600 0.78rem/1 var(--font);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .lang button[aria-pressed="true"] {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--mist-strong);
+    }
+
+    .eyebrow {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-family: var(--font);
+    }
+
+    h1 {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 2.85rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--mist-strong);
+      max-width: 16ch;
+      margin-bottom: 14px;
+    }
+
+    .lede {
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 40ch;
+      margin-bottom: 18px;
+      font-family: var(--font);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      font-size: 0.8rem;
+      color: var(--faint);
+      font-family: var(--font);
+    }
+
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta span::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+
+    /* —— Tile grid —— */
+    .tiles {
+      display: grid;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .tile {
+      position: relative;
+      isolation: isolate;
+      padding: 26px 24px;
+      border-radius: var(--radius);
+      background: var(--glass-fill);
+      backdrop-filter: blur(26px) saturate(1.2);
+      -webkit-backdrop-filter: blur(26px) saturate(1.2);
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.05) inset,
+        0 18px 48px rgba(0, 0, 0, 0.22);
+      cursor: pointer;
+      overflow: hidden;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      animation: rise 0.75s ease-out both;
+      --mx: 50%;
+      --my: 50%;
+      --flash: 0;
+    }
+
+    .tile:nth-child(1) { animation-delay: 0.02s; }
+    .tile:nth-child(2) { animation-delay: 0.05s; }
+    .tile:nth-child(3) { animation-delay: 0.08s; }
+    .tile:nth-child(4) { animation-delay: 0.11s; }
+    .tile:nth-child(5) { animation-delay: 0.14s; }
+    .tile:nth-child(6) { animation-delay: 0.17s; }
+    .tile:nth-child(7) { animation-delay: 0.20s; }
+    .tile:nth-child(8) { animation-delay: 0.23s; }
+    .tile:nth-child(9) { animation-delay: 0.26s; }
+    .tile:nth-child(10) { animation-delay: 0.29s; }
+    .tile:nth-child(11) { animation-delay: 0.32s; }
+    .tile:nth-child(12) { animation-delay: 0.35s; }
+    .tile:nth-child(13) { animation-delay: 0.38s; }
+    .tile:nth-child(14) { animation-delay: 0.41s; }
+
+    /* Border glow that follows the cursor */
+    .tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: radial-gradient(
+        220px circle at var(--mx) var(--my),
+        rgba(190, 230, 245, 0.95) 0%,
+        rgba(126, 184, 201, 0.55) 22%,
+        rgba(255, 255, 255, 0.12) 42%,
+        transparent 68%
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.55;
+      transition: opacity 0.35s ease;
+      z-index: 2;
+    }
+
+    .tile:hover::before,
+    .tile:focus-visible::before {
+      opacity: 1;
+    }
+
+    /* Soft aura behind cursor on the surface */
+    .tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        280px circle at var(--mx) var(--my),
+        rgba(126, 184, 201, 0.14),
+        transparent 55%
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 0;
+    }
+
+    .tile:hover::after,
+    .tile:focus-visible::after {
+      opacity: 1;
+    }
+
+    .tile-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Click flash burst */
+    .tile-flash {
+      position: absolute;
+      left: var(--flash-x, 50%);
+      top: var(--flash-y, 50%);
+      width: 12px;
+      height: 12px;
+      margin: -6px 0 0 -6px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(190, 230, 245, 0.65) 28%,
+        rgba(126, 184, 201, 0.2) 55%,
+        transparent 72%
+      );
+      opacity: 0;
+      transform: scale(0.2);
+    }
+
+    .tile.is-flashing .tile-flash {
+      animation: tileBurst 0.72s cubic-bezier(0.16, 0.84, 0.28, 1) forwards;
+    }
+
+    @keyframes tileBurst {
+      0% {
+        opacity: 0.95;
+        transform: scale(0.15);
+        filter: blur(0);
+      }
+      35% {
+        opacity: 0.75;
+        transform: scale(18);
+        filter: blur(1px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(32);
+        filter: blur(6px);
+      }
+    }
+
+    .tile-num {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-family: var(--font);
+    }
+
+    .tile h2 {
+      font-family: var(--font);
+      font-size: 1.22rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--mist-strong);
+      margin-bottom: 12px;
+    }
+
+    .tile h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 16px 0 8px;
+      font-family: var(--font);
+    }
+
+    .tile p,
+    .tile li {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-family: var(--font);
+    }
+
+    .tile p + p { margin-top: 10px; }
+
+    .tile ul {
+      margin: 10px 0 0;
+      padding-left: 1.15rem;
+      display: grid;
+      gap: 7px;
+    }
+
+    .tile li::marker { color: var(--accent); }
+
+    .tile strong { color: var(--text); font-weight: 700; }
+
+    .tile code {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 0.84em;
+      color: rgba(210, 228, 238, 0.92);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 6px;
+      border-radius: 6px;
+    }
+
+    .callout {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(126, 184, 201, 0.28);
+      color: rgba(236, 240, 246, 0.9);
+      font-size: 0.9rem;
+      font-family: var(--font);
+    }
+
+    a.inline {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding: 0 8px;
+      font-size: 0.8rem;
+      color: var(--faint);
+      text-align: center;
+      font-family: var(--font);
+      animation: rise 0.9s ease-out 0.12s both;
+    }
+
+    [data-lang] { display: none; }
+    html[lang="en"] [data-lang="en"],
+    html[lang="pl"] [data-lang="pl"] { display: contents; }
+
+    html[lang="en"] [data-lang="en"].block,
+    html[lang="pl"] [data-lang="pl"].block { display: block; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .atmosphere .orb,
+      .atmosphere .veil {
+        animation: none !important;
+      }
+      .tile { animation: none !important; }
+      .tile.is-flashing .tile-flash { animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="veil"></div>
+  </div>
+
+  <div class="shell">
+    <header class="hero">
+      <div class="topbar">
+        <a class="brand" href="#top" id="top">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span class="brand-name">Syncly</span>
+        </a>
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" id="lang-en" aria-pressed="true">EN</button>
+          <button type="button" id="lang-pl" aria-pressed="false">PL</button>
+        </div>
+      </div>
+
+      <p class="eyebrow">
+        <span data-lang="en">Legal</span>
+        <span data-lang="pl">Dokumenty</span>
+      </p>
+      <h1>
+        <span data-lang="en">Privacy Policy</span>
+        <span data-lang="pl">Polityka prywatności</span>
+      </h1>
+      <p class="lede">
+        <span data-lang="en">How Syncly handles your data — written to match what the app actually does, for you and for App Review.</span>
+        <span data-lang="pl">Jak Syncly przetwarza Twoje dane — opis zgodny z działaniem aplikacji, jasny dla Ciebie i dla App Review.</span>
+      </p>
+      <div class="meta">
+        <span>
+          <span data-lang="en">Effective: 15 October 2026</span>
+          <span data-lang="pl">Obowiązuje od: 15 października 2026</span>
+        </span>
+        <span>Syncly · iOS / iPadOS · watchOS</span>
+        <span>com.michaelproduct.syncly</span>
+      </div>
+    </header>
+
+    <div class="tiles">
+
+      <section class="tile" id="overview" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">01</span>
+          <h2><span data-lang="en">Overview</span><span data-lang="pl">Przegląd</span></h2>
+          <p data-lang="en" class="block">
+            Syncly is a personal project organizer for iPhone, iPad, and Apple Watch. You create projects, tasks, bugs, future notes, and a daily “Current Plan.” Optional Smart Assistant features use <strong>Apple Intelligence / Foundation Models on the device</strong>. Syncly does <strong>not</strong> operate its own cloud backend for your project content.
+          </p>
+          <p data-lang="pl" class="block">
+            Syncly to osobisty organizer projektów na iPhone’a, iPada i Apple Watch. Tworzysz projekty, zadania, błędy, notatki przyszłości oraz dzienny „Aktualny Plan”. Opcjonalne funkcje Smart Assistant korzystają z <strong>Apple Intelligence / Foundation Models na urządzeniu</strong>. Syncly <strong>nie</strong> prowadzi własnego serwera chmurowego dla treści Twoich projektów.
+          </p>
+          <div class="callout">
+            <span data-lang="en"><strong>In short:</strong> your project content stays on your Apple devices (and, if you choose, in your private iCloud via CloudKit). We do not sell data, run ads, or use third-party analytics SDKs in the app.</span>
+            <span data-lang="pl"><strong>W skrócie:</strong> treść projektów zostaje na Twoich urządzeniach Apple (a jeśli wybierzesz — w prywatnym iCloud przez CloudKit). Nie sprzedajemy danych, nie wyświetlamy reklam i nie używamy w aplikacji SDK analityki firm trzecich.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="tile" id="controller" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">02</span>
+          <h2><span data-lang="en">Who is responsible</span><span data-lang="pl">Administrator</span></h2>
+          <p data-lang="en" class="block">
+            The Syncly app (bundle ID <strong>com.michaelproduct.syncly</strong>) is published by the independent developer behind this product. For privacy questions, use the contact in <a class="inline" href="#contact">section 13</a>.
+          </p>
+          <p data-lang="pl" class="block">
+            Aplikację Syncly (bundle ID <strong>com.michaelproduct.syncly</strong>) publikuje niezależny deweloper tego produktu. W sprawach prywatności użyj kontaktu z <a class="inline" href="#contact">sekcji 13</a>.
+          </p>
+          <p data-lang="en" class="block">
+            Apple Inc. may process certain data under Apple’s own terms when you use Sign in with Apple, iCloud/CloudKit, App Store purchases, Apple Intelligence, or WatchConnectivity. That processing is controlled by Apple, not by Syncly’s developer servers.
+          </p>
+          <p data-lang="pl" class="block">
+            Apple Inc. może przetwarzać niektóre dane na podstawie własnych warunków, gdy korzystasz z Sign in with Apple, iCloud/CloudKit, zakupów App Store, Apple Intelligence lub WatchConnectivity. To przetwarzanie leży po stronie Apple, a nie na serwerach dewelopera Syncly.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="data" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">03</span>
+          <h2><span data-lang="en">Data Syncly processes</span><span data-lang="pl">Dane przetwarzane przez Syncly</span></h2>
+
+          <h3><span data-lang="en">Content you create</span><span data-lang="pl">Treści, które tworzysz</span></h3>
+          <ul>
+            <li><span data-lang="en">Projects (name, details, kind, importance, priority flags)</span><span data-lang="pl">Projekty (nazwa, opis, rodzaj, ważność, wyróżnienie)</span></li>
+            <li><span data-lang="en">Tasks, bugs, and future notes</span><span data-lang="pl">Zadania, błędy i notatki przyszłości</span></li>
+            <li><span data-lang="en">Current Plan membership and queue state</span><span data-lang="pl">Przynależność do Aktualnego Planu i kolejka</span></li>
+            <li><span data-lang="en">Optional project “core” fields (e.g. game / story / school / app metadata you fill in)</span><span data-lang="pl">Opcjonalne pola „rdzenia” projektu (np. gra / opowiadanie / szkoła / aplikacja)</span></li>
+            <li><span data-lang="en">Optional context files you import (text, Markdown, source code, RTF, PDF text extraction, and similar) — stored as project context on device</span><span data-lang="pl">Opcjonalne pliki kontekstu, które importujesz (tekst, Markdown, kod, RTF, ekstrakcja tekstu z PDF itd.) — zapisywane jako kontekst projektu na urządzeniu</span></li>
+          </ul>
+
+          <h3><span data-lang="en">Account &amp; preferences</span><span data-lang="pl">Konto i ustawienia</span></h3>
+          <ul>
+            <li><span data-lang="en">If you use Sign in with Apple: Apple user identifier and, if Apple provides it on first sign-in, your name for display</span><span data-lang="pl">Przy Sign in with Apple: identyfikator użytkownika Apple oraz — jeśli Apple przekaże przy pierwszym logowaniu — imię/nazwisko do wyświetlenia</span></li>
+            <li><span data-lang="en">Your choice to skip sign-in and use local-only storage</span><span data-lang="pl">Wybór pominięcia logowania i zapisu wyłącznie lokalnego</span></li>
+            <li><span data-lang="en">Appearance and app settings (theme, glass style, language-related preferences, Smart Mode, plan limits, etc.) stored in on-device preferences</span><span data-lang="pl">Ustawienia wyglądu i aplikacji (motyw, styl glass, preferencje językowe, Smart Mode, limity planu itd.) w preferencjach na urządzeniu</span></li>
+          </ul>
+
+          <h3><span data-lang="en">Purchases</span><span data-lang="pl">Zakupy</span></h3>
+          <ul>
+            <li><span data-lang="en">Smart Assistant entitlement state (which plan you own/activate), reconciled from App Store transactions</span><span data-lang="pl">Stan uprawnień Smart Assistant (który plan posiadasz/aktywujesz), uzgadniany z transakcjami App Store</span></li>
+            <li><span data-lang="en">A local Keychain cache of entitlement product IDs on this device only (does not sync via iCloud Keychain)</span><span data-lang="pl">Lokalna pamięć podręczna ID produktów w Keychain tylko na tym urządzeniu (bez synchronizacji iCloud Keychain)</span></li>
+          </ul>
+
+          <h3><span data-lang="en">Diagnostics we do not collect</span><span data-lang="pl">Diagnostyka, której nie zbieramy</span></h3>
+          <p data-lang="en" class="block">
+            Syncly does not integrate third-party crash, analytics, advertising, or tracking SDKs. We do not use App Tracking Transparency to track you across apps or websites.
+          </p>
+          <p data-lang="pl" class="block">
+            Syncly nie integruje SDK firm trzecich do crashy, analityki, reklam ani śledzenia. Nie korzystamy z App Tracking Transparency do śledzenia Cię między aplikacjami lub stronami.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="storage" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">04</span>
+          <h2><span data-lang="en">Where data is stored</span><span data-lang="pl">Gdzie są przechowywane dane</span></h2>
+          <ul>
+            <li>
+              <strong><span data-lang="en">On device (default / local-only).</span><span data-lang="pl">Na urządzeniu (domyślnie / tryb lokalny).</span></strong>
+              <span data-lang="en"> Project data is stored with SwiftData in the app’s sandbox. If you skip Sign in with Apple, Syncly stays in local-only mode.</span>
+              <span data-lang="pl"> Dane projektów są w SwiftData w piaskownicy aplikacji. Po pominięciu Sign in with Apple Syncly działa w trybie wyłącznie lokalnym.</span>
+            </li>
+            <li>
+              <strong><span data-lang="en">Private iCloud (CloudKit) — optional.</span><span data-lang="pl">Prywatny iCloud (CloudKit) — opcjonalnie.</span></strong>
+              <span data-lang="en"> After Sign in with Apple, if iCloud is available on the device, Syncly may sync project data through the private CloudKit container <code>iCloud.jujug.Syncly</code> so your projects can appear on your other Apple devices signed into the same Apple Account. This is your private database; Syncly’s developer cannot browse other users’ CloudKit contents as a public product backend.</span>
+              <span data-lang="pl"> Po Sign in with Apple, gdy iCloud jest dostępny, Syncly może synchronizować projekty przez prywatny kontener CloudKit <code>iCloud.jujug.Syncly</code>, aby pojawiły się na Twoich innych urządzeniach Apple z tym samym kontem. To prywatna baza; deweloper Syncly nie przegląda treści CloudKit użytkowników jak publicznego backendu produktu.</span>
+            </li>
+            <li>
+              <strong><span data-lang="en">Keychain (this device).</span><span data-lang="pl">Keychain (to urządzenie).</span></strong>
+              <span data-lang="en"> Purchase entitlement mirror for Smart Assistant, scoped to this device.</span>
+              <span data-lang="pl"> Lustro uprawnień zakupowych Smart Assistant, ograniczone do tego urządzenia.</span>
+            </li>
+            <li>
+              <strong><span data-lang="en">Widgets.</span><span data-lang="pl">Widżety.</span></strong>
+              <span data-lang="en"> If you add a Syncly widget, iOS may display information derived from app data on the Home Screen / Lock Screen according to system widget rules.</span>
+              <span data-lang="pl"> Po dodaniu widżetu Syncly system iOS może pokazywać informacje wynikające z danych aplikacji zgodnie z zasadami widżetów.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="tile" id="apple-id" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">05</span>
+          <h2><span data-lang="en">Sign in with Apple &amp; iCloud</span><span data-lang="pl">Sign in with Apple i iCloud</span></h2>
+          <p data-lang="en" class="block">
+            Sign in with Apple is optional. You can skip it and use Syncly with local storage only. Signing in enables iCloud project sync when your device has an available iCloud account, and is required in-app to purchase Smart Assistant.
+          </p>
+          <p data-lang="pl" class="block">
+            Sign in with Apple jest opcjonalne. Możesz je pominąć i korzystać z lokalnego zapisu. Logowanie włącza synchronizację projektów przez iCloud, gdy konto iCloud jest dostępne, oraz jest wymagane w aplikacji do zakupu Smart Assistant.
+          </p>
+          <p data-lang="en" class="block">
+            Syncly stores the Apple user ID (and optional display name) in on-device preferences to keep your session. You can sign out in Settings; the app continues in local-only mode and the first-run sign-in gate does not return.
+          </p>
+          <p data-lang="pl" class="block">
+            Syncly zapisuje identyfikator użytkownika Apple (oraz opcjonalną nazwę) w preferencjach na urządzeniu. Możesz się wylogować w Ustawieniach; aplikacja działa dalej lokalnie, a bramka pierwszego uruchomienia nie wraca.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="purchases" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">06</span>
+          <h2><span data-lang="en">Purchases (Smart Assistant)</span><span data-lang="pl">Zakupy (Smart Assistant)</span></h2>
+          <p data-lang="en" class="block">
+            In-app purchases (StoreKit 2) unlock Smart Assistant tiers (e.g. Basic / Plus / Pro). Payment is processed by Apple. Syncly reads verified App Store transactions to determine entitlements and may cache that state locally (UserDefaults + Keychain). Syncly does not receive or store your full payment card details.
+          </p>
+          <p data-lang="pl" class="block">
+            Zakupy w aplikacji (StoreKit 2) odblokowują plany Smart Assistant (np. Basic / Plus / Pro). Płatność obsługuje Apple. Syncly odczytuje zweryfikowane transakcje App Store, aby ustalić uprawnienia, i może cache’ować ten stan lokalnie (UserDefaults + Keychain). Syncly nie otrzymuje ani nie przechowuje pełnych danych karty płatniczej.
+          </p>
+          <p data-lang="en" class="block">
+            Restoring purchases may use Apple’s App Store sync UI when you explicitly choose Restore. Routine entitlement checks use StoreKit transaction APIs without selling or sharing purchase data with third-party marketers.
+          </p>
+          <p data-lang="pl" class="block">
+            Przywracanie zakupów może użyć systemowego sync App Store, gdy wybierzesz „Przywróć zakupy”. Bieżące sprawdzanie uprawnień korzysta z API transakcji StoreKit — bez sprzedaży ani udostępniania danych zakupowych marketerom zewnętrznym.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="ai" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">07</span>
+          <h2><span data-lang="en">On-device AI</span><span data-lang="pl">AI na urządzeniu</span></h2>
+          <p data-lang="en" class="block">
+            When you invoke AI actions (summarize, evaluate, propose tasks, build Current Plan, break down a task, etc.), Syncly builds a prompt from <strong>your project data already on the device</strong> and sends it to <strong>Apple’s on-device Foundation Models / Apple Intelligence</strong> (via Apple’s FoundationModels framework), subject to device eligibility and your Apple Intelligence settings.
+          </p>
+          <p data-lang="pl" class="block">
+            Gdy wywołujesz akcje AI (podsumowanie, ocena, propozycja zadań, budowa Aktualnego Planu, rozbicie zadania itd.), Syncly buduje prompt z <strong>danych projektu już na urządzeniu</strong> i przekazuje go do <strong>modeli Foundation Models / Apple Intelligence na urządzeniu</strong> (framework FoundationModels Apple), zależnie od urządzenia i ustawień Apple Intelligence.
+          </p>
+          <p data-lang="en" class="block">
+            Syncly does <strong>not</strong> send your project content to a Syncly-operated AI server, and does not use a third-party generative AI API (such as a developer-hosted OpenAI endpoint) for these features. Apple’s processing of Apple Intelligence requests is governed by Apple’s privacy documentation.
+          </p>
+          <p data-lang="pl" class="block">
+            Syncly <strong>nie</strong> wysyła treści projektów na własny serwer AI i nie używa zewnętrznego API generatywnego AI (np. endpointu OpenAI prowadzonego przez dewelopera) do tych funkcji. Przetwarzanie Apple Intelligence po stronie Apple regulują dokumenty prywatności Apple.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="watch" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">08</span>
+          <h2><span data-lang="en">Apple Watch</span><span data-lang="pl">Apple Watch</span></h2>
+          <p data-lang="en" class="block">
+            If you use the Syncly Watch app, the iPhone acts as the source of truth and exchanges project/task/bug snapshots with the Watch over <strong>WatchConnectivity</strong> (device-to-device, through Apple’s paired connection). This sync does not go through a Syncly web server.
+          </p>
+          <p data-lang="pl" class="block">
+            Przy aplikacji Syncly na Watchu iPhone jest źródłem prawdy i wymienia snapshoty projektów/zadań/błędów z Watch przez <strong>WatchConnectivity</strong> (między sparowanymi urządzeniami Apple). Ta synchronizacja nie przechodzi przez serwer WWW Syncly.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="not-collect" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">09</span>
+          <h2><span data-lang="en">What we do not do</span><span data-lang="pl">Czego nie robimy</span></h2>
+          <ul>
+            <li><span data-lang="en">No sale of personal data</span><span data-lang="pl">Nie sprzedajemy danych osobowych</span></li>
+            <li><span data-lang="en">No advertising networks or cross-app tracking for ads</span><span data-lang="pl">Brak sieci reklamowych i śledzenia między aplikacjami pod reklamy</span></li>
+            <li><span data-lang="en">No third-party analytics / crash SDKs in the shipped app code described above</span><span data-lang="pl">Brak SDK analityki / crash firm trzecich w opisanym kodzie aplikacji</span></li>
+            <li><span data-lang="en">No Syncly-operated account database of your project notes beyond what Apple platforms store for you (device / your iCloud)</span><span data-lang="pl">Brak bazy kont Syncly z Twoimi notatkami poza tym, co platformy Apple przechowują dla Ciebie (urządzenie / Twój iCloud)</span></li>
+            <li><span data-lang="en">We do not require access to Contacts, Photos library browsing, Camera, Microphone, Precise Location, or Health for core Syncly features</span><span data-lang="pl">Do podstawowych funkcji Syncly nie wymagamy dostępu do Kontaktów, przeglądania Biblioteki zdjęć, Aparatu, Mikrofonu, precyzyjnej Lokalizacji ani Zdrowia</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="tile" id="choices" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">10</span>
+          <h2><span data-lang="en">Your choices</span><span data-lang="pl">Twoje wybory</span></h2>
+          <ul>
+            <li><span data-lang="en"><strong>Skip Apple sign-in</strong> — keep everything local on that device.</span><span data-lang="pl"><strong>Pomiń logowanie Apple</strong> — wszystko lokalnie na tym urządzeniu.</span></li>
+            <li><span data-lang="en"><strong>Sign out</strong> — stop iCloud project sync from Syncly’s side; continue locally.</span><span data-lang="pl"><strong>Wyloguj się</strong> — zatrzymaj sync iCloud projektów po stronie Syncly; działaj lokalnie.</span></li>
+            <li><span data-lang="en"><strong>Delete data</strong> — delete projects/tasks inside the app, or remove the app (local sandbox data is removed with the app; iCloud copies follow Apple’s iCloud deletion rules if sync was enabled; Keychain entitlement cache may remain until cleared by the system/user).</span><span data-lang="pl"><strong>Usuń dane</strong> — usuń projekty/zadania w aplikacji albo odinstaluj aplikację (dane w sandboxie znikają z aplikacją; kopie iCloud podlegają zasadom Apple, jeśli sync był włączony; cache Keychain może pozostać do wyczyszczenia przez system/użytkownika).</span></li>
+            <li><span data-lang="en"><strong>Manage Apple Account / iCloud / purchases</strong> in iOS Settings and App Store.</span><span data-lang="pl"><strong>Konto Apple / iCloud / zakupy</strong> zarządzasz w Ustawieniach iOS i App Store.</span></li>
+            <li><span data-lang="en"><strong>Apple Intelligence</strong> — enable or disable in system Settings; Syncly AI features depend on it where Foundation Models are used.</span><span data-lang="pl"><strong>Apple Intelligence</strong> — włączasz lub wyłączasz w Ustawieniach systemu; funkcje AI Syncly od tego zależą, gdy używane są Foundation Models.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="tile" id="children" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">11</span>
+          <h2><span data-lang="en">Children</span><span data-lang="pl">Dzieci</span></h2>
+          <p data-lang="en" class="block">
+            Syncly is a general-audience productivity app and is not directed at children under 13 (or the equivalent minimum age in your country). We do not knowingly collect personal information from children through a Syncly-operated backend. Parents who believe a child provided data via Apple services should use Apple’s account and parental controls tools.
+          </p>
+          <p data-lang="pl" class="block">
+            Syncly to aplikacja produktywności dla ogólnego odbiorcy i nie jest skierowana do dzieci poniżej 13. roku życia (lub równoważnego wieku w Twoim kraju). Świadomie nie zbieramy danych dzieci przez backend Syncly. Rodzice, którzy uważają, że dziecko przekazało dane przez usługi Apple, powinni skorzystać z narzędzi konta i kontroli rodzicielskiej Apple.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="changes" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">12</span>
+          <h2><span data-lang="en">Changes</span><span data-lang="pl">Zmiany</span></h2>
+          <p data-lang="en" class="block">
+            If Syncly’s data practices change (for example, adding a new network service), this Policy will be updated and the effective date above will change. Material changes that affect App Store privacy disclosures will be reflected in App Store Connect privacy answers as required.
+          </p>
+          <p data-lang="pl" class="block">
+            Jeśli praktyki Syncly się zmienią (np. nowa usługa sieciowa), ta Polityka zostanie zaktualizowana wraz z datą obowiązywania. Istotne zmiany wpływające na ujawnienia prywatności w App Store zostaną odzwierciedlone w odpowiedziach App Store Connect.
+          </p>
+        </div>
+      </section>
+
+      <section class="tile" id="contact" tabindex="0">
+        <span class="tile-flash" aria-hidden="true"></span>
+        <div class="tile-inner">
+          <span class="tile-num">13</span>
+          <h2><span data-lang="en">Contact</span><span data-lang="pl">Kontakt</span></h2>
+          <p data-lang="en" class="block">
+            Privacy questions about Syncly:
+            <a class="inline" href="mailto:indieedevsh@gmail.com">indieedevsh@gmail.com</a>
+          </p>
+          <p data-lang="pl" class="block">
+            Pytania o prywatność Syncly:
+            <a class="inline" href="mailto:indieedevsh@gmail.com">indieedevsh@gmail.com</a>
+          </p>
+          <p data-lang="en" class="block">
+            For Apple Account, iCloud, App Store billing, or Apple Intelligence behavior, contact Apple Support or use the controls in iOS Settings — those systems are operated by Apple.
+          </p>
+          <p data-lang="pl" class="block">
+            W sprawach konta Apple, iCloud, rozliczeń App Store lub działania Apple Intelligence skontaktuj się z Apple Support albo użyj ustawień iOS — te systemy prowadzi Apple.
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      <span data-lang="en">© 2026 Syncly. This page describes the Syncly iOS app as implemented.</span>
+      <span data-lang="pl">© 2026 Syncly. Ta strona opisuje aplikację Syncly na iOS zgodnie z implementacją.</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var en = document.getElementById("lang-en");
+      var pl = document.getElementById("lang-pl");
+
+      function setLang(code) {
+        root.lang = code;
+        en.setAttribute("aria-pressed", code === "en" ? "true" : "false");
+        pl.setAttribute("aria-pressed", code === "pl" ? "true" : "false");
+        try { localStorage.setItem("syncly-privacy-lang", code); } catch (e) {}
+      }
+
+      en.addEventListener("click", function () { setLang("en"); });
+      pl.addEventListener("click", function () { setLang("pl"); });
+
+      var saved = null;
+      try { saved = localStorage.getItem("syncly-privacy-lang"); } catch (e) {}
+      if (saved === "pl" || saved === "en") {
+        setLang(saved);
+      } else if (navigator.language && navigator.language.toLowerCase().indexOf("pl") === 0) {
+        setLang("pl");
+      } else {
+        setLang("en");
+      }
+
+      var tiles = document.querySelectorAll(".tile");
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      tiles.forEach(function (tile) {
+        tile.addEventListener("pointermove", function (e) {
+          var rect = tile.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width) * 100;
+          var y = ((e.clientY - rect.top) / rect.height) * 100;
+          tile.style.setProperty("--mx", x + "%");
+          tile.style.setProperty("--my", y + "%");
+        });
+
+        tile.addEventListener("pointerleave", function () {
+          tile.style.setProperty("--mx", "50%");
+          tile.style.setProperty("--my", "50%");
+        });
+
+        function flashAt(clientX, clientY) {
+          if (reduceMotion) return;
+          var rect = tile.getBoundingClientRect();
+          var x = clientX - rect.left;
+          var y = clientY - rect.top;
+          tile.style.setProperty("--flash-x", x + "px");
+          tile.style.setProperty("--flash-y", y + "px");
+          tile.classList.remove("is-flashing");
+          void tile.offsetWidth;
+          tile.classList.add("is-flashing");
+          window.setTimeout(function () {
+            tile.classList.remove("is-flashing");
+          }, 750);
+        }
+
+        tile.addEventListener("pointerdown", function (e) {
+          if (e.pointerType === "mouse" && e.button !== 0) return;
+          flashAt(e.clientX, e.clientY);
+        });
+
+        tile.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            var rect = tile.getBoundingClientRect();
+            flashAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
