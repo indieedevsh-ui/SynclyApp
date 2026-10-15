@@ -5,7 +5,7 @@
   ],
   "products" : [
     {
-      "displayPrice" : "3.99",
+      "displayPrice" : "2.99",
       "familyShareable" : false,
       "internalID" : "B1S0A001",
       "localizations" : [
@@ -20,12 +20,12 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "jujug.BeSorted.smartAssistant.standard",
+      "productID" : "SA_Basic.syncly",
       "referenceName" : "Smart Assistant",
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "6.99",
+      "displayPrice" : "4.99",
       "familyShareable" : false,
       "internalID" : "B1S0A002",
       "localizations" : [
@@ -40,12 +40,12 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "jujug.BeSorted.smartAssistant.plus",
+      "productID" : "SA_PLUS.syncly",
       "referenceName" : "Smart Assistant Plus",
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "11.99",
+      "displayPrice" : "9.99",
       "familyShareable" : false,
       "internalID" : "B1S0A003",
       "localizations" : [
@@ -60,68 +60,8 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "jujug.BeSorted.smartAssistant.pro",
+      "productID" : "SA_PRO.syncly",
       "referenceName" : "Smart Assistant Pro",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "3.00",
-      "familyShareable" : false,
-      "internalID" : "B1S0A004",
-      "localizations" : [
-        {
-          "description" : "Upgrade z Smart Assistant do Smart Assistant +.",
-          "displayName" : "Upgrade do Smart Assistant +",
-          "locale" : "pl_PL"
-        },
-        {
-          "description" : "Upgrade from Smart Assistant to Smart Assistant +.",
-          "displayName" : "Upgrade to Smart Assistant +",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "jujug.BeSorted.smartAssistant.plus.fromStandard",
-      "referenceName" : "Plus from Standard",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "8.00",
-      "familyShareable" : false,
-      "internalID" : "B1S0A005",
-      "localizations" : [
-        {
-          "description" : "Upgrade z Smart Assistant do Smart Assistant Pro.",
-          "displayName" : "Upgrade do Smart Assistant Pro",
-          "locale" : "pl_PL"
-        },
-        {
-          "description" : "Upgrade from Smart Assistant to Smart Assistant Pro.",
-          "displayName" : "Upgrade to Smart Assistant Pro",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "jujug.BeSorted.smartAssistant.pro.fromStandard",
-      "referenceName" : "Pro from Standard",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "5.00",
-      "familyShareable" : false,
-      "internalID" : "B1S0A006",
-      "localizations" : [
-        {
-          "description" : "Upgrade z Smart Assistant + do Smart Assistant Pro.",
-          "displayName" : "Upgrade do Smart Assistant Pro",
-          "locale" : "pl_PL"
-        },
-        {
-          "description" : "Upgrade from Smart Assistant + to Smart Assistant Pro.",
-          "displayName" : "Upgrade to Smart Assistant Pro",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "jujug.BeSorted.smartAssistant.pro.fromPlus",
-      "referenceName" : "Pro from Plus",
       "type" : "NonConsumable"
     }
   ],
@@ -144,26 +84,6 @@
         "current" : null,
         "enabled" : false,
         "name" : "Purchase"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Verification"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "App Store Sync"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Subscription Status"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "App Transaction"
       },
       {
         "current" : null,

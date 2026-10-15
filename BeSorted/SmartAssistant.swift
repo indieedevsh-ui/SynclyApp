@@ -41,12 +41,16 @@ enum SmartAssistantTier: String, CaseIterable, Identifiable {
         }
     }
 
-    /// Cena katalogowa (PLN).
+    /// Cena katalogowa (PLN) — **tylko awaryjnie**, gdy sklep nie zwrócił ceny.
+    /// Wartość pokazywana użytkownikowi pochodzi z `Product.displayPrice`
+    /// (`SmartAssistantStore.storeDisplayPrice`), więc po załadowaniu sklepu
+    /// ta tabela służy wyłącznie do przekreślonej ceny „było”.
+    /// Musi odpowiadać `Products.storekit` i App Store Connect.
     var listPrice: Double {
         switch self {
-        case .pro: return 11.99
-        case .plus: return 6.99
-        case .standard: return 3.99
+        case .pro: return 9.99
+        case .plus: return 4.99
+        case .standard: return 2.99
         }
     }
 
@@ -235,24 +239,6 @@ enum SmartAssistantDevice {
         }
     }
 
-    /// iPhone 14+ z ≥6 GB, bez klasy Apple Intelligence (15 Pro+ → Plus/Pro).
-    /// Świadomie bez 12/13 (za mało RAM / poza pozycjonowaniem).
-    static var isStandardHardware: Bool {
-        if isPlusHardware { return false }
-        switch machineIdentifier {
-        case
-            // iPhone 14 / 14 Plus
-            "iPhone14,7", "iPhone14,8",
-            // iPhone 14 Pro / 14 Pro Max
-            "iPhone15,2", "iPhone15,3",
-            // iPhone 15 / 15 Plus (6 GB, bez AI class)
-            "iPhone15,4", "iPhone15,5":
-            return true
-        default:
-            return false
-        }
-    }
-
     /// iPhone 15 Pro / 15 Pro Max oraz cała linia 16+ (Apple Intelligence class).
     /// Świadomie bez iPhone 15 / 15 Plus (`iPhone15,4` / `iPhone15,5`).
     static var isPlusHardware: Bool {
@@ -300,13 +286,23 @@ enum SmartAssistantDevice {
     static func canPurchase(_ tier: SmartAssistantTier) -> Bool {
         switch tier {
         case .standard:
-            // Wyłącznie klasa Standard (14 / 15 non-Pro) — bez overlapu z 15 Pro+.
-            return isStandardHardware
+            // Najtańszy plan uruchamia się na każdym iPhonie
+            // (`canActivateOnThisDevice(.standard)` to zawsze `true`), więc nie może
+            // być niedostępny do zakupu na mocniejszym sprzęcie. Wcześniej
+            // `isStandardHardware` zwracało `false` dla całej klasy 15 Pro+/16/17/18,
+            // przez co na nowoczesnym iPhonie karta pokazywała „Niedostępne do
+            // zakupu” i planu nie dało się kupić wcale.
+            return isAnyiPhone
         case .plus:
             return isPlusHardware
         case .pro:
             return isProHardware
         }
+    }
+
+    /// Dowolny iPhone, niezależnie od klasy sprzętu.
+    static var isAnyiPhone: Bool {
+        isPlusHardware || machineIdentifier.hasPrefix("iPhone")
     }
 
     /// Liczba z `iPhoneNN,…` (np. 15 z `iPhone15,2`).
@@ -337,30 +333,104 @@ final class SmartAssistantStore {
             } else {
                 UserDefaults.standard.removeObject(forKey: Keys.active)
             }
+            // Keychron przeżywa usunięcie aplikacji — `UserDefaults` nie.
+            persistEntitlementVault()
         }
     }
 
     // MARK: StoreKit state (patrz SmartAssistantStoreKit.swift)
+
+    /// Identyfikator, pod którym plan faktycznie da się kupić: nowy prefiks, a gdy
+    /// w sklepie istnieje tylko stary, ten stary. Bez tego płatność nie działa
+    /// w dopóki nowe produkty nie pojawią się w App Store Connect.
+    func resolvedPurchaseID(for tier: SmartAssistantTier) -> String {
+        for candidate in SmartAssistantProductID.purchaseIDVariants(for: tier, owned: owns)
+        where storeProducts[candidate] != nil {
+            return candidate
+        }
+        return SmartAssistantProductID.purchaseID(for: tier, owned: owns)
+    }
+
+    /// Produkt, który faktycznie kupuje użytkownik dla danego planu — czyli
+    /// wariant „z upgrade'u”, jeśli niższy plan już ma. `nil` = sklep nie zwrócił
+    /// jeszcze oferty, więc ceny nie wolno udawać. Ten sam identyfikator, którego
+    /// używa `purchase(_:)`, więc pokazana cena zawsze dotyczy tego, co zostanie
+    /// kupione.
+    func purchaseProduct(for tier: SmartAssistantTier) -> Product? {
+        storeProducts[resolvedPurchaseID(for: tier)]
+    }
+
+    /// Czy sklep potwierdził cenę tego planu (a nie fallback z tabeli).
+    func hasStoreKitPrice(for tier: SmartAssistantTier) -> Bool {
+        purchaseProduct(for: tier)?.displayPrice.isEmpty == false
+    }
+
+    /// Rabat przy upgrade liczymy z PRAWDYWEJ ceny sklepu, nie z arytmetyki
+    /// klienta. Dzięki temu przekreślona cena znika, gdy App Store wyceni
+    /// upgrade inaczej niż „różnica cen katalogowych”.
+    func hasStoreKitDiscount(for tier: SmartAssistantTier) -> Bool {
+        upgradeSavingPLN(for: tier) != nil
+    }
+
+    /// Realna oszczędność przy upgrade w PLN policzona z cen sklepu.
+    /// `nil` = brak oferty albo różnica poniżej grosza (brak realnego rabatu).
+    func upgradeSavingPLN(for tier: SmartAssistantTier) -> Double? {
+        guard !owns(tier) else { return nil }
+        guard let product = purchaseProduct(for: tier) else { return nil }
+        let list = NSDecimalNumber(value: tier.listPrice).doubleValue
+        let difference = (list - NSDecimalNumber(decimal: product.price).doubleValue) * 100
+        guard difference >= 1 else { return nil }
+        return (difference).rounded() / 100
+    }
 
     private(set) var storeProducts: [String: Product] = [:]
     private(set) var productsAvailable = false
     private(set) var isLoadingProducts = false
     private(set) var isRestoringPurchases = false
     private(set) var purchasingTierID: String?
+    /// Ostatni udany odczyt uprawnień z App Store — `nil` znaczy „jeszcze nigdy”.
+    private(set) var lastEntitlementSyncAt: Date?
+    /// Współdzielone pobieranie produktów — scala równoległe wywołania.
+    var loadProductsTask: Task<Void, Never>?
     var lastStoreError: String?
     var transactionListener: Task<Void, Never>?
 
     private init() {
-        let owned = UserDefaults.standard.stringArray(forKey: Keys.owned) ?? []
-        ownedTierIDs = Set(owned)
-        if let raw = UserDefaults.standard.string(forKey: Keys.active),
-           let tier = SmartAssistantTier(rawValue: raw),
-           ownedTierIDs.contains(tier.rawValue) {
-            activeTier = tier
+        // 1) UserDefaults — szybka ścieżka, ale giną przy usunięciu aplikacji.
+        var owned = Set(UserDefaults.standard.stringArray(forKey: Keys.owned) ?? [])
+        var active = Self.storedActiveTier()
+
+        // 2) Keychain — przetrwał usunięcie aplikacji, więc zakupione plany są
+        //    widoczne natychmiast po instalacji, zanim StoreKit zdąży odpowiedzieć.
+        if owned.isEmpty {
+            let cached = SmartAssistantEntitlementVault.ownedTiers()
+                .filter { SmartAssistantTier(rawValue: $0) != nil }
+            if !cached.isEmpty {
+                owned = cached
+                active = Self.storedActiveTier() ?? SmartAssistantEntitlementVault.activeTier()
+            }
+        }
+
+        ownedTierIDs = owned
+        if let active, ownedTierIDs.contains(active.rawValue) {
+            activeTier = active
         } else {
             activeTier = nil
         }
+        if !ownedTierIDs.isEmpty {
+            persistOwned()
+        }
+        #if DEBUG
+        if SmartAssistantEntitlementVault.hasCachedEntitlements {
+            print("[StoreKit] Sejf Keychain: tiery=\(ownedTierIDs.sorted()) aktywny=\(activeTier?.rawValue ?? "brak") producty=\(SmartAssistantEntitlementVault.productIDs().sorted())")
+        }
+        #endif
         startStoreKitListenersIfNeeded()
+    }
+
+    private static func storedActiveTier() -> SmartAssistantTier? {
+        guard let raw = UserDefaults.standard.string(forKey: Keys.active) else { return nil }
+        return SmartAssistantTier(rawValue: raw)
     }
 
     var hasActiveAssistant: Bool { activeTier != nil }
@@ -403,42 +473,46 @@ final class SmartAssistantStore {
     func activateOwned(_ tier: SmartAssistantTier) {
         guard owns(tier) else { return }
         // Pro / + wymagają kompatybilnego sprzętu do działania FM / plus-runtime.
-        switch tier {
-        case .pro:
-            guard SmartAssistantDevice.isProHardware else { return }
-        case .plus:
-            guard SmartAssistantDevice.isPlusHardware else { return }
-        case .standard:
-            break
+        guard canActivateOnThisDevice(tier) else {
+            lastStoreError = "Ten plan wymaga mocniejszego iPhone’a. Twój zakup jest bezpieczny i wróci na sprzęcie, który go obsługuje.".l10n
+            BeSortedSound.play(.skillNo)
+            return
         }
+        lastStoreError = nil
         activeTier = tier
         BeSortedSound.play(.regular)
     }
 
-    /// Usuwa tiery, których ten sprzęt nie utrzyma (np. Pro na iPhone 14).
+    /// Sprzęt, na którym dany tier da się uruchomić.
+    /// Osobno od `SmartAssistantDevice.canPurchase`, bo to dotyczy **posiadanego**
+    /// zakupu, a nie oferty sklepowej.
+    func canActivateOnThisDevice(_ tier: SmartAssistantTier) -> Bool {
+        switch tier {
+        case .pro: return SmartAssistantDevice.isProHardware
+        case .plus: return SmartAssistantDevice.isPlusHardware
+        case .standard: return true
+        }
+    }
+
+    /// Zakup istnieje, ale ten sprzęt go nie uruchomi (np. Pro kupione na 15 Pro,
+    /// otwarte na 14). Zakupu NIE kasujemy — wróci na sprzęcie, który go obsłuży.
+    func isOwnedButUnsupportedHere(_ tier: SmartAssistantTier) -> Bool {
+        owns(tier) && !canActivateOnThisDevice(tier)
+    }
+
+    /// Koryguje TYLKO aktywację dla aktualnego sprzętu. Świadomie nie usuwa
+    /// `ownedTierIDs`: zapis w App Store jest jedynym źródłem prawdy o zakupie,
+    /// a kasowanie lokalnego rekordu przy błędnej detekcji sprzętu wyglądałoby
+    /// dla użytkownika jak utrata zakupu (i znikało po reinstalacji).
     /// Niższych odblokowanych w pakiecie nie wyrzucamy — służą do przełączania.
     func sanitizeOwnedForCurrentDevice() {
-        var changed = false
-        if owns(.pro), !SmartAssistantDevice.isProHardware {
-            ownedTierIDs.remove(SmartAssistantTier.pro.rawValue)
-            if activeTier == .pro { activeTier = nil }
-            changed = true
-        }
-        if owns(.plus), !SmartAssistantDevice.isPlusHardware {
-            ownedTierIDs.remove(SmartAssistantTier.plus.rawValue)
-            if activeTier == .plus { activeTier = nil }
-            changed = true
-        }
-        if changed {
-            persistOwned()
-            // Jeśli coś zostało (np. SA), ustaw aktywny na najwyższy posiadany.
-            if activeTier == nil {
-                let best = SmartAssistantTier.allCases
-                    .filter(owns)
-                    .max(by: { $0.rank < $1.rank })
-                activeTier = best
-            }
-        }
+        guard let active = activeTier else { return }
+        guard !canActivateOnThisDevice(active) else { return }
+
+        // Nie kasujemy zakupu — schodzimy na najwyższy plan, który ten sprzęt obsługuje.
+        activeTier = SmartAssistantTier.allCases
+            .filter { owns($0) && canActivateOnThisDevice($0) }
+            .max(by: { $0.rank < $1.rank })
     }
 
     func supports(_ skill: SmartAssistantSkill) -> Bool {
@@ -484,7 +558,19 @@ final class SmartAssistantStore {
     }
 
     func persistOwned() {
-        UserDefaults.standard.set(Array(ownedTierIDs).sorted(), forKey: Keys.owned)
+        let sorted = Array(ownedTierIDs).sorted()
+        UserDefaults.standard.set(sorted, forKey: Keys.owned)
+        persistEntitlementVault()
+    }
+
+    /// Lustro w Keychain — jedyne miejsce, które przetrwa usunięcie aplikacji.
+    /// Źródłem prawdy pozostaje App Store; ten zapis istnieje tylko po to, by
+    /// zakupy były widoczne od pierwszego uruchomienia, także bez sieci.
+    private func persistEntitlementVault() {
+        SmartAssistantEntitlementVault.save(
+            ownedTiers: ownedTierIDs,
+            activeTier: activeTier
+        )
     }
 
     func replaceOwnedTier(_ ids: Set<String>) {
@@ -514,6 +600,18 @@ final class SmartAssistantStore {
 
     func setRestoringPurchases(_ value: Bool) {
         isRestoringPurchases = value
+    }
+
+    func setLastEntitlementSyncAt(_ date: Date?) {
+        lastEntitlementSyncAt = date
+    }
+
+    func setLoadProductsTask(_ task: Task<Void, Never>?) {
+        loadProductsTask = task
+    }
+
+    func clearLoadProductsTask() {
+        loadProductsTask = nil
     }
 }
 

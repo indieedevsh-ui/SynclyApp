@@ -14,8 +14,6 @@ import UIKit
 extension Notification.Name {
     /// ModelContainer trzeba przebudować (CloudKit ↔ lokalny).
     static let synclyStorageModeDidChange = Notification.Name("syncly.storageModeDidChange")
-    /// Użytkownik wylogował się — pokaż bramkę logowania.
-    static let synclyDidSignOut = Notification.Name("syncly.didSignOut")
 }
 
 @MainActor
@@ -29,11 +27,24 @@ final class SynclyCloudAccount {
         static let localOnly = "syncly.icloudGate.localOnly"
         static let appleUserID = "syncly.icloudGate.appleUserID"
         static let displayName = "syncly.icloudGate.displayName"
+        static let decided = "syncly.icloudGate.decided"
+        /// Cache `CKAccountStatus == .available` — SharedModelContainer czyta ten
+        /// klucz synchronicznie, żeby nie otwierać CloudKit bez konta iCloud.
+        static let iCloudAvailable = "syncly.icloudGate.iCloudAvailable"
     }
 
-    /// Pierwsze uruchomienie — brak logowania i braku pominięcia → pokaż bramkę.
+    /// Użytkownik już raz podjął decyzję (zalogował się albo pominął) — bramka
+    /// nie wraca nawet po wylogowaniu i kolejnym uruchomieniu aplikacji.
+    private var didDecideAboutSignIn: Bool {
+        if isSignedIn || didSkipSignIn { return true }
+        return UserDefaults.standard.bool(forKey: Keys.decided)
+    }
+
+    /// Pierwsze uruchomienie: brak logowania i braku decyzji → pokaż okienko
+    /// logowania albo „Pomiń”. Po decyzji bramka nie wraca — logowanie jest
+    /// wtedy wyłącznie w Ustawieniach (kafelek „Konto Apple”).
     var needsSignInGate: Bool {
-        !isSignedIn && !didSkipSignIn
+        !isSignedIn && !didDecideAboutSignIn
     }
 
     var isSignedIn: Bool {
@@ -88,7 +99,10 @@ final class SynclyCloudAccount {
         isRefreshing = true
         defer { isRefreshing = false }
 
+        let previousAvailable = UserDefaults.standard.bool(forKey: Keys.iCloudAvailable)
         do {
+            // `accountStatus()` NIE pokazuje systemowego logowania — w przeciwieństwie
+            // do otwarcia prywatnej bazy CloudKit przez ModelContainer.
             let status = try await CKContainer(identifier: SharedModelContainer.cloudKitContainerID)
                 .accountStatus()
             iCloudStatus = status
@@ -97,11 +111,19 @@ final class SynclyCloudAccount {
             iCloudStatus = .couldNotDetermine
             statusMessage = error.localizedDescription
         }
+
+        let nowAvailable = iCloudStatus == .available
+        UserDefaults.standard.set(nowAvailable, forKey: Keys.iCloudAvailable)
+
+        // Przełącz magazyn dopiero gdy iCloud faktycznie jest (albo gdy znika) —
+        // nigdy na samym SIWA, bo to odpalało „Sign in to Apple Account” przy starcie.
+        let wantsCloud = isSignedIn && !UserDefaults.standard.bool(forKey: Keys.localOnly)
+        if wantsCloud, previousAvailable != nowAvailable {
+            NotificationCenter.default.post(name: .synclyStorageModeDidChange, object: nil)
+        }
     }
 
     func completeSignIn(userID: String, fullName: PersonNameComponents?) {
-        let wasLocalOnly = usesLocalOnlyStorage
-
         UserDefaults.standard.set(userID, forKey: Keys.appleUserID)
         if let fullName {
             let formatter = PersonNameComponentsFormatter()
@@ -113,31 +135,40 @@ final class SynclyCloudAccount {
         UserDefaults.standard.set(true, forKey: Keys.completed)
         UserDefaults.standard.set(false, forKey: Keys.skipped)
         UserDefaults.standard.set(false, forKey: Keys.localOnly)
+        UserDefaults.standard.set(true, forKey: Keys.decided)
         noteAuthChange()
 
-        if wasLocalOnly {
-            NotificationCenter.default.post(name: .synclyStorageModeDidChange, object: nil)
-        }
+        // NIE przebudowujemy kontenera tutaj. CloudKit włączamy dopiero po
+        // `refreshICloudStatus()`, gdy status == .available — inaczej start
+        // aplikacji pyta o Apple Account przy każdym uruchomieniu.
     }
 
     /// Pomiń logowanie — tylko lokalny zapis, zakupy Smart Assistant zablokowane.
     func skipSignIn() {
+        let wasCloud = SharedModelContainer.shouldUseCloudKit
         UserDefaults.standard.set(true, forKey: Keys.skipped)
         UserDefaults.standard.set(true, forKey: Keys.localOnly)
         UserDefaults.standard.set(false, forKey: Keys.completed)
+        UserDefaults.standard.set(true, forKey: Keys.decided)
         // Nie usuwamy appleUserID jeśli kiedyś było — ale po skip nie ma sesji.
         UserDefaults.standard.removeObject(forKey: Keys.appleUserID)
         UserDefaults.standard.removeObject(forKey: Keys.displayName)
         noteAuthChange()
+        if wasCloud {
+            NotificationCenter.default.post(name: .synclyStorageModeDidChange, object: nil)
+        }
     }
 
-    /// Wylogowanie — czyści sesję i wraca do ekranu logowania.
+    /// Wylogowanie — czyści sesję. Aplikacja działa dalej z zapisem lokalnym,
+    /// a ponowne logowanie jest w Ustawieniach (kafelek „Konto Apple”).
+    /// Bramka logowania NIE wraca: decyzja o wejściu do aplikacji już zapadła.
     func signOut() {
-        let wasCloud = !usesLocalOnlyStorage
+        let wasCloud = SharedModelContainer.shouldUseCloudKit
 
         UserDefaults.standard.set(false, forKey: Keys.completed)
         UserDefaults.standard.set(false, forKey: Keys.skipped)
         UserDefaults.standard.set(true, forKey: Keys.localOnly)
+        UserDefaults.standard.set(true, forKey: Keys.decided)
         UserDefaults.standard.removeObject(forKey: Keys.appleUserID)
         UserDefaults.standard.removeObject(forKey: Keys.displayName)
         noteAuthChange()
@@ -145,7 +176,6 @@ final class SynclyCloudAccount {
         if wasCloud {
             NotificationCenter.default.post(name: .synclyStorageModeDidChange, object: nil)
         }
-        NotificationCenter.default.post(name: .synclyDidSignOut, object: nil)
     }
 
     /// Ponowne sprawdzenie credentiali Sign in with Apple (po reinstalacji / nowym urządzeniu).
@@ -162,6 +192,9 @@ final class SynclyCloudAccount {
                 UserDefaults.standard.set(false, forKey: Keys.completed)
                 UserDefaults.standard.removeObject(forKey: Keys.appleUserID)
                 UserDefaults.standard.set(true, forKey: Keys.localOnly)
+                // Sesja istniała, więc decyzja o wejściu już zapadła — cofnięcie
+                // uwierzytelnienia przez Apple nie może odtworzyć bramki.
+                UserDefaults.standard.set(true, forKey: Keys.decided)
                 noteAuthChange()
                 if wasCloud {
                     NotificationCenter.default.post(name: .synclyStorageModeDidChange, object: nil)

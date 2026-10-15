@@ -1887,7 +1887,7 @@ enum MenuPillCollapseBridge {
 /// Poziomy odstęp list kafelków od krawędzi ekranu (jak Aktualny Plan / Ustawienia).
 enum BeSortedContentInsets {
     static var isLandscape: Bool {
-        let size = UIScreen.main.bounds.size
+        let size = BeSortedScreen.bounds.size
         return size.width > size.height
     }
 

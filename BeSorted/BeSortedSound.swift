@@ -167,10 +167,20 @@ enum BeSortedSound {
             duration: 0.01,
             volume: 0
         )
-        let fallback = try! AVAudioPlayer(data: silent)
-        fallback.prepareToPlay()
-        fallback.volume = 0
-        return fallback
+        // `synthesize` generuje WAV przez nas samych, więc dekoder praktycznie nie
+        // zawiedzie — ale `try!` zamieniłby taki wyjątek w crash aplikacji.
+        // Cisza zamiast crashu: dźwięk jest dodatkiem, nie funkcją krytyczną.
+        if let fallback = try? AVAudioPlayer(data: silent) {
+            fallback.prepareToPlay()
+            fallback.volume = 0
+            return fallback
+        }
+        if let existing = players[.regular] {
+            return existing
+        }
+        // Ostateczność: `AVAudioPlayer(data:)` na pustych danych nie zawodzi.
+        // Bez tego `?` zamieniłby pojedynczy błąd w ciche zamilkanie obsługi dźwięku.
+        return (try? AVAudioPlayer(data: Data())) ?? AVAudioPlayer()
     }
 
     private static func wavData(for kind: Kind) -> Data {

@@ -31,6 +31,17 @@ struct SynclySettingsAccountCard: View {
                         .font(.caption2.weight(.medium))
                         .foregroundStyle(syncStatusColor)
                         .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Text(
+                        "Po zalogowaniu projekty i dane synchronizują się przez iCloud. Na nowym urządzeniu wystarczy to samo konto Apple.".l10n
+                    )
+                    .font(.caption)
+                    .foregroundStyle(appearance.tertiaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+                    Text(account.iCloudStatusLabel)
+                        .font(.caption2.weight(.medium))
+                        .foregroundStyle(syncStatusColor)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
 
@@ -117,7 +128,7 @@ struct SynclySettingsAccountCard: View {
             Button("Anuluj".l10n, role: .cancel) {}
         } message: {
             Text(
-                "Po wylogowaniu wrócisz do ekranu logowania. Synchronizacja iCloud będzie niedostępna do ponownego zalogowania.".l10n
+                "Po wylogowaniu aplikacja działa dalej z zapisem lokalnym. Synchronizacja iCloud wróci po ponownym zalogowaniu w Ustawieniach.".l10n
             )
         }
         .task {

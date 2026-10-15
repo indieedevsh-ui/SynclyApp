@@ -181,11 +181,16 @@ final class PhoneWatchSyncService: NSObject, WCSessionDelegate {
 
         do {
             let context = container.mainContext
-            try? context.save()
+            // Nie rozsyłamy snapshodu, którego telefon nie zapisał — zegarek dostałby
+            // stan, który po restarcie i tak zniknąłby (trwała rozbieżność).
+            // Wyjątkiem jest `try?`: `mainContext` bywa już zapisany, więc zapis
+            // niczego nie zmienia i nie powinien blokować wysyłki.
+            try context.save()
+
             let snapshot = try buildSnapshot(from: context)
             let data = try JSONEncoder().encode(snapshot)
 
-            var payload: [String: Any] = [
+            let payload: [String: Any] = [
                 SyncPayloadKey.type: SyncPayloadKey.typeFullSnapshot,
                 SyncPayloadKey.source: localSource,
                 SyncPayloadKey.snapshot: data
@@ -288,8 +293,16 @@ final class PhoneWatchSyncService: NSObject, WCSessionDelegate {
     }
 
     private func deliver(_ payload: [String: Any], via session: WCSession) {
-        // Najnowszy kontekst (nadpisuje poprzedni).
-        try? session.updateApplicationContext(payload)
+        // Najnowszy kontekst (nadpisuje poprzedni). Ma limit rozmiaru — przy dużym
+        // katalogu `updateApplicationContext` rzuca błąd, a bez poniższego fallbacku
+        // zegarek po prostu nigdy nie dostałby danych.
+        let contextUpdated: Bool
+        do {
+            try session.updateApplicationContext(payload)
+            contextUpdated = true
+        } catch {
+            contextUpdated = false
+        }
 
         if session.isReachable {
             session.sendMessage(payload, replyHandler: nil, errorHandler: { _ in
@@ -297,9 +310,10 @@ final class PhoneWatchSyncService: NSObject, WCSessionDelegate {
             })
         } else {
             // Gdy counterpart nie jest aktywny — kolejka, ale tylko dla małych mutacji.
-            // Dla fullSnapshot wolimy applicationContext (już ustawiony).
+            // Dla fullSnapshot wolimy applicationContext (już ustawiony), chyba że
+            // się nie powiódł — wtedy `transferUserInfo` jest jedyną drogą.
             if let type = payload[SyncPayloadKey.type] as? String,
-               type != SyncPayloadKey.typeFullSnapshot {
+               type != SyncPayloadKey.typeFullSnapshot || !contextUpdated {
                 session.transferUserInfo(payload)
             }
         }

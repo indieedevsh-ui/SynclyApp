@@ -79,8 +79,8 @@ enum L10n {
         "Zalogowano": "Signed in",
         "Wyloguj się": "Sign out",
         "Wylogować się?": "Sign out?",
-        "Po wylogowaniu wrócisz do ekranu logowania. Synchronizacja iCloud będzie niedostępna do ponownego zalogowania.":
-            "After signing out you’ll return to the sign-in screen. iCloud sync stays unavailable until you sign in again.",
+        "Po wylogowaniu aplikacja działa dalej z zapisem lokalnym. Synchronizacja iCloud wróci po ponownym zalogowaniu w Ustawieniach.":
+            "After signing out the app keeps working with local saves. iCloud sync comes back once you sign in again from Settings.",
         "Zmień język": "Change language",
         "Wygląd": "Appearance",
         "Ustawienia dodatkowe": "Additional settings",
@@ -144,6 +144,11 @@ enum L10n {
         "Przywróć zakupy": "Restore Purchases",
         "Zakup oczekuje na zatwierdzenie.": "Purchase is pending approval.",
         "Produkty StoreKit są niedostępne.": "StoreKit products are unavailable.",
+        "Ten plan wymaga mocniejszego iPhone’a. Twój zakup jest bezpieczny i wróci na sprzęcie, który go obsługuje.":
+            "This plan needs a more powerful iPhone. Your purchase is safe and will return on hardware that supports it.",
+        "Masz ten plan, ale wymaga mocniejszego iPhone’a. Zakup jest bezpieczny i włączy się na sprzęcie, który go obsługuje.":
+            "You own this plan, but it needs a more powerful iPhone. The purchase is safe and will activate on hardware that supports it.",
+        "Zakupy zsynchronizowane z App Store": "Purchases synced with the App Store",
         "Wybierz wersję dopasowaną do Twojego iPhone’a.": "Choose the version that matches your iPhone.",
         "Zapoznaj się z Twoją wersją Smart Assistant": "Get to know your Smart Assistant version",
         "Zapoznaj się z funkcjami tego modelu": "Get to know this model’s features",
@@ -560,11 +565,13 @@ struct AIFormattedResultText: View {
     @ViewBuilder
     private func formattedLine(_ runs: [InlineRun], font: Font, color: Color) -> some View {
         // Składamy Text z mieszanym stylem (bold / regular).
+        // iOS 26: `Text + Text` jest wycofane na rzecz interpolacji — każdy run
+        // zachowuje własny font i kolor, więc wygląd jest identyczny.
         runs.reduce(Text("")) { partial, run in
             let piece = Text(run.text)
                 .font(run.bold ? font.weight(.bold) : font.weight(.regular))
                 .foregroundColor(run.bold ? primary : color)
-            return partial + piece
+            return Text("\(partial)\(piece)")
         }
     }
 

@@ -125,16 +125,20 @@ struct SmartAssistantBrandedText: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
+    /// iOS 26 zastąpiło `Text + Text` interpolacją. Każdy fragment zachowuje
+    /// własne `foregroundStyle`, więc gradienty „Pro”/„+” renderują się jak dawniej.
     private var combinedText: Text {
         segments.reduce(Text("")) { partial, segment in
+            let piece: Text
             switch segment {
             case .plain(let value):
-                return partial + Text(value).foregroundStyle(baseColor)
+                piece = Text(value).foregroundStyle(baseColor)
             case .pro:
-                return partial + Text("Pro").foregroundStyle(SmartAssistantBrandGradients.pro)
+                piece = Text("Pro").foregroundStyle(SmartAssistantBrandGradients.pro)
             case .plus:
-                return partial + Text("+").foregroundStyle(SmartAssistantBrandGradients.plus)
+                piece = Text("+").foregroundStyle(SmartAssistantBrandGradients.plus)
             }
+            return Text("\(partial)\(piece)")
         }
     }
 
@@ -219,6 +223,8 @@ struct SmartAssistantActivateOverlay: View {
     @State private var celebrationTier: SmartAssistantTier?
     /// Odświeżanie UI po zakupie / aktywacji.
     @State private var refreshTick = 0
+
+    private var store: SmartAssistantStore { .shared }
 
     private var tourTier: SmartAssistantTier {
         let store = SmartAssistantStore.shared
@@ -324,6 +330,15 @@ struct SmartAssistantActivateOverlay: View {
                     .font(.caption.weight(.medium))
                     .foregroundStyle(Color(red: 0.92, green: 0.28, blue: 0.28))
                     .fixedSize(horizontal: false, vertical: true)
+            } else if store.lastEntitlementSyncAt != nil {
+                // Potwierdzenie, że plany zostały właśnie odczytane z App Store,
+                // a nie tylko z cache'u — zakup jest powiązany z Apple ID.
+                Label(
+                    "Zakupy zsynchronizowane z App Store".l10n,
+                    systemImage: "checkmark.icloud.fill"
+                )
+                .font(.caption.weight(.medium))
+                .foregroundStyle(appearance.secondaryText)
             }
 
 ScrollView {
@@ -404,11 +419,16 @@ ScrollView {
         let accountOK = SynclyCloudAccount.shared.canPurchaseSmartAssistant
         let owned = store.owns(tier)
         let isActive = store.activeTier == tier
-        let credit = store.upgradeCredit(toward: tier)
-        let payPrice = store.priceToPay(for: tier)
-        let hasDiscount = !owned && credit > 0 && payPrice < tier.listPrice
+        let hasStoreKitPrice = store.hasStoreKitPrice(for: tier)
         let isPurchasing = store.purchasingTierID == tier.rawValue
         let priceLabel = store.storeDisplayPrice(for: tier)
+        // Rabat bierzemy z prawdziwej ceny sklepu. Gdy sklep nie odpowiedział,
+        // pokazujemy arytmetykę klienta tylko jako ostatni ratunek.
+        let hasDiscount = !owned && (
+            store.hasStoreKitDiscount(for: tier)
+                || (!hasStoreKitPrice && store.upgradeCredit(toward: tier) > 0)
+        )
+        let credit = store.upgradeSavingPLN(for: tier) ?? store.upgradeCredit(toward: tier)
 
         return VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
@@ -462,6 +482,13 @@ ScrollView {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Color(red: 0.72, green: 0.12, blue: 0.18))
                     .fixedSize(horizontal: false, vertical: true)
+            } else if store.isOwnedButUnsupportedHere(tier) {
+                // Zakup NIE zniknął — sprzęt go nie uruchamia. Bez tego komunikatu
+                // wyłączony przycisk „Użyj” wygląda jak utrata zakupu.
+                Text("Masz ten plan, ale wymaga mocniejszego iPhone’a. Zakup jest bezpieczny i włączy się na sprzęcie, który go obsługuje.".l10n)
+                .font(.caption.weight(.medium))
+                .foregroundStyle(appearance.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
             }
 
             HStack(spacing: 8) {
@@ -628,11 +655,7 @@ ScrollView {
     }
 
     private func canActivate(_ tier: SmartAssistantTier) -> Bool {
-        switch tier {
-        case .pro: return SmartAssistantDevice.isProHardware
-        case .plus: return SmartAssistantDevice.isPlusHardware
-        case .standard: return true
-        }
+        store.canActivateOnThisDevice(tier)
     }
 
     private func includedModelsNote(for tier: SmartAssistantTier) -> String {

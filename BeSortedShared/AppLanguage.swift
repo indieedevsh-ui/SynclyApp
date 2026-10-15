@@ -11,10 +11,13 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
-    static let userDefaultsKey = "besorted.language"
+    nonisolated static let userDefaultsKey = "besorted.language"
 
     /// Aktualny język UI (synchronizowany z ustawieniami aplikacji).
-    static var stored: AppLanguage {
+    /// `nonisolated`: enum jest typem wartości, a `UserDefaults` jest thread-safe —
+    /// nie ma tu stanu współdzielonego, więc izolacja aktora tylko przeszkadza
+    /// czytelnikom spoza main actora (błąd w Swift 6).
+    nonisolated static var stored: AppLanguage {
         get {
             let raw = UserDefaults.standard.string(forKey: userDefaultsKey) ?? AppLanguage.polish.rawValue
             return AppLanguage(rawValue: raw) ?? .polish
@@ -31,5 +34,5 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    var isEnglish: Bool { self == .english }
+    nonisolated var isEnglish: Bool { self == .english }
 }

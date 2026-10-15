@@ -52,9 +52,16 @@ enum SharedModelContainer {
         static let completed = "syncly.icloudGate.completed"
         static let localOnly = "syncly.icloudGate.localOnly"
         static let appleUserID = "syncly.icloudGate.appleUserID"
+        /// Ostatni znany `CKAccountStatus == .available` — bez tego `ModelContainer`
+        /// z CloudKit przy starcie wywołuje systemowe „Sign in to Apple Account”
+        /// w kółko (nawet gdy Sign in with Apple w aplikacji już przeszło).
+        static let iCloudAvailable = "syncly.icloudGate.iCloudAvailable"
     }
 
-    /// CloudKit tylko po zalogowaniu kontem Apple (bez trybu lokalnego).
+    /// CloudKit tylko gdy: SIWA zalogowane, nie tryb lokalny, **i** iCloud
+    /// faktycznie dostępny na urządzeniu. Samo SIWA nie wystarczy — bez konta
+    /// iCloud / Media & Purchases kontener CloudKit przy każdym starcie pyta
+    /// o Apple Account.
     static var shouldUseCloudKit: Bool {
         #if os(watchOS)
         return false
@@ -62,7 +69,8 @@ enum SharedModelContainer {
         let signedIn = UserDefaults.standard.bool(forKey: AccountKeys.completed)
             && UserDefaults.standard.string(forKey: AccountKeys.appleUserID) != nil
         let localOnly = UserDefaults.standard.bool(forKey: AccountKeys.localOnly)
-        return signedIn && !localOnly
+        let iCloudAvailable = UserDefaults.standard.bool(forKey: AccountKeys.iCloudAvailable)
+        return signedIn && !localOnly && iCloudAvailable
         #endif
     }
 
@@ -143,11 +151,11 @@ enum SharedModelContainer {
         do {
             return try ModelContainer(for: schema, configurations: [configuration])
         } catch {
-            try? FileManager.default.removeItem(at: storeDirectory)
-            try? FileManager.default.createDirectory(
-                at: storeDirectory,
-                withIntermediateDirectories: true
-            )
+            // Uszkodzony lub zablokowany store. NIGDY nie kasujemy całego katalogu
+            // `BeSortedStores` — obok leży `besorted-v12.store`, z którego migracja
+            // do CloudKit (`SynclyCloudMigration`) czyta projekty użytkownika.
+            // Odsuwamy wyłącznie pliki tego jednego store'a, żeby odblokować start.
+            quarantineStoreFiles(at: storeURL, in: storeDirectory)
 
             do {
                 return try ModelContainer(for: schema, configurations: [configuration])
@@ -156,10 +164,58 @@ enum SharedModelContainer {
                 do {
                     return try ModelContainer(for: schema, configurations: [memory])
                 } catch {
+                    // Ostatnia deska ratunku: w pamięci RAM nie ma nic do utraty.
+                    reportCloudKitStatus(CloudKitContainerStatus(
+                        attempted: true,
+                        isUsingCloudKit: false,
+                        isFallbackToLocal: true,
+                        errorText: error.localizedDescription
+                    ))
                     fatalError("Could not create ModelContainer: \(error)")
                 }
             }
         }
+    }
+
+    /// Przenosi pliki jednego store'a (`.store`, `-wal`, `-shm`) do podkatalogu
+    /// `Uszkodzone`, zamiast je kasować. Dzięki temu dane da się odzyskać ręcznie,
+    /// a katalog pozostaje nietknięty dla pozostałych store'ów.
+    private static func quarantineStoreFiles(at storeURL: URL, in storeDirectory: URL) {
+        let manager = FileManager.default
+        let directory = storeURL.deletingLastPathComponent()
+
+        // Pliki towarzyszące SQLite leżą OBOK store'a i mają dopisek `-wal`/`-shm`
+        // dopisany do pełnej nazwy: `besorted-v12.store-wal`, nie `….store.store-wal`.
+        let sidecars = ["-wal", "-shm"].map { suffix in
+            directory.appendingPathComponent(storeURL.lastPathComponent + suffix)
+        }
+        let candidates = [storeURL] + sidecars
+
+        let existing = candidates.filter { manager.fileExists(atPath: $0.path) }
+        guard !existing.isEmpty else { return }
+
+        let quarantineDirectory = storeDirectory
+            .appendingPathComponent("Uszkodzone", isDirectory: true)
+            .appendingPathComponent(stamp(), isDirectory: true)
+        try? manager.createDirectory(at: quarantineDirectory, withIntermediateDirectories: true)
+
+        for file in existing {
+            let target = quarantineDirectory.appendingPathComponent(file.lastPathComponent)
+            do {
+                try manager.moveItem(at: file, to: target)
+            } catch {
+                // Nie udało się przenieść (np. brak miejsca) — kasujemy tylko ten
+                // konkretny plik, nigdy całego katalogu.
+                try? manager.removeItem(at: file)
+            }
+        }
+    }
+
+    private static func stamp() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd-HHmmss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.string(from: Date())
     }
 
     private static func applicationSupportDirectory() -> URL {

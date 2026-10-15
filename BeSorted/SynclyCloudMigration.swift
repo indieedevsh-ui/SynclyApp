@@ -43,6 +43,9 @@ enum SynclyCloudMigration {
             (try? cloudContainer.mainContext.fetch(FetchDescriptor<Project>()))?.map(\.syncUUID) ?? []
         )
         var copied = 0
+        /// Ilość store'ów, których nie dało się otworzyć (plik zajęty przez
+        /// poprzedni kontener, uszkodzony SQLite). To NIE jest „brak danych”.
+        var unreadableStores = 0
 
         for storeName in localStoreCandidates {
             let url = SharedModelContainer.localStoreURL(storeName: storeName)
@@ -56,6 +59,7 @@ enum SynclyCloudMigration {
                     configurations: [config]
                 )
             } catch {
+                unreadableStores += 1
                 continue
             }
 
@@ -74,6 +78,11 @@ enum SynclyCloudMigration {
         }
 
         guard copied > 0 else {
+            // Nie oznaczaj migracji jako zrobionej, jeśli któreś store'y były
+            // nieczytelne — wtedy projekty zostałyby na dysku na zawsze, w sklepie,
+            // którego aplikacja już nie otwiera. Niech migracja spróbuje jeszcze raz
+            // przy kolejnym uruchomieniu.
+            guard unreadableStores == 0 else { return nil }
             UserDefaults.standard.set(true, forKey: migrationKey(userID: userID))
             return nil
         }

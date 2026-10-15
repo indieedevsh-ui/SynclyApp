@@ -1338,7 +1338,7 @@ struct ContentView: View {
             .onChanged { value in
                 guard selectedTab == .plan else { return }
 
-                let screenHeight = UIScreen.main.bounds.height
+                let screenHeight = BeSortedScreen.bounds.height
                 let maxPull = screenHeight * 0.30
                 let rawPullUp = max(0, -value.translation.height)
                 let pullUp = min(rawPullUp, maxPull)

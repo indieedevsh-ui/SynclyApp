@@ -168,13 +168,16 @@ enum SmartAssistantStandardIntel {
         return true
     }
 
-    static func normalize(_ text: String) -> String {
+    /// Czysta normalizacja tekstu — bez stanu i bez I/O, więc `nonisolated`.
+    /// Bez tego `Set.map(normalize)` przekazuje main-actor-isolowaną funkcję do
+    /// nieizolowanego closure (błąd w Swift 6).
+    nonisolated static func normalize(_ text: String) -> String {
         text.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: .current)
             .lowercased()
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private static func normalizeDisplay(_ text: String) -> String {
+    nonisolated private static func normalizeDisplay(_ text: String) -> String {
         let parts = text
             .split(whereSeparator: { $0.isWhitespace })
             .map(String.init)
